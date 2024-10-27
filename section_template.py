@@ -1,59 +1,74 @@
 import tkinter as tk
 from functions import functions_dict
 
-
 class SectionFrame(tk.Frame):
-    def __init__(self, parent, func_number, func_name):
+    def __init__(self, parent, func_number, func_name, result_label):
         super().__init__(parent)
 
-        # Создаём левую панель с инструкциями по вводу
-        instructions_frame = tk.Frame(self, width=200, bg="#f0f0f0", bd=2, relief="sunken")
-        instructions_frame.pack(side="left", fill="y")
-
-        instructions_label = tk.Label(instructions_frame, text="Формат ввода операций:", font=("Arial", 10, "bold"))
-        instructions_label.pack(pady=5)
-
-        # Список доступных операций
+        # Список операций для вывода слева
         operations = [
             "+  - сложение",
             "-  - вычитание",
+            "*  - умножение",
+            "/  - деление",
             "^  - возведение в степень",
             "sqrt - квадратный корень"
         ]
 
-        # Отображение операций
-        for op in operations:
-            label = tk.Label(instructions_frame, text=op, bg="#f0f0f0", anchor="w")
-            label.pack(anchor="w", padx=10, pady=2)
+        # Фрейм для списка доступных операций
+        operations_frame = tk.Frame(self)
+        operations_frame.grid(row=0, column=0, rowspan=5, padx=10, pady=10, sticky="n")
 
-        # Основная часть фрейма для раздела
-        main_frame = tk.Frame(self)
-        main_frame.pack(side="right", fill="both", expand=True)
+        operations_label = tk.Label(operations_frame, text="Доступные операции:", font=("Arial", 10, "bold"))
+        operations_label.pack(anchor="w")
 
-        # Заголовок с названием раздела
-        title_label = tk.Label(main_frame, text=f"{func_name} (Раздел {func_number})", font=("Arial", 14))
-        title_label.pack(pady=10)
+        for operation in operations:
+            op_label = tk.Label(operations_frame, text=operation, anchor="w")
+            op_label.pack(anchor="w")
 
-        # Поле ввода
-        self.input_label = tk.Label(main_frame, text=f"Введите данные для {func_name}:")
-        self.input_label.pack(pady=5)
+        # Центральный фрейм для размещения лейблов и поля ввода
+        central_frame = tk.Frame(self)
+        central_frame.grid(row=0, column=1, padx=10, pady=10, sticky="n")
 
-        self.input_field = tk.Entry(main_frame)
-        self.input_field.pack(pady=5)
+        # Лейбл для названия текущего раздела
+        self.label = tk.Label(central_frame, text=func_name, font=("Arial", 14))
+        self.label.pack(pady=(0, 10))  # Отступ снизу для отделения от поля ввода
 
-        # Поле вывода
-        self.output_label = tk.Label(main_frame, text="Результат:")
-        self.output_label.pack(pady=5)
+        # Поле ввода для данных пользователя
+        self.input_entry = tk.Entry(central_frame, width=30)
+        self.input_entry.pack(pady=5)
 
-        self.output_field = tk.Label(main_frame, text="", bg="white", relief="solid", width=20)
-        self.output_field.pack(pady=5)
+        # Лейбл для вывода ошибок валидации под полем ввода
+        self.error_label = tk.Label(central_frame, text="", fg="red")
+        self.error_label.pack(pady=(0, 10))
 
         # Кнопка для выполнения функции
-        self.run_button = tk.Button(main_frame, text="Выполнить", command=lambda: self.run_function(func_number))
+        self.run_button = tk.Button(central_frame, text="Выполнить", command=lambda: self.run_function(func_number, result_label))
         self.run_button.pack(pady=10)
 
-    def run_function(self, func_number):
-        # Выполнение соответствующей функции из functions.py
-        input_data = self.input_field.get()
-        result = functions_dict.get(str(func_number), lambda: "Функция не найдена")()
-        self.output_field.config(text=f"{result} для ввода: {input_data}")
+        # Лейбл для отображения результата под кнопкой
+        self.result_label = tk.Label(central_frame, text="", font=("Arial", 12), fg="blue")
+        self.result_label.pack(pady=5)
+
+    def run_function(self, func_number, result_label):
+        """Выполняет функцию с номером func_number и отображает результат в result_label."""
+        user_input = self.input_entry.get()
+        function = functions_dict.get(func_number)  # Получаем функцию по номеру
+
+        if function:
+            # Валидация входных данных перед выполнением
+            validation_error = self.validate_input(user_input)
+            if validation_error:
+                self.error_label.config(text=validation_error)  # Вывод ошибки
+                self.result_label.config(text="")  # Очищаем поле результата
+            else:
+                # Вызов функции и отображение результата
+                self.error_label.config(text="")
+                result_text = function(user_input)  # Выполнение функции с пользовательским вводом
+                self.result_label.config(text=result_text)  # Отображение результата
+
+    def validate_input(self, user_input):
+        """Валидация данных, введённых пользователем, перед отправкой в функцию."""
+        if not user_input.strip():
+            return "Ошибка: введите данные."
+        return None  # Нет ошибок

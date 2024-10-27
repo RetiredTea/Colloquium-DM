@@ -1,5 +1,14 @@
-def function_1():
-    print("Функция 1 была вызвана")
+def function_1(input_str):
+    """Проверка на ноль"""
+    try:
+        number = float(input_str)
+        if number == 0:
+            return "Эта штука работает!!!!"
+        else:
+            return "Число не равно нулю."
+    except ValueError:
+        return "Ошибка: введите корректное число."
+
 
 def function_2():
     print("Функция 2 была вызвана")

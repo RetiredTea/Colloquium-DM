@@ -2,49 +2,72 @@ import tkinter as tk
 from tkinter import ttk
 from section_template import SectionFrame
 
+
 def main():
     root = tk.Tk()
-    root.title("Выбор функции")
-    root.geometry("600x400")  #размеры окна
+    root.title("Проект, Коллоквиум №1")
+    root.geometry("600x400")
+    root.minsize(400, 300)
 
-    functions_dict = {      # Словарь с названиями разделов и соответствующими номерами функций
-        "Проверка на ноль": 1,
-        "Сложение натуральных чисел": 2,
-        "Вычитание чисел": 3,
-        #и тд, потом добавлю
-        "Умножение чисел": 40
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(1, weight=1)
+
+    # Словарь с названиями разделов и соответствующими номерами функций
+    sections_dict = {
+        "Информация": "0",
+        "Проверка на ноль": "1",
+        "Сложение натуральных чисел": "2",
+        "Вычитание чисел": "3",
+        "Умножение чисел": "40"
     }
 
+    # Лейбл "Выберите функцию"
+    label = tk.Label(root, text="Выберите функцию:")
+    label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-    label = tk.Label(root, text="Выберите функцию:") # Выпадающий список для выбора раздела
-    label.pack(pady=10)
-
+    # Выпадающий список
     selected_function = tk.StringVar(root)
-    dropdown = ttk.Combobox(root, textvariable=selected_function, values=list(functions_dict.keys()), state="readonly")
-    dropdown.pack(pady=10)
-    dropdown.set("Проверка на ноль")  # Начальное значение
+    dropdown = ttk.Combobox(root, textvariable=selected_function, values=list(sections_dict.keys()), state="readonly")
+    dropdown.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
+    dropdown.set("Информация")
 
+    # Контейнер для отображения выбранного раздела
+    container = tk.Frame(root, bd=2, relief="groove")
+    container.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+    root.columnconfigure(1, weight=1)
+    root.rowconfigure(1, weight=1)
 
-    container = tk.Frame(root) # Контейнер для основного раздела
-    container.pack(fill="both", expand=True)
+    # Лейбл для вывода результата
+    result_label = tk.Label(root, text="", wraplength=500, fg="black")
+    result_label.grid(row=2, column=0, columnspan=2, padx=10, pady=5)
 
+    # Переменная для текущего открытого фрейма
     current_frame = None
 
-    # Функция для переключения разделов
-    def switch_section():
+    def switch_section(event=None):
+        """Переключает на выбранный раздел"""
         nonlocal current_frame
         if current_frame is not None:
             current_frame.destroy()
 
         func_name = selected_function.get()
-        func_number = functions_dict[func_name]
+        func_number = sections_dict[func_name]
 
+        # Стартовый экран
+        if func_number == "0":
+            current_frame = tk.Frame(container)
+            info_label = tk.Label(current_frame,
+            text="Добро пожаловать в программу!\n"
+            "Проект выполнили студенты группы 3382 ",
+            font=("Arial", 14))
+            info_label.pack(expand=True)
+        else:
+            current_frame = SectionFrame(container, func_number, func_name, result_label)
 
-        current_frame = SectionFrame(container, func_number, func_name) # Создаём фрейм с нужным номером функции
         current_frame.pack(fill="both", expand=True)
 
-
-    tk.Button(root, text="Перейти", command=switch_section).pack(pady=10) # Кнопка для перехода к выбранному разделу
+    dropdown.bind("<<ComboboxSelected>>", switch_section)
+    switch_section()
 
     root.mainloop()
 
