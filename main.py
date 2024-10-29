@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from section_template import SectionFrame
+import classes
 
 
 def main():
