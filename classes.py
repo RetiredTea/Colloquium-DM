@@ -1,4 +1,6 @@
 import re
+from fractions import Fraction
+import math
 
 # Используйте метод makePolynomial для создания нового многочлена, передавайте туда строку вида (+-n)x(^m) - то что в скобка опциональноэ
 # Используйте метод getStringPolynomial для получения многочлена: строки вида (+-n)x(^m)
@@ -129,3 +131,71 @@ class Polynomial:
             if(temp.deg == deg):
                 return temp.val
         return 0
+
+
+class NaturalNumber:
+    def __init__(self, value):
+        if not value.isdigit() or int(value) <= 0:
+            raise ValueError("Значение должно быть натуральным числом.")
+        self.value = int(value)
+    def __str__(self):
+        return str(self.value)
+    def sum(self, other): #надо заменить на столбик
+        return NaturalNumber(str(self.value + other.value)) #сложение заглушка
+    def multiply(self, other): #надо заменить на столбик
+        return NaturalNumber(str(self.value * other.value)) #умножени заглушка
+
+
+class IntegerNumber(NaturalNumber):
+    def __init__(self, value):
+        if not isinstance(value, int):
+            raise ValueError("Значение должно быть целым числом.")
+        super().__init__(abs(value) if value == 0 else value) #я не знал что так можно записывать, но это работает
+        self.value = value
+    def __str__(self):
+        return str(self.value)
+    def subtract(self, other): #надо заменить на столбик
+        return IntegerNumber(self.value - other.value) #заглушка
+    def negate(self):
+        return IntegerNumber(-self.value)
+
+
+class RationalNumber(IntegerNumber):
+    def __init__(self, numerator, denominator="1"):
+        num = int(numerator)
+        denom = int(denominator)
+        if denom == 0:
+            raise ValueError("Знаменатель не может быть нулем.")
+        self.value = Fraction(num, denom)
+    def __str__(self):
+        if self.value.denominator != 1:
+             return f"{self.value.numerator}/{self.value.denominator}"
+        else:
+            return str(self.value.numerator)
+    def sum(self, other): #надо заменить на столбик
+        result = self.value + other.value #заглушка
+        return RationalNumber(str(result.numerator), str(result.denominator))
+    def multiply(self, other):
+        result = self.value * other.value #заглушка
+        return RationalNumber(str(result.numerator), str(result.denominator))
+    def divide(self, other):
+        if other.value == 0:
+            raise ZeroDivisionError("Деление на ноль.")
+        result = self.value / other.value #заглушка
+        return RationalNumber(str(result.numerator), str(result.denominator))
+
+
+class RealNumber(RationalNumber):
+    def __init__(self, value):
+        try:
+            self.value = float(value)
+        except ValueError:
+            raise ValueError("Значение должно быть вещественным числом.")
+    def __str__(self):
+        return str(self.value)
+    def sqrt(self): #вроде корень не нужен, но я его на всякий оставлю
+        if self.value < 0:
+            raise ValueError("Квадратный корень из отрицательного числа не определен.")
+        return RealNumber(str(math.sqrt(self.value)))
+
+
