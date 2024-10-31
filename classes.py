@@ -59,6 +59,26 @@ class Polynomial:
             temp = temp.prev
     
     def getStringPolynomial(self):
+        indexes = {"0": "\u2070",
+           "1": "\u00B9",
+           "2": "\u00B2",
+           "3": "\u00B3",
+           "4": "\u2074",
+           "5": "\u2075",
+           "6": "\u2076",
+           "7": "\u2077",
+           "8": "\u2078",
+           "9": "\u2079",
+           "-": "\u207B"
+           }
+
+        def degree(deg):
+            degree = ""
+            temp = str(deg)
+            for char in temp:
+                degree += indexes[char] or ""
+            return degree
+        
         if not self.head:
             return "0"
         
@@ -82,12 +102,12 @@ class Polynomial:
                         if temp.deg == 1:
                             res += f"x"
                         else:
-                            res += f"x^{temp.deg}"
+                            res += f"x{degree(temp.deg)}"
                     else:
                         if temp.deg == 1:
                             res += f"{coeff_str}x"
                         else:
-                            res += f"{coeff_str}x^{temp.deg}"
+                            res += f"{coeff_str}x{degree(temp.deg)}"
             temp = temp.next
         
         return res or "0"
@@ -123,6 +143,7 @@ class Polynomial:
 
                 # Добавляем в многочлен
                 self.add(deg, coeff)
+                
     def getCoeff(self, deg):
         temp = self.head
         while(temp != None):
