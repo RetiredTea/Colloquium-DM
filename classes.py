@@ -1,4 +1,6 @@
 import re
+from fractions import Fraction
+import math
 
 # Используйте метод makePolynomial для создания нового многочлена, передавайте туда строку вида (+-n)x(^m) - то что в скобка опциональноэ
 # Используйте метод getStringPolynomial для получения многочлена: строки вида (+-n)x(^m)
@@ -150,3 +152,100 @@ class Polynomial:
             if(temp.deg == deg):
                 return temp.val
         return 0
+
+
+class NaturalNumber:
+    def __init__(self, value):
+        if not isinstance(value, str) or not value.isdigit() or int(value) <= 0:
+            raise ValueError("Значение должно быть натуральным числом.")
+        self.value = int(value)  # Преобразуем строку в натуральное число
+
+    def __str__(self):
+        return str(self.value)
+
+    def is_natural(self):
+        return True
+
+    def sum(self, other):  # Заглушка для сложения столбиком
+        return NaturalNumber(str(self.value + other.value))
+
+    def multiply(self, other):  # Заглушка для умножения столбиком
+        return NaturalNumber(str(self.value * other.value))
+
+
+class IntegerNumber(NaturalNumber):
+    def __init__(self, value):
+        if not isinstance(value, str) or not (value.lstrip('-').isdigit()):
+            raise ValueError("Значение должно быть целым числом.")
+
+        self.value = int(value)  # Преобразуем строку в целое число
+        super().__init__(str(abs(self.value)) if self.value != 0 else "0")
+
+    def __str__(self):
+        return str(self.value)
+
+    def is_integer(self):
+        return True
+
+    def subtract(self, other):  # Заглушка для вычитания столбиком
+        return IntegerNumber(str(self.value - other.value))
+
+    def negate(self):
+        return IntegerNumber(str(-self.value))
+
+
+class RationalNumber(IntegerNumber):
+    def __init__(self, numerator, denominator="1"):
+        if not (isinstance(numerator, str) and isinstance(denominator, str)):
+            raise ValueError("Числитель и знаменатель должны быть строками.")
+
+        num = int(numerator)
+        denom = int(denominator)
+        if denom == 0:
+            raise ValueError("Знаменатель не может быть нулем.")
+
+        self.value = Fraction(num, denom)  # Сохраняем как дробь
+        super().__init__(str(self.value.numerator))  # Для корректного наследования проверок
+
+    def __str__(self):
+        if self.value.denominator != 1:
+            return f"{self.value.numerator}/{self.value.denominator}"
+        else:
+            return str(self.value.numerator)
+
+    def is_rational(self):
+        return True
+
+    def sum(self, other):  # Заглушка для сложения дробей
+        result = self.value + other.value
+        return RationalNumber(str(result.numerator), str(result.denominator))
+
+    def multiply(self, other):  # Заглушка для умножения дробей
+        result = self.value * other.value
+        return RationalNumber(str(result.numerator), str(result.denominator))
+
+    def divide(self, other): #Заглушка для деления
+        if other.value == 0:
+            raise ZeroDivisionError("Деление на ноль.")
+        result = self.value / other.value
+        return RationalNumber(str(result.numerator), str(result.denominator))
+
+
+class RealNumber(RationalNumber):
+    def __init__(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Значение должно быть строкой.")
+
+        try:
+            self.value = float(value)
+        except ValueError:
+            raise ValueError("Значение должно быть вещественным числом.")
+
+    def __str__(self):
+        return str(self.value)
+
+    def is_real(self):
+        return True
+
+    def power(self, exponent):  # Заглушка для возведения в степень
+        return RealNumber(str(self.value ** exponent))
