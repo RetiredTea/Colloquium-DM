@@ -1,3 +1,49 @@
+# Примеры использования алгоритма Евклида
+# возвращает кортеж
+# первое значение кортежа - коэффициенты полученные при расширенном алг. Евк. (например цепная дробь)
+# второе значение кортежа - частное решение диофантового уравнения
+# третье значение кортежа - общее решение диофантового уравнения
+# четвёртое значение кортежа - НОД переданных чисел
+
+#drob, ch_ans, ob_ans, nod = euclidean_algorithm(13, 5)
+#     output = ([2, 1, 1, 2], (2, -5), (-5, 13))
+
+#drob = euclidean_algorithm(13, 5)[0]
+#     output = [2, 1, 1, 2]
+
+#ch_ans = euclidean_algorithm(13, 5)[1]
+#     output = (2, -5)
+
+#ob_ans = euclidean_algorithm(13, 5)[2]
+#     output = (-5, 13)
+
+#ob_ans = euclidean_algorithm(13, 5)[3]
+#     output = 1
+
+#Алгоритм Евклида
+def euclidean_algorithm(a, b):
+    def swap(a, b):
+        temp = a
+        a = b
+        b = temp
+        return a, b
+    coeffs = []
+    while(b != 0):
+        coeffs.append(a//b)
+        a = a%b
+        a, b = swap(a, b)
+    NOD = a
+    a1 = 1
+    a2 = 0
+    b1 = 0
+    b2 = 1
+    for i in coeffs:
+        a1 -= i*b1
+        a2 -= i*b2
+        a1, b1 = swap(a1, b1)
+        a2, b2 = swap(a2, b2)
+    return coeffs, (a1, a2), (b1, b2), NOD
+
 def function_1(input_str):
     """Проверка на ноль"""
     try:
