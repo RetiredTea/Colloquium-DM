@@ -56,11 +56,25 @@ def function_1(input_str):
         return "Ошибка: введите корректное число."
 
 
-def function_2():
-    print("Функция 2 была вызвана")
+def trans_n_z(natural_num):
+    """Преобразование натурального числа в целое"""
+    if type(natural_num) == NaturalNumber: # Проверка типа поданных данных
+        int_num = IntegerNumber(natural_num.__str__())
+        return int_num
+    else:
+        raise ValueError("На вход должно подаваться натуральное число.")
 
-def function_3():
-    print("Функция 3 была вызвана")
+def trans_z_n(integer_num):
+    """Преобразование целого числа в натуральное"""
+    if type(integer_num) == IntegerNumber: # Проверка типа поданных данных
+        if integer_num.get_sign()==0: # Проверка знака числа
+            natural_num = NaturalNumber(natural_num.__str__())
+            return natural_num
+        else:
+            raise ValueError("Число должно быть неотрицательным")
+    else:
+        raise ValueError("На вход должно подаваться целое неотрицательное число.")
+
 def function_4():
     print("Функция 4 была вызвана")
 def function_5():
