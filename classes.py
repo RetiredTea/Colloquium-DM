@@ -239,7 +239,7 @@ class RationalNumber:
 
         # Инициализация числителя и знаменателя
         self.numerator = numerator
-        if denominator != ["0"]:
+        if denominator.__str__() != "0":
             self.denominator = denominator
         else:
             raise ValueError("Знаменатель не может быть нулём")
