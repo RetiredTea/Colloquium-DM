@@ -170,7 +170,7 @@ class NaturalNumber:
             raise ValueError('Значение должно быть натуральным числом или нулём.')
 
         # Инициализация массивом цифр
-        self.value = list(map(int, list(value)))
+        self.value = list(map(int, list(str(int(value)))))
 
     # Вывод числа в виде строки
     def __str__(self):
@@ -179,6 +179,10 @@ class NaturalNumber:
     # Возврат массива цифр
     def get_value(self):
         return self.value
+
+    # Перегруженный len
+    def __len__(self):
+        return len(self.value)
 
 
 # Класс целого числа
@@ -218,6 +222,10 @@ class IntegerNumber:
     def get_sign(self):
         return self.sign
 
+    # Перегруженный len
+    def __len__(self):
+        return len(self.value)
+
 
 # Класс рационального числа
 # Хранится как целое и натуральное число для числителя и знаменателя соответственно.
@@ -240,4 +248,4 @@ class RationalNumber:
     def __str__(self):
 
         # Так как числитель и знаменатель - объекты предыдущих классов, вызываются методы __str__.
-        return f"{self.numerator.__str__()}/{self.denominator.__str__()}"
+        return f"{str(self.numerator)}/{str(self.denominator)}"
