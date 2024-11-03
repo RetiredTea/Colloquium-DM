@@ -6,7 +6,7 @@
 # четвёртое значение кортежа - НОД переданных чисел
 
 #drob, ch_ans, ob_ans, nod = euclidean_algorithm(13, 5)
-#     output = ([2, 1, 1, 2], (2, -5), (-5, 13))
+#     output = ([2, 1, 1, 2], (2, -5), (-5, 13)), 1
 
 #drob = euclidean_algorithm(13, 5)[0]
 #     output = [2, 1, 1, 2]
@@ -22,16 +22,20 @@
 
 #Алгоритм Евклида
 def euclidean_algorithm(a, b):
+    # Функция меняющая между собой значения 2 переданных переменных
     def swap(a, b):
-        temp = a
-        a = b
-        b = temp
-        return a, b
+        return b, a
+    
+    # Коэффициенты алгоритма Евклида
     coeffs = []
+
+    # Применяем алгоритм Евклида
     while(b != 0):
         coeffs.append(a//b)
         a = a%b
         a, b = swap(a, b)
+
+    # Записываем результаты алгоритма Евклида
     NOD = a
     a1 = 1
     a2 = 0
@@ -42,6 +46,8 @@ def euclidean_algorithm(a, b):
         a2 -= i*b2
         a1, b1 = swap(a1, b1)
         a2, b2 = swap(a2, b2)
+        
+    # Возвращаем результаты
     return coeffs, (a1, a2), (b1, b2), NOD
 
 def function_1(input_str):
