@@ -108,6 +108,78 @@ def function_20():
 def function_40():
     print("Функция 45 была вызвана")
 
+def func_q1(rational_number):
+    if(rational_number.denomirator == 1):
+        return rational_number
+    nod = euclidean_algorithm(rational_number.numerator, rational_number.denomirator)[3]
+    rational_number.numerator = rational_number.numerator//nod
+    rational_number.denomirator = rational_number.denomirator//nod
+    return class_rational_number
+
+def func_q3(value):
+    return rational_number(value, 1)
+
+def func_q8(rational_number1, rational_number2):
+    rational_number1.numerator *= rational_number2.denomirator
+    rational_number1.denomirator *= rational_number2.numerator
+    return func_q1(rational_number1)
+
+def func_p2(pln1, pln2):
+    arr1 = pln1.getDegrees()
+    arr2 = pln2.getDegrees()
+    for i in arr2:
+        val = 0 - pln2.getCoeff(i)
+        pln1.add(i, val)
+    return pln1
+
+def func_p4(pln, k):
+    for i in pln.getDegrees():
+        pln.changeDegree(i, i+k)
+    return pln
+
+def func_p8(pln1, pln2):
+    arr1 = pln1.getDegrees()
+    arr2 = pln2.getDegrees()
+    pln = Polynomial()
+    for i in arr2:
+        val = pln2.getCoeff(i)
+        for j in arr1:
+            pln.add(j+i, val*pln1.getCoeff(j))
+    return pln
+
+def func_p9(pln1, pln2):
+    pln = Polynomial()
+    break_deg = pln2.getDegrees()[0]
+    while(pln1.getDegrees()[0] >= break_deg):
+        val = pln1.getCoeff(pln1.getDegrees()[0]) // pln2.getCoeff(pln2.getDegrees()[0])
+        deg = pln1.getDegrees()[0] - pln2.getDegrees()[0]
+        temp = Polynomial()
+        temp.makePolynomial(f"{val}x^{deg}")
+        pln1 = func_p2(pln1, func_p8(pln2, temp))
+        pln.add(deg, val)
+    return pln
+
+def func_p10(pln1, pln2):
+    break_deg = pln2.getDegrees()[0]
+    while(pln1.getDegrees()[0] >= break_deg):
+        val = pln1.getCoeff(pln1.getDegrees()[0]) // pln2.getCoeff(pln2.getDegrees()[0])
+        deg = pln1.getDegrees()[0] - pln2.getDegrees()[0]
+        temp = Polynomial()
+        temp.makePolynomial(f"{val}x^{deg}")
+        pln1 = func_p2(pln1, func_p8(pln2, temp))
+    return pln1
+    
+def func_p13(pln1):
+    def check_root(pln, val):
+        temp = Polynomial()
+        temp.makePolynomial(f"x - {val}")
+        if(func_p10(pln, temp) == 0):
+            return True
+        return False
+    
+    
+    pass
+
 # Словарь для маппинга номеров на функции
 functions_dict = {
     str(i): globals()[f'function_{i}'] for i in range(1, 20)
