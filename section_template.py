@@ -1,6 +1,7 @@
 import tkinter as tk
 from functions import functions_dict
 
+
 class SectionFrame(tk.Frame):
     def __init__(self, parent, func_number, func_name, result_label):
         super().__init__(parent)
@@ -15,9 +16,9 @@ class SectionFrame(tk.Frame):
             "sqrt - квадратный корень"
         ]
 
-        # Фрейм для списка доступных операций
+        # Левый фрейм для отображения доступных операций
         operations_frame = tk.Frame(self)
-        operations_frame.grid(row=0, column=0, rowspan=5, padx=10, pady=10, sticky="n")
+        operations_frame.pack(side="left", padx=10, pady=10, anchor="n")
 
         operations_label = tk.Label(operations_frame, text="Доступные операции:", font=("Arial", 10, "bold"))
         operations_label.pack(anchor="w")
@@ -26,49 +27,146 @@ class SectionFrame(tk.Frame):
             op_label = tk.Label(operations_frame, text=operation, anchor="w")
             op_label.pack(anchor="w")
 
-        # Центральный фрейм для размещения лейблов и поля ввода
+        # Центральный фрейм для ввода и вывода
         central_frame = tk.Frame(self)
-        central_frame.grid(row=0, column=1, padx=10, pady=10, sticky="n")
+        central_frame.pack(side="left", padx=10, pady=10, anchor="n")
 
-        # Лейбл для названия текущего раздела
+        # Лейбл для отображения названия функции
         self.label = tk.Label(central_frame, text=func_name, font=("Arial", 14))
         self.label.pack(pady=(0, 10))  # Отступ снизу для отделения от поля ввода
 
-        # Поле ввода для данных пользователя
-        self.input_entry = tk.Entry(central_frame, width=30)
-        self.input_entry.pack(pady=5)
 
-        # Лейбл для вывода ошибок валидации под полем ввода
+        arr_for_one_arg = ["1"]
+        arr_for_one_subtraction = ["2"]
+        arr_for_two_аddition = ["3"]
+        arr_for_one_multiplication = ["40"]
+        arr_for_one_division = ["1"]
+        arr_for_one_comparison = ["1"]
+
+
+# -----------------------------------------------------------------------------------------------------------------
+        # Определение макета в зависимости от функции
+        if  func_number in arr_for_one_arg:                                                   # Макет с одним полем ввода
+            self.single_input_entry = tk.Entry(central_frame, width=30)
+            self.single_input_entry.pack(pady=5)
+        elif func_number in arr_for_one_subtraction:                                                  # Макет с двумя полями ввода "+"
+            dual_input_frame = tk.Frame(central_frame)
+            dual_input_frame.pack(pady=5)
+
+            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.first_input_entry.pack(side="left", padx=5)
+
+            self.operator_label = tk.Label(dual_input_frame, text="+",
+                                           font=("Arial", 12))
+            self.operator_label.pack(side="left", padx=5)
+
+            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.second_input_entry.pack(side="left", padx=5)
+
+        elif func_number in arr_for_two_аddition:                                                 # Макет с двумя полями ввода "-"
+            dual_input_frame = tk.Frame(central_frame)
+            dual_input_frame.pack(pady=5)
+
+            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.first_input_entry.pack(side="left", padx=5)
+
+            self.operator_label = tk.Label(dual_input_frame, text="-",
+                                           font=("Arial", 12))
+            self.operator_label.pack(side="left", padx=5)
+
+            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.second_input_entry.pack(side="left", padx=5)
+
+        elif func_number in arr_for_one_multiplication:                                           # Макет с двумя полями ввода "*"
+            dual_input_frame = tk.Frame(central_frame)
+            dual_input_frame.pack(pady=5)
+
+            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.first_input_entry.pack(side="left", padx=5)
+
+            self.operator_label = tk.Label(dual_input_frame, text="*",
+                                           font=("Arial", 12))
+            self.operator_label.pack(side="left", padx=5)
+
+            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.second_input_entry.pack(side="left", padx=5)
+
+        elif func_number == "23":                                                               # Макет с двумя полями ввода "/"
+            dual_input_frame = tk.Frame(central_frame)
+            dual_input_frame.pack(pady=5)
+
+            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.first_input_entry.pack(side="left", padx=5)
+
+            self.operator_label = tk.Label(dual_input_frame, text="/",
+                                           font=("Arial", 12))
+            self.operator_label.pack(side="left", padx=5)
+
+            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.second_input_entry.pack(side="left", padx=5)
+
+        elif func_number in  arr_for_one_comparison:                                         # Макет с двумя полями ввода "?"
+            dual_input_frame = tk.Frame(central_frame)
+            dual_input_frame.pack(pady=5)
+
+            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.first_input_entry.pack(side="left", padx=5)
+
+            self.operator_label = tk.Label(dual_input_frame, text="?",
+                                           font=("Arial", 12))
+            self.operator_label.pack(side="left", padx=5)
+
+            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+            self.second_input_entry.pack(side="left", padx=5)
+
+
+    #-----------------------------------------------------------------------------------------------------------------
+
+        # Лейбл для вывода ошибок валидации
         self.error_label = tk.Label(central_frame, text="", fg="red")
         self.error_label.pack(pady=(0, 10))
 
         # Кнопка для выполнения функции
-        self.run_button = tk.Button(central_frame, text="Выполнить", command=lambda: self.run_function(func_number, result_label))
+        self.run_button = tk.Button(central_frame, text="Выполнить",
+                                    command=lambda: self.run_function(func_number, result_label))
         self.run_button.pack(pady=10)
 
-        # Лейбл для отображения результата под кнопкой
+        # Лейбл для отображения результата
         self.result_label = tk.Label(central_frame, text="", font=("Arial", 12), fg="blue")
         self.result_label.pack(pady=5)
 
     def run_function(self, func_number, result_label):
-        """Выполняет функцию с номером func_number и отображает результат в result_label."""
-        user_input = self.input_entry.get()
-        function = functions_dict.get(func_number)  # Получаем функцию по номеру
+        """Выполняет функцию в зависимости от макета и отображает результат."""
+        if func_number == "1":  # Проверка на ноль с одним полем
+            user_input = self.single_input_entry.get()
+            args = [user_input]
+        else:  # Два поля ввода
+            first_input = self.first_input_entry.get()
+            second_input = self.second_input_entry.get()
+            args = [first_input, second_input]
+
+        function = functions_dict.get(func_number)
 
         if function:
             # Валидация входных данных перед выполнением
-            validation_error = self.validate_input(user_input)
+            validation_error = self.validate_input(args)
             if validation_error:
-                self.error_label.config(text=validation_error)  # Вывод ошибки
-                self.result_label.config(text="")  # Очищаем поле результата
+                self.error_label.config(text=validation_error)  # Отображение ошибки
+                self.result_label.config(text="")  # Очистка поля результата
             else:
-                # Вызов функции и отображение результата
-                self.error_label.config(text="")
-                result_text = function(user_input)  # Выполнение функции с пользовательским вводом
-                self.result_label.config(text=result_text)  # Отображение результата
+                self.error_label.config(text="")  # Очистка ошибок
+                try:
+                    result_text = function(*args)  # Выполнение функции с аргументами
+                    self.result_label.config(text=result_text)  # Отображение результата
+                except Exception as e:
+                    self.error_label.config(text=f"Ошибка выполнения: {e}")
 
-    def validate_input(self, user_input):
+    def validate_input(self, args):
         """Валидация данных, введённых пользователем, перед отправкой в функцию."""
-        if not user_input.strip():
-            return "Ошибка: введите данные."
+        if len(args) == 1:  # Проверка для одного аргумента
+            if not args[0].strip():
+                return "Ошибка: введите значение."
+        else:  # Проверка для двух аргументов
+            if not args[0].strip() or not args[1].strip():
+                return "Ошибка: оба поля должны быть заполнены."
         return None  # Нет ошибок
