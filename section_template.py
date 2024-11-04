@@ -36,12 +36,13 @@ class SectionFrame(tk.Frame):
         self.label.pack(pady=(0, 10))  # Отступ снизу для отделения от поля ввода
 
 
-        arr_for_one_arg = ["1"]
-        arr_for_one_subtraction = ["2"]
-        arr_for_two_аddition = ["3"]
-        arr_for_one_multiplication = ["40"]
-        arr_for_one_division = ["1"]
-        arr_for_one_comparison = ["1"]
+        arr_for_one_arg = ["1", "25", "27", "45"]
+        arr_for_two_subtraction = ["2", "34"]
+        arr_for_two_аddition = ["3", "29"]
+        arr_for_two_multiplication = ["40", "31", "36", "40"]
+        arr_for_two_division = ["1", "32", "41"]
+        arr_for_two_remainder_of_devision = ["42"]
+        arr_for_two_comparison = ["1"]
 
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ class SectionFrame(tk.Frame):
         if  func_number in arr_for_one_arg:                                                   # Макет с одним полем ввода
             self.single_input_entry = tk.Entry(central_frame, width=30)
             self.single_input_entry.pack(pady=5)
-        elif func_number in arr_for_one_subtraction:                                                  # Макет с двумя полями ввода "+"
+        elif func_number in arr_for_two_subtraction:                                                  # Макет с двумя полями ввода "+"
             dual_input_frame = tk.Frame(central_frame)
             dual_input_frame.pack(pady=5)
 
@@ -77,7 +78,7 @@ class SectionFrame(tk.Frame):
             self.second_input_entry = tk.Entry(dual_input_frame, width=14)
             self.second_input_entry.pack(side="left", padx=5)
 
-        elif func_number in arr_for_one_multiplication:                                           # Макет с двумя полями ввода "*"
+        elif func_number in arr_for_two_multiplication:                                           # Макет с двумя полями ввода "*"
             dual_input_frame = tk.Frame(central_frame)
             dual_input_frame.pack(pady=5)
 
@@ -105,7 +106,7 @@ class SectionFrame(tk.Frame):
             self.second_input_entry = tk.Entry(dual_input_frame, width=14)
             self.second_input_entry.pack(side="left", padx=5)
 
-        elif func_number in  arr_for_one_comparison:                                         # Макет с двумя полями ввода "?"
+        elif func_number in  arr_for_two_comparison:                                         # Макет с двумя полями ввода "?"
             dual_input_frame = tk.Frame(central_frame)
             dual_input_frame.pack(pady=5)
 
