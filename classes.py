@@ -1,8 +1,5 @@
 import re
-from functions import function_q5
 
-# Класс целого числа
-# Хранится в аналогично натуральному, но присутствует знак в виде int.
 class IntegerNumber:
 
     def __init__(self, value: str):
@@ -120,31 +117,8 @@ class Polynomial:
     def __init__(self):
         self.head = PolynomialNode()
 
-    # Возвращает многлчен в виде строки  
+    # Возвращает многочлен в виде строки  
     def __str__(self):
-        indexes = {"0": "\u2070",
-           "1": "\u00B9",
-           "2": "\u00B2",
-           "3": "\u00B3",
-           "4": "\u2074",
-           "5": "\u2075",
-           "6": "\u2076",
-           "7": "\u2077",
-           "8": "\u2078",
-           "9": "\u2079",
-           "-": "\u207B"
-           }
-
-        def degree(deg):
-            degree = ""
-            temp = str(deg)
-            for char in temp:
-                degree += indexes[char] or ""
-            return degree
-        
-        if not self.head:
-            return "0"
-        
         res = ""
         temp = self.head
         while temp is not None:
@@ -173,11 +147,18 @@ class Polynomial:
                     if int(temp.deg) == 1:
                         res += f"{coeff_str}x"
                     else:
-                        res += f"{coeff_str}x{degree(temp.deg)}"
+                        res += f"{coeff_str}x^{str(temp.deg)}"
             temp = temp.next
         
         return res or "0"
     
+    # Зануляет все коэффициенты
+    def clear(self):
+        temp = self.head
+        while(temp != None):
+            temp.val = RationalNumber("0")
+            temp = temp.next
+
     # Добавление/изменение (сумма старого и нового коэффициентов) одночлена
     def add(self, deg: NaturalNumber, val: RationalNumber):
         if (not isinstance(deg, NaturalNumber)) and (not isinstance(val, RationalNumber)):
@@ -191,7 +172,8 @@ class Polynomial:
             
             # Если у степени уже есть коэффициент
             elif(str(deg) == str(temp.deg)):
-                temp.val = function_q5(temp.val, val)
+                num, denom = function_q5(str(temp.val), str(val)).split('/')
+                temp.val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
                 break
 
             # Если нашли место для вставки, то вставляем
@@ -293,6 +275,71 @@ class Polynomial:
                 temp.val = 0
             temp = temp.next
         return
+    
+    # Возвращает красивую строку (многочлен), использовать только для конечного вывода
+    def getNiceStr(self):
+        indexes = {"0": "\u2070",
+           "1": "\u00B9",
+           "2": "\u00B2",
+           "3": "\u00B3",
+           "4": "\u2074",
+           "5": "\u2075",
+           "6": "\u2076",
+           "7": "\u2077",
+           "8": "\u2078",
+           "9": "\u2079",
+           "-": "\u207B"
+           }
+
+        temp = self.head
+        while temp is not None:
+            if int(temp.val.numerator) != 0:
+                num, denom = function_q1(str(temp.val)).split('/')
+                temp.val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+            temp = temp.next
+
+        def degree(deg):
+            degree = ""
+            temp = str(deg)
+            for char in temp:
+                degree += indexes[char] or ""
+            return degree
+        
+        if not self.head:
+            return "0"
+        
+        res = ""
+        temp = self.head
+        while temp is not None:
+            if int(temp.val.numerator) != 0:
+                if res:  # Если это не первый элемент
+                    if (temp.val.numerator.get_sign() == 0):
+                        res += " + "
+                    else:
+                        res += " - "
+                else:
+                    if (temp.val.numerator.get_sign() == 1):
+                        res += "-"
+                
+                coeff_str = ""
+                if (int(temp.val.denominator) == 1 and abs(int(temp.val.numerator)) != 1):
+                    coeff_str = str(temp.val.numerator)
+                elif (int(temp.val.denominator) != 1):
+                    coeff_str = str(temp.val)
+                if (temp.val.numerator.get_sign() == 1):
+                    coeff_str = coeff_str[1:]
+                if int(temp.deg) == 0:
+                    if coeff_str == "":
+                        coeff_str = "1"
+                    res += coeff_str
+                else:
+                    if int(temp.deg) == 1:
+                        res += f"{coeff_str}x"
+                    else:
+                        res += f"{coeff_str}x{degree(temp.deg)}"
+            temp = temp.next
+        
+        return res or "0"
    
 
 '''
