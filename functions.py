@@ -56,9 +56,14 @@ def function_1(input_str):
         return "Ошибка: введите корректное число."
 
 
-def function_2():
-    print("Функция 2 была вызвана")
-
+def function_2(input_str1, input_str2):
+    try:
+        number1 = float(input_str1)
+        number2 = float(input_str2)
+        result = number1 + number2
+        return f"Результат сложения: {result}"
+    except ValueError:
+        return "Ошибка: оба поля должны содержать корректные числа."
 def function_3():
     print("Функция 3 была вызвана")
 def function_4():

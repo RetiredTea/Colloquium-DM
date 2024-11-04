@@ -1,4 +1,3 @@
-#Файл для отлова ошибок, что бы говорить что конретно не так, позже сделаю
 import re
 
 def validate_input(expression):
@@ -24,9 +23,8 @@ def validate_input(expression):
     if operators_pattern.search(expression):
         return "Ошибка: Неверное расположение операторов (например, 13^*15)."
 
-
     sqrt_pattern = re.compile(r'sqrt\(') # Проверка на корректное использование корня sqrt
     if 'sqrt' in expression and not sqrt_pattern.search(expression):
         return "Ошибка: Некорректное использование функции sqrt, пропущена скобка."
 
-    return None  #се проверки пройдены
+    return None  # Если все проверки пройдены
