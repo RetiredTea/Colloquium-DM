@@ -1,5 +1,7 @@
 import re
 
+# Класс целого числа
+# Хранится в аналогично натуральному, но присутствует знак в виде int.
 class IntegerNumber:
 
     def __init__(self, value: str):
