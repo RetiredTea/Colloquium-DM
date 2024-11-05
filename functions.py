@@ -1,8 +1,3 @@
-from classes import Polynomial
-from classes import IntegerNumber
-from classes import NaturalNumber
-from classes import RationalNumber
-from classes import makePolynomial
 # Примеры использования алгоритма Евклида
 # возвращает кортеж
 # первое значение кортежа - коэффициенты полученные при расширенном алг. Евк. (например цепная дробь)
@@ -258,6 +253,13 @@ functions_dict = {
 
 
 '''     Tests
+
+from classes import Polynomial
+from classes import IntegerNumber
+from classes import NaturalNumber
+from classes import RationalNumber
+from classes import makePolynomial
+
 print(RED_Q_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2"))), RED_Q_Q(RationalNumber(IntegerNumber("2"), NaturalNumber("4"))), RED_Q_Q(RationalNumber(IntegerNumber("10"), NaturalNumber("5"))))
 print(TRANS_Z_Q(IntegerNumber("1")), TRANS_Z_Q(IntegerNumber("2")), TRANS_Z_Q(IntegerNumber("10")))
 print(DIV_QQ_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2")), RationalNumber(IntegerNumber("-2"), NaturalNumber("5"))), DIV_QQ_Q(RationalNumber(IntegerNumber("-2"), NaturalNumber("4")), RationalNumber(IntegerNumber("1"))))
