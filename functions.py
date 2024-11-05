@@ -245,7 +245,17 @@ def function_40():
 
 # Словарь для маппинга номеров на функции
 functions_dict = {
-    str(i): globals()[f'function_{i}'] for i in range(1, 20)
+    "25": 'RED_Q_Q',
+    "27": 'TRANS_Z_Q',
+    "29": 'ADD_QQ_Q',
+    "31": 'MUL_QQ_Q',
+    "32": 'DIV_QQ_Q',
+    "34": 'SUB_PP_P',
+    "36": 'MUL_Pxk_P',
+    "40": 'MUL_PP_P',
+    "41": 'DIV_PP_P',
+    "42": 'MOD_PP_P',
+    "45": 'NMR_P_P'
 }
 
 
