@@ -1,5 +1,4 @@
 import re
-
 # Класс целого числа
 # Хранится в аналогично натуральному, но присутствует знак в виде int.
 class IntegerNumber:
@@ -174,8 +173,18 @@ class Polynomial:
             
             # Если у степени уже есть коэффициент
             elif(str(deg) == str(temp.deg)):
-                num, denom = function_q5(str(temp.val), str(val)).split('/')
-                temp.val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+                # Сложение рациональных чисел:
+                # (a/b) + (c/d) = (a*d + b*c) / (b*d)
+                # Получаем числители и знаменатели
+                a = int(temp.val.numerator)
+                b = int(temp.val.denominator)
+                c = int(val.numerator)
+                d = int(val.denominator)
+
+                # Вычисляем новый числитель и знаменатель
+                new_numerator_value = IntegerNumber(str(a * d + b * c))
+                new_denominator_value = NaturalNumber(str(b * d))
+                temp.val = RationalNumber(new_numerator_value, new_denominator_value)
                 break
 
             # Если нашли место для вставки, то вставляем
@@ -280,6 +289,33 @@ class Polynomial:
     
     # Возвращает красивую строку (многочлен), использовать только для конечного вывода
     def getNiceStr(self):
+        def func_q1(rational_number: RationalNumber) -> RationalNumber:
+            def euc_alg(a, b):
+                # Функция меняющая между собой значения 2 переданных переменных
+                def swap(a, b):
+                    return b, a
+                
+                # Коэффициенты алгоритма Евклида
+                coeffs = []
+
+                # Применяем алгоритм Евклида
+                while(b != 0):
+                    coeffs.append(a//b)
+                    a = a%b
+                    a, b = swap(a, b)
+
+                # Записываем результаты алгоритма Евклида (nod)
+                return a 
+            
+            if(rational_number.denominator == 1):
+                return rational_number
+            
+            nod = euc_alg(int(rational_number.numerator), int(rational_number.denominator))
+            rational_number.numerator = IntegerNumber(str(int(rational_number.numerator)//nod))
+            rational_number.denominator = NaturalNumber(str(int(rational_number.denominator)//nod))
+
+            return rational_number
+
         indexes = {"0": "\u2070",
            "1": "\u00B9",
            "2": "\u00B2",
@@ -296,8 +332,7 @@ class Polynomial:
         temp = self.head
         while temp is not None:
             if int(temp.val.numerator) != 0:
-                num, denom = function_q1(str(temp.val)).split('/')
-                temp.val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+                temp.val = func_q1(temp.val)
             temp = temp.next
 
         def degree(deg):
@@ -343,56 +378,7 @@ class Polynomial:
         
         return res or "0"
    
-
-'''
-Пример использования класса многочлена
-
-x = RationalNumber(IntegerNumber("28"),NaturalNumber("11"))
-poly = Polynomial()
-
-print(str(poly))
-
-poly.add(NaturalNumber("1"), x)
-
-print(str(poly))
-
-poly.add(NaturalNumber("10"), RationalNumber(IntegerNumber("-10"),NaturalNumber("1")))
-
-print(str(poly))
-
-poly.add(NaturalNumber("5"), RationalNumber(IntegerNumber("-1"),NaturalNumber("1")))
-
-print(str(poly))
-
-poly.add(NaturalNumber("5"), RationalNumber(IntegerNumber("1"),NaturalNumber("1")))
-
-print(str(poly))
-
-print(poly.getDegrees())
-
-poly.changeDegree(NaturalNumber("1"), NaturalNumber("2"))
-
-print(str(poly))
-
-print(poly.getDegrees())
-
-poly = Polynomial()
-poly.makePolynomial("10*x^10 - 1x^5 - 103/28*x^3 + 1/2x - 10/2")
-print(poly)
-print(poly.getDegrees())
-print(poly.getCoeff(NaturalNumber("0")))
-
-
-output:
-0
-28/11x
--10x¹⁰ + 28/11x
--10x¹⁰ - x⁵ + 28/11x
--10x¹⁰ + 28/11x
-[10, 1]
--10x¹⁰ + 28/11x²
-[10, 2]
-10x¹⁰ - x⁵ - 103/28x³ + 1/2x - 10
-[10, 5, 3, 1, 0]
--10/1
-'''
+def makePolynomial(input_str: str) -> Polynomial:
+    pln = Polynomial()
+    pln.makePolynomial(input_str)
+    return pln
