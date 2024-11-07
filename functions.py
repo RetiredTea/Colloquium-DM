@@ -61,203 +61,131 @@ def function_1(input_str):
     except ValueError:
         return "Ошибка: введите корректное число."
 
-def function_q1(input_str):
-    if '/' in input_str:
-        num, denom = input_str.split('/')
-        rational_number = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_number = RationalNumber(IntegerNumber(input_str))
-        
+def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
     if(rational_number.denominator == 1):
         return rational_number
     
+    temp = RationalNumber(rational_number.numerator, rational_number.denominator)
     nod = euclidean_algorithm(int(rational_number.numerator), int(rational_number.denominator))[3]
-    rational_number.numerator = IntegerNumber(str(int(rational_number.numerator)//nod))
-    rational_number.denominator = NaturalNumber(str(int(rational_number.denominator)//nod))
+    temp.numerator = IntegerNumber(str(int(rational_number.numerator)//nod))
+    temp.denominator = NaturalNumber(str(int(rational_number.denominator)//nod))
 
-    return str(rational_number)
+    return temp
 
-def function_q3(input_str):
-    return str(RationalNumber(str(IntegerNumber(input_str))))
+def TRANS_Z_Q(integer_number: IntegerNumber) -> RationalNumber:
+    return RationalNumber(str(integer_number))
 
-def function_q5(input_str1: str, input_str2: str):
-    if '/' in input_str1:
-        num, denom = input_str1.split('/')
-        rational_num1 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_num1 = RationalNumber(IntegerNumber(input_str1))
-        
-    if '/' in input_str2:
-        num, denom = input_str2.split('/')
-        rational_num2 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_num2 = RationalNumber(IntegerNumber(input_str2))
-
+def ADD_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
     # Сложение рациональных чисел:
     # (a/b) + (c/d) = (a*d + b*c) / (b*d)
-    
     # Получаем числители и знаменатели
-    a = int(rational_num1.numerator)
-    b = int(rational_num1.denominator)
-    c = int(rational_num2.numerator)
-    d = int(rational_num2.denominator)
+    a = int(rational_number1.numerator)
+    b = int(rational_number1.denominator)
+    c = int(rational_number2.numerator)
+    d = int(rational_number2.denominator)
 
     # Вычисляем новый числитель и знаменатель
     new_numerator_value = IntegerNumber(str(a * d + b * c))
     new_denominator_value = NaturalNumber(str(b * d))
 
     # Возвращаем новый объект RationalNumber
-    return str(RationalNumber(new_numerator_value, new_denominator_value))
+    return RationalNumber(new_numerator_value, new_denominator_value)
 
-def function_q7(input_str1, input_str2):
-    if '/' in input_str1:
-        num, denom = input_str1.split('/')
-        rational_number1 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_number1 = RationalNumber(IntegerNumber(input_str1))
-
-    if '/' in input_str2:
-        num, denom = input_str2.split('/')
-        rational_number2 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_number2 = RationalNumber(IntegerNumber(input_str2))
-
+def MUL_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
+    temp = RationalNumber(rational_number1.numerator, rational_number1.denominator)
     if rational_number2.numerator != '0':
-        rational_number1.numerator = IntegerNumber(str(int(rational_number1.numerator) * int(rational_number2.numerator)))
-        rational_number1.denominator = NaturalNumber(str(int(rational_number1.denominator) * int(rational_number2.denominator)))
+        temp.numerator = IntegerNumber(str(int(rational_number1.numerator) * int(rational_number2.numerator)))
+        temp.denominator = NaturalNumber(str(int(rational_number1.denominator) * int(rational_number2.denominator)))
     else:
         raise ValueError("Знаменатель не может быть нулём")
     
-    return str(rational_number1)
+    return temp
 
-def function_q8(input_str1, input_str2):
-    if '/' in input_str1:
-        num, denom = input_str1.split('/')
-        rational_number1 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_number1 = RationalNumber(IntegerNumber(input_str1))
+def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
+    temp1 = RationalNumber(rational_number1.numerator, rational_number1.denominator)
+    temp2 = RationalNumber(rational_number2.numerator, rational_number2.denominator)
+    if(temp2.numerator.get_sign() == 1):
+        temp2.numerator = IntegerNumber(str(int(temp2.numerator) * (-1)))
+        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * (-1)))
 
-    if '/' in input_str2:
-        num, denom = input_str2.split('/')
-        rational_number2 = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
-    else:
-        rational_number2 = RationalNumber(IntegerNumber(input_str2))
-
-    if(rational_number2.numerator.get_sign() == 1):
-        rational_number2.numerator = IntegerNumber(str(int(rational_number2.numerator) * (-1)))
-        rational_number1.numerator = IntegerNumber(str(int(rational_number1.numerator) * (-1)))
-
-    if rational_number2.numerator != '0':
-        rational_number1.numerator = IntegerNumber(str(int(rational_number1.numerator) * int(rational_number2.denominator)))
-        rational_number1.denominator = NaturalNumber(str(int(rational_number1.denominator) * int(rational_number2.numerator)))
+    if temp2.numerator != '0':
+        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * int(temp2.denominator)))
+        temp1.denominator = NaturalNumber(str(int(temp1.denominator) * int(temp2.numerator)))
     else:
         raise ValueError("Знаменатель не может быть нулём")
     
-    return str(rational_number1)
+    return temp1
 
-def function_p2(input_str1, input_str2):
-    pln1 = Polynomial()
-    pln1.makePolynomial(input_str1)
-    pln2 = Polynomial()
-    pln2.makePolynomial(input_str2)
+def SUB_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     arr2 = pln2.getDegrees()
+    temp = makePolynomial(str(pln1))
 
     for i in arr2:
-        num, denom = function_q8(str(pln2.getCoeff(NaturalNumber(str(i)))), str(RationalNumber("-1"))).split('/')
-        val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+        val = DIV_QQ_Q(pln2.getCoeff(NaturalNumber(str(i))), RationalNumber(IntegerNumber("-1")))
+        temp.add(i, val)
 
-        pln1.add(i, val)
+    return temp
 
-    return str(pln1)
+def MUL_Pxk_P(pln: Polynomial, k: NaturalNumber) -> Polynomial:
+    temp = makePolynomial(str(pln))
+    for i in temp.getDegrees():
+        temp.changeDegree(i, NaturalNumber(str(int(i)+int(k))))
 
-def function_p4(input_str1, input_str2):
-    pln = Polynomial()
-    pln.makePolynomial(input_str1)
-    k = NaturalNumber(input_str2)
+    return temp
 
-    for i in pln.getDegrees():
-        pln.changeDegree(i, NaturalNumber(str(int(i)+int(k))))
-
-    return str(pln)
-
-def function_p8(input_str1, input_str2):
-    pln1 = Polynomial()
-    pln1.makePolynomial(input_str1)
-    pln2 = Polynomial()
-    pln2.makePolynomial(input_str2)
-
+def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     arr1 = pln1.getDegrees()
     arr2 = pln2.getDegrees()
     pln = Polynomial()
 
     for i in arr2:
-        val = pln2.getCoeff(NaturalNumber(str(i)))
         for j in arr1:
-            num, denom = function_q7(str(val), str(pln1.getCoeff(NaturalNumber(str(j))))).split('/')
-            pln.add(NaturalNumber(str(int(j)+int(i))), RationalNumber(IntegerNumber(num), NaturalNumber(denom)))
+            val = MUL_QQ_Q(pln2.getCoeff(NaturalNumber(str(i))), pln1.getCoeff(NaturalNumber(str(j))))
+            pln.add(NaturalNumber(str(int(j)+int(i))), val)
 
-    return str(pln)
+    return pln
 
-def function_p9(input_str1, input_str2):
-    pln1 = Polynomial()
-    pln1.makePolynomial(input_str1)
-    pln2 = Polynomial()
-    pln2.makePolynomial(input_str2)
-    pln = Polynomial()
-
+def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
+    pln1 = makePolynomial(str(input_pln1))
+    pln2 = makePolynomial(str(input_pln2))
     break_deg = pln2.getDegrees()[0]
+    pln = Polynomial()
     while(pln1.getDegrees()[0] >= break_deg):
-        num, denom = function_q8(str(pln1.getCoeff(NaturalNumber(str(pln1.getDegrees()[0])))), str(pln2.getCoeff(NaturalNumber(str(pln2.getDegrees()[0]))))).split('/')
-        val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+        val = DIV_QQ_Q(pln1.getCoeff(NaturalNumber(str(pln1.getDegrees()[0]))), pln2.getCoeff(NaturalNumber(str(pln2.getDegrees()[0]))))
         deg = int(pln1.getDegrees()[0]) - int(pln2.getDegrees()[0])
 
         temp = Polynomial()
         temp.makePolynomial(f"{val}x^{deg}")
-        newpln = function_p8(str(pln2), str(temp))
-        temp.clear()
-        temp.makePolynomial(newpln)
+        temp = MUL_PP_P(pln2, temp)
 
-        newpln = function_p2(str(pln1), str(temp))
-        pln1.clear()
-        pln1.makePolynomial(newpln)
+        pln1 = SUB_PP_P(pln1, temp)
 
         pln.add(deg, val)
-    return str(pln)
+    return pln
 
-def function_p10(input_str1, input_str2):
-    pln1 = Polynomial()
-    pln1.makePolynomial(input_str1)
-    pln2 = Polynomial()
-    pln2.makePolynomial(input_str2)
-    pln = Polynomial()
-
+def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
+    pln1 = makePolynomial(str(input_pln1))
+    pln2 = makePolynomial(str(input_pln2))
     break_deg = pln2.getDegrees()[0]
+    pln = Polynomial()
     while(pln1.getDegrees()[0] >= break_deg):
-        num, denom = function_q8(str(pln1.getCoeff(NaturalNumber(str(pln1.getDegrees()[0])))), str(pln2.getCoeff(NaturalNumber(str(pln2.getDegrees()[0]))))).split('/')
-        val = RationalNumber(IntegerNumber(num), NaturalNumber(denom))
+        val = DIV_QQ_Q(pln1.getCoeff(NaturalNumber(str(pln1.getDegrees()[0]))), pln2.getCoeff(NaturalNumber(str(pln2.getDegrees()[0]))))
         deg = int(pln1.getDegrees()[0]) - int(pln2.getDegrees()[0])
 
         temp = Polynomial()
         temp.makePolynomial(f"{val}x^{deg}")
-        newpln = function_p8(str(pln2), str(temp))
-        temp.clear()
-        temp.makePolynomial(newpln)
+        temp = MUL_PP_P(pln2, temp)
 
-        newpln = function_p2(str(pln1), str(temp))
-        pln1.clear()
-        pln1.makePolynomial(newpln)
+        pln1 = SUB_PP_P(pln1, temp)
 
         pln.add(deg, val)
-    return str(pln1)
+    return pln1
     
-def function_p13(input_str):
-    pln = Polynomial()
-    pln.makePolynomial(input_str)
-
+def NMR_P_P(pln: Polynomial) -> str:
     def check_root(pln, val):
         temp = Polynomial()
         temp.makePolynomial(f"x - {val}")
-        if(function_p10(pln, temp) == 0):
+        if(MOD_PP_P(pln, temp) == 0):
             return True
         return False
     
@@ -317,5 +245,49 @@ def function_40():
 
 # Словарь для маппинга номеров на функции
 functions_dict = {
-    str(i): globals()[f'function_{i}'] for i in range(1, 20)
+    "25": 'RED_Q_Q',
+    "27": 'TRANS_Z_Q',
+    "29": 'ADD_QQ_Q',
+    "31": 'MUL_QQ_Q',
+    "32": 'DIV_QQ_Q',
+    "34": 'SUB_PP_P',
+    "36": 'MUL_Pxk_P',
+    "40": 'MUL_PP_P',
+    "41": 'DIV_PP_P',
+    "42": 'MOD_PP_P',
+    "45": 'NMR_P_P'
 }
+
+
+#----------------------------------------------------------------------------------------------------------------------------------
+
+
+'''     Tests
+
+from classes import Polynomial
+from classes import IntegerNumber
+from classes import NaturalNumber
+from classes import RationalNumber
+from classes import makePolynomial
+
+print(RED_Q_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2"))), RED_Q_Q(RationalNumber(IntegerNumber("2"), NaturalNumber("4"))), RED_Q_Q(RationalNumber(IntegerNumber("10"), NaturalNumber("5"))))
+print(TRANS_Z_Q(IntegerNumber("1")), TRANS_Z_Q(IntegerNumber("2")), TRANS_Z_Q(IntegerNumber("10")))
+print(DIV_QQ_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2")), RationalNumber(IntegerNumber("-2"), NaturalNumber("5"))), DIV_QQ_Q(RationalNumber(IntegerNumber("-2"), NaturalNumber("4")), RationalNumber(IntegerNumber("1"))))
+pln = Polynomial()
+pln1 = Polynomial()
+pln.makePolynomial("10x^10 - 1 + 5x^5")
+pln1.makePolynomial("9x^10 - x^7 - 2 + 5x^5")
+print(SUB_PP_P(pln, pln1).getNiceStr())
+print(MUL_Pxk_P(pln, NaturalNumber("100")).getNiceStr())
+print(MUL_QQ_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2")), RationalNumber(IntegerNumber("-5"), NaturalNumber("2"))))
+print(MUL_PP_P(pln, pln1).getNiceStr())
+poly = Polynomial()
+poly = makePolynomial("2x^3-6x^2-26x+30")
+poly1 = makePolynomial("x-1")
+print(DIV_PP_P(poly, poly1).getNiceStr())
+poly.clear()
+poly1 = Polynomial()
+poly = makePolynomial("4x^5 - 3x^3 + x - 1")
+poly1 = makePolynomial("2x^2 - 3")
+print(MOD_PP_P(poly, poly1).getNiceStr())
+'''
