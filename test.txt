@@ -1,0 +1,26 @@
+from classes import Polynomial
+from classes import IntegerNumber
+from classes import NaturalNumber
+from classes import RationalNumber
+from classes import makePolynomial
+
+print(RED_Q_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2"))), RED_Q_Q(RationalNumber(IntegerNumber("2"), NaturalNumber("4"))), RED_Q_Q(RationalNumber(IntegerNumber("10"), NaturalNumber("5"))))
+print(TRANS_Z_Q(IntegerNumber("1")), TRANS_Z_Q(IntegerNumber("2")), TRANS_Z_Q(IntegerNumber("10")))
+print(DIV_QQ_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2")), RationalNumber(IntegerNumber("-2"), NaturalNumber("5"))), DIV_QQ_Q(RationalNumber(IntegerNumber("-2"), NaturalNumber("4")), RationalNumber(IntegerNumber("1"))))
+pln = Polynomial()
+pln1 = Polynomial()
+pln.makePolynomial("10x^10 - 1 + 5x^5")
+pln1.makePolynomial("9x^10 - x^7 - 2 + 5x^5")
+print(SUB_PP_P(pln, pln1).getNiceStr())
+print(MUL_Pxk_P(pln, NaturalNumber("100")).getNiceStr())
+print(MUL_QQ_Q(RationalNumber(IntegerNumber("1"), NaturalNumber("2")), RationalNumber(IntegerNumber("-5"), NaturalNumber("2"))))
+print(MUL_PP_P(pln, pln1).getNiceStr())
+poly = Polynomial()
+poly = makePolynomial("2x^3-6x^2-26x+30")
+poly1 = makePolynomial("x-1")
+print(DIV_PP_P(poly, poly1).getNiceStr())
+poly.clear()
+poly1 = Polynomial()
+poly = makePolynomial("4x^5 - 3x^3 + x - 1")
+poly1 = makePolynomial("2x^2 - 3")
+print(MOD_PP_P(poly, poly1).getNiceStr())

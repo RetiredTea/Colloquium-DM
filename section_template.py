@@ -1,5 +1,6 @@
 import tkinter as tk
 from functions import functions_dict
+from classes import *
 
 
 class SectionFrame(tk.Frame):
@@ -11,9 +12,19 @@ class SectionFrame(tk.Frame):
             "+  - сложение",
             "-  - вычитание",
             "*  - умножение",
-            "/  - деление",
+            ":  - деление",
             "^  - возведение в степень",
-            "sqrt - квадратный корень"
+            "%  - остаток",
+            "?  - сравнение",
+            """　　　　　　　　 　　　 ／ ¯¯｀フ
+　　　　　　　　　,　'' ｀ ｀ / 　 　 　 !　 　
+　　　　　　　 , ' 　　　　 レ　 _,　 -' ミ
+　　　　　　　 ; 　 　 　 　 　`ミ __,xノﾞ､
+　　　 　　 　 i　 　　　ﾐ　　　; ,､､､、　ヽ ¸
+　　　 　　,.-‐! 　 　 　 ﾐ　　i　　　　｀ヽ.._,,))
+　　 　　//´｀｀､　　　　 ミ　ヽ　　　　　(¯`v´¯)
+　　　　| l　　 　｀ ｰｰ -‐''ゝ､,,)).　 　　 　 ..`·.¸.·´
+　　　 　ヽ.ー─'´)　"""
         ]
 
         # Левый фрейм для отображения доступных операций
@@ -35,107 +46,25 @@ class SectionFrame(tk.Frame):
         self.label = tk.Label(central_frame, text=func_name, font=("Arial", 14))
         self.label.pack(pady=(0, 10))  # Отступ снизу для отделения от поля ввода
 
+        # Определение категорий функций
+        self.single_arg_funcs = ["1", "24", "26", "44","26"]
+        self.dual_arg_funcs = {
+            "+": ["2", "32","28"],
+            "-": ["3","33"],
+            "*": ["30", "35", "39"],
+            ":": ["31", "40"],
+            "%": ["41"],
+            "?": ["1"]
+        }
 
-        arr_for_one_arg = ["1", "25", "27", "45"]
-        arr_for_two_subtraction = ["2", "34"]
-        arr_for_two_аddition = ["3", "29"]
-        arr_for_two_multiplication = ["40", "31", "36", "40"]
-        arr_for_two_division = ["1", "32", "41"]
-        arr_for_two_remainder_of_devision = ["42"]
-        arr_for_two_comparison = ["1"]
-
-
-# -----------------------------------------------------------------------------------------------------------------
-        # Определение макета в зависимости от функции
-        if  func_number in arr_for_one_arg:                                                   # Макет с одним полем ввода
+        # Создание макета на основе функции
+        if func_number in self.single_arg_funcs:
             self.single_input_entry = tk.Entry(central_frame, width=30)
             self.single_input_entry.pack(pady=5)
-        elif func_number in arr_for_two_subtraction:                                                  # Макет с двумя полями ввода "+"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="+",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-        elif func_number in arr_for_two_аddition:                                                 # Макет с двумя полями ввода "-"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="-",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-        elif func_number in arr_for_two_multiplication:                                           # Макет с двумя полями ввода "*"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="*",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-        elif func_number in arr_for_two_division:                                                               # Макет с двумя полями ввода "/"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="/",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-        elif func_number in  arr_for_two_comparison:                                         # Макет с двумя полями ввода "?"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="?",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-        elif func_number in  arr_for_two_remainder_of_devision:                                         # Макет с двумя полями ввода "?"
-            dual_input_frame = tk.Frame(central_frame)
-            dual_input_frame.pack(pady=5)
-
-            self.first_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.first_input_entry.pack(side="left", padx=5)
-
-            self.operator_label = tk.Label(dual_input_frame, text="%",
-                                           font=("Arial", 12))
-            self.operator_label.pack(side="left", padx=5)
-
-            self.second_input_entry = tk.Entry(dual_input_frame, width=14)
-            self.second_input_entry.pack(side="left", padx=5)
-
-
-    #-----------------------------------------------------------------------------------------------------------------
+        else:
+            operator = self.get_operator(func_number)
+            if operator:
+                self.create_dual_input_frame(central_frame, operator)
 
         # Лейбл для вывода ошибок валидации
         self.error_label = tk.Label(central_frame, text="", fg="red")
@@ -147,26 +76,57 @@ class SectionFrame(tk.Frame):
         self.run_button.pack(pady=10)
 
         # Лейбл для отображения результата
-        self.result_label = tk.Label(central_frame, text="", font=("Arial", 12), fg="blue")
+        self.result_label = tk.Label(central_frame, text="", font=("Arial", 18), fg="White")
         self.result_label.pack(pady=5)
+
+
+    def get_operator(self, func_number):
+        """Определяет оператор для двух аргументов на основе номера функции."""
+        for operator, func_list in self.dual_arg_funcs.items():
+            if func_number in func_list:
+                return operator
+        return None
+
+    def create_dual_input_frame(self, parent, operator): #Создает макет с двумя полями ввода и оператором между ними.
+        dual_input_frame = tk.Frame(parent)
+        dual_input_frame.pack(pady=5)
+
+        self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+        self.first_input_entry.pack(side="left", padx=5)
+
+        self.operator_label = tk.Label(dual_input_frame, text=operator, font=("Arial", 12))
+        self.operator_label.pack(side="left", padx=5)
+
+        self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+        self.second_input_entry.pack(side="left", padx=5)
+
+    def get_inputs(self, func_number): #Возвращает входные данные в зависимости от количества полей ввода.
+        if func_number in self.single_arg_funcs:
+            return [self.single_input_entry.get()]
+        return [self.first_input_entry.get(), self.second_input_entry.get()]
 
     def run_function(self, func_number, result_label):
         """Выполняет функцию в зависимости от макета и отображает результат."""
-        if func_number == "1":  # Проверка на ноль с одним полем
-            user_input = self.single_input_entry.get()
-            args = [user_input]
-        else:  # Два поля ввода
-            first_input = self.first_input_entry.get()
-            second_input = self.second_input_entry.get()
-            args = [first_input, second_input]
+        args = self.get_inputs(func_number)
+        if 0 <= int(func_number) <= 13:
+            args = [NaturalNumber(arg) for arg in args]
+        elif 14 <= int(func_number) <= 23:
+            args = [IntegerNumber(arg) for arg in args]
+        elif 24 <= int(func_number) <= 31:
+            res = []
+            for i in range(len(args)):
+                args[i] = args[i].split("/")
+                res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
+            args = res
+        elif 32 <= int(func_number) <= 44:
+            pass
 
         function = functions_dict.get(func_number)
 
         if function:
-            # Валидация входных данных перед выполнением
             validation_error = self.validate_input(args)
             if validation_error:
-                self.error_label.config(text=validation_error)  # Отображение ошибки
+                self.error_label.config(text=validation_error)
                 self.result_label.config(text="")  # Очистка поля результата
             else:
                 self.error_label.config(text="")  # Очистка ошибок
@@ -178,10 +138,10 @@ class SectionFrame(tk.Frame):
 
     def validate_input(self, args):
         """Валидация данных, введённых пользователем, перед отправкой в функцию."""
-        if len(args) == 1:  # Проверка для одного аргумента
-            if not args[0].strip():
+        if len(args) == 1:
+            if not str(args)[0].strip():
                 return "Ошибка: введите значение."
-        else:  # Проверка для двух аргументов
-            if not args[0].strip() or not args[1].strip():
+        elif len(args) == 2:
+            if not str(args)[0].strip() or not str(args)[1].strip():
                 return "Ошибка: оба поля должны быть заполнены."
         return None  # Нет ошибок

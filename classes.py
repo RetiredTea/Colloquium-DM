@@ -1,4 +1,6 @@
 import re
+
+
 # Класс целого числа
 # Хранится в аналогично натуральному, но присутствует знак в виде int.
 class IntegerNumber:
@@ -27,8 +29,8 @@ class IntegerNumber:
             return f"-{''.join(list(map(str, list(self.value))))}"
         else:
             return ''.join(list(map(str, list(self.value))))
-    
-    # Вывод числа в виде цечисленного значения   
+
+    # Вывод числа в виде цечисленного значения
     def __int__(self):
         return int(str(self))
 
@@ -43,6 +45,7 @@ class IntegerNumber:
     # Перегруженный len
     def __len__(self):
         return len(self.value)
+
 
 # Класс натурального числа
 # Хранение натурального числа подразумевается в виде массива чисел ->
@@ -63,7 +66,7 @@ class NaturalNumber:
     # Вывод числа в виде строки
     def __str__(self):
         return ''.join(list(map(str, list(self.value))))
-    
+
     # Вывод числа в виде цечисленного значения
     def __int__(self):
         return int(str(self))
@@ -76,6 +79,7 @@ class NaturalNumber:
     def __len__(self):
         return len(self.value)
 
+
 # Класс рационального числа
 # Хранится как целое и натуральное число для числителя и знаменателя соответственно.
 class RationalNumber:
@@ -84,7 +88,8 @@ class RationalNumber:
 
         # Проверки на корректность ввода
         if (not isinstance(numerator, IntegerNumber)) and (not isinstance(denominator, NaturalNumber)):
-            raise ValueError("Числитель и знаменатель должны быть классами IntegerNumber и NaturalNumber соответственно.")
+            raise ValueError(
+                "Числитель и знаменатель должны быть классами IntegerNumber и NaturalNumber соответственно.")
 
         # Инициализация числителя и знаменателя
         self.numerator = numerator
@@ -99,26 +104,29 @@ class RationalNumber:
         # Так как числитель и знаменатель - объекты предыдущих классов, вызываются методы __str__.
         return f"{str(self.numerator)}/{str(self.denominator)}"
 
-#Вспомогательный класс узла многочлена
-#Поле val - коэффициент
-#Поле deg - степень
+
+# Вспомогательный класс узла многочлена
+# Поле val - коэффициент
+# Поле deg - степень
 class PolynomialNode:
-    def __init__(self, deg = NaturalNumber("0"), val = RationalNumber("0"), prev = None, next = None):
+    def __init__(self, deg=NaturalNumber("0"), val=RationalNumber("0"), prev=None, next=None):
         if (not isinstance(deg, NaturalNumber)) and (not isinstance(val, RationalNumber)):
-            raise ValueError("Степень и коэффициент должны быть классами NaturalNumber и RationalNumber соответственно.")
+            raise ValueError(
+                "Степень и коэффициент должны быть классами NaturalNumber и RationalNumber соответственно.")
         self.val = val
         self.deg = deg
         self.prev = prev
         self.next = next
 
-#Класс многочлена
-#Реализован на базе двусвязного списка
+
+# Класс многочлена
+# Реализован на базе двусвязного списка
 class Polynomial:
     # Инициализация многочлена
     def __init__(self):
         self.head = PolynomialNode()
 
-    # Возвращает многочлен в виде строки  
+    # Возвращает многочлен в виде строки
     def __str__(self):
         res = ""
         temp = self.head
@@ -132,7 +140,7 @@ class Polynomial:
                 else:
                     if (temp.val.numerator.get_sign() == 1):
                         res += "-"
-                
+
                 coeff_str = ""
                 if (int(temp.val.denominator) == 1 and abs(int(temp.val.numerator)) != 1):
                     coeff_str = str(temp.val.numerator)
@@ -150,29 +158,30 @@ class Polynomial:
                     else:
                         res += f"{coeff_str}x^{str(temp.deg)}"
             temp = temp.next
-        
+
         return res or "0"
-    
+
     # Зануляет все коэффициенты
     def clear(self):
         temp = self.head
-        while(temp != None):
+        while (temp != None):
             temp.val = RationalNumber("0")
             temp = temp.next
 
     # Добавление/изменение (сумма старого и нового коэффициентов) одночлена
     def add(self, deg: NaturalNumber, val: RationalNumber):
         if (not isinstance(deg, NaturalNumber)) and (not isinstance(val, RationalNumber)):
-            raise ValueError("Степень и коэффициент должны быть классами NaturalNumber и RationalNumber соответственно.")
-        
+            raise ValueError(
+                "Степень и коэффициент должны быть классами NaturalNumber и RationalNumber соответственно.")
+
         temp = self.head
-        while(temp != None):
+        while (temp != None):
             # Ищем для вставки место в списке
-            if(int(deg) < int(temp.deg) and temp.next != None):
+            if (int(deg) < int(temp.deg) and temp.next != None):
                 temp = temp.next
-            
+
             # Если у степени уже есть коэффициент
-            elif(str(deg) == str(temp.deg)):
+            elif (str(deg) == str(temp.deg)):
                 # Сложение рациональных чисел:
                 # (a/b) + (c/d) = (a*d + b*c) / (b*d)
                 # Получаем числители и знаменатели
@@ -190,7 +199,7 @@ class Polynomial:
             # Если нашли место для вставки, то вставляем
             else:
                 elem = PolynomialNode(deg, val)
-                if(int(deg) > int(temp.deg)):
+                if (int(deg) > int(temp.deg)):
                     elem.next = temp
                     elem.prev = temp.prev
                     if temp.prev != None:
@@ -206,7 +215,7 @@ class Polynomial:
         temp = self.head.prev
 
         # Если после вставки элемента мы не в начале то переходим в начало
-        while(temp != None):
+        while (temp != None):
             self.head = temp
             temp = temp.prev
 
@@ -252,41 +261,41 @@ class Polynomial:
     def getCoeff(self, deg: NaturalNumber):
         if not isinstance(deg, NaturalNumber):
             raise ValueError("Степень должна быть классом NaturalNumber.")
-        
+
         # Проходимся по списку и возвращаем значение
         temp = self.head
-        while(temp != None):
-            if(int(temp.deg) == int(deg)):
+        while (temp != None):
+            if (int(temp.deg) == int(deg)):
                 return temp.val
             temp = temp.next
         return RationalNumber("0")
-    
+
     # Возвращает массив степеней, у которых коэффициенты отличны от нуля
     def getDegrees(self):
         arr = []
         # Проходимся по списку и добавляем в массив степень, если коэффициент не ноль
         temp = self.head
-        while(temp != None):
+        while (temp != None):
             if int(temp.val.numerator) != 0:
                 arr.append(int(temp.deg))
             temp = temp.next
         return arr or [0]
-    
+
     # Изменяет степень на новую
     def changeDegree(self, deg: NaturalNumber, newdeg: NaturalNumber):
         if (not isinstance(deg, NaturalNumber)) and (not isinstance(newdeg, NaturalNumber)):
             raise ValueError("Степени должны быть классом NaturalNumber.")
-        
+
         # Проходимся по списку
         temp = self.head
-        while(temp != None):
+        while (temp != None):
             # Если нашли значение, то добавляем новый элемент с новой степенью и старым коэффициентом, а коэффициент у старой степени зануляем
             if int(temp.deg) == int(deg):
                 self.add(newdeg, temp.val)
                 temp.val = 0
             temp = temp.next
         return
-    
+
     # Возвращает красивую строку (многочлен), использовать только для конечного вывода
     def getNiceStr(self):
         def func_q1(rational_number: RationalNumber) -> RationalNumber:
@@ -294,40 +303,40 @@ class Polynomial:
                 # Функция меняющая между собой значения 2 переданных переменных
                 def swap(a, b):
                     return b, a
-                
+
                 # Коэффициенты алгоритма Евклида
                 coeffs = []
 
                 # Применяем алгоритм Евклида
-                while(b != 0):
-                    coeffs.append(a//b)
-                    a = a%b
+                while (b != 0):
+                    coeffs.append(a // b)
+                    a = a % b
                     a, b = swap(a, b)
 
                 # Записываем результаты алгоритма Евклида (nod)
-                return a 
-            
-            if(rational_number.denominator == 1):
+                return a
+
+            if (rational_number.denominator == 1):
                 return rational_number
-            
+
             nod = euc_alg(int(rational_number.numerator), int(rational_number.denominator))
-            rational_number.numerator = IntegerNumber(str(int(rational_number.numerator)//nod))
-            rational_number.denominator = NaturalNumber(str(int(rational_number.denominator)//nod))
+            rational_number.numerator = IntegerNumber(str(int(rational_number.numerator) // nod))
+            rational_number.denominator = NaturalNumber(str(int(rational_number.denominator) // nod))
 
             return rational_number
 
         indexes = {"0": "\u2070",
-           "1": "\u00B9",
-           "2": "\u00B2",
-           "3": "\u00B3",
-           "4": "\u2074",
-           "5": "\u2075",
-           "6": "\u2076",
-           "7": "\u2077",
-           "8": "\u2078",
-           "9": "\u2079",
-           "-": "\u207B"
-           }
+                   "1": "\u00B9",
+                   "2": "\u00B2",
+                   "3": "\u00B3",
+                   "4": "\u2074",
+                   "5": "\u2075",
+                   "6": "\u2076",
+                   "7": "\u2077",
+                   "8": "\u2078",
+                   "9": "\u2079",
+                   "-": "\u207B"
+                   }
 
         temp = self.head
         while temp is not None:
@@ -341,10 +350,10 @@ class Polynomial:
             for char in temp:
                 degree += indexes[char] or ""
             return degree
-        
+
         if not self.head:
             return "0"
-        
+
         res = ""
         temp = self.head
         while temp is not None:
@@ -357,7 +366,7 @@ class Polynomial:
                 else:
                     if (temp.val.numerator.get_sign() == 1):
                         res += "-"
-                
+
                 coeff_str = ""
                 if (int(temp.val.denominator) == 1 and abs(int(temp.val.numerator)) != 1):
                     coeff_str = str(temp.val.numerator)
@@ -375,9 +384,10 @@ class Polynomial:
                     else:
                         res += f"{coeff_str}x{degree(temp.deg)}"
             temp = temp.next
-        
+
         return res or "0"
-   
+
+
 def makePolynomial(input_str: str) -> Polynomial:
     pln = Polynomial()
     pln.makePolynomial(input_str)
