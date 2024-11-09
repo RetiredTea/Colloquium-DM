@@ -78,6 +78,8 @@ def DIV_NN_Dk(n_num_1, n_num_2):
 
 def MUL_PQ_P(polynomial, rational):
     """Умножение многочлена на рациональное число"""
+    if not (isinstance(polynomial, Polynomial) and isinstance(rational, RationalNumber)):
+        return ValueError("Должны подаваться многочлен и рациональное число")
     result = Polynomial()
     temp = polynomial.head
     while temp is not None:
@@ -96,3 +98,11 @@ def MUL_PQ_P(polynomial, rational):
 #n1 = NaturalNumber("23600")
 #n2 = NaturalNumber("53")
 #print(DIV_NN_Dk(n1,n2))
+r=RationalNumber(IntegerNumber("2"), NaturalNumber("3"))
+print(r.__str__())
+p=Polynomial()
+p.makePolynomial("10*x^1+1")
+
+p
+
+print(MUL_PQ_P(p,r).__str__())
