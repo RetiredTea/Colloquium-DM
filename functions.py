@@ -508,14 +508,10 @@ def DER_P_P():
 
 
 def NMR_P_P(pln: Polynomial) -> str:
-    def check_root(pln, val):
-        temp = Polynomial()
-        temp.makePolynomial(f"x - {val}")
-        if (MOD_PP_P(pln, temp) == 0):
-            return True
-        return False
-
-    pass
+    res = Polynomial() # Создадим результирующий многочлен
+    gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
+    res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
+    return res # Возвращаем исходный многочлен без кратных корней
 
 
 # Словарь для маппинга номеров на функции
