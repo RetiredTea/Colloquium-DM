@@ -1,4 +1,4 @@
-def NZER_N_B(num: NaturalNumber):  # N-1  Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
+def NZER_N_B(num: NaturalNumber):  # N-1 Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
     if int(num) == 0:
         return True
     else:
@@ -25,21 +25,22 @@ def MOD_NN_N(num_1: NaturalNumber, num_2: NaturalNumber):  # N-12	Остаток
 
 def POZ_Z_D(num: IntegerNumber):  # Z-2	Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
     if int(num) > 0:
-        return NaturalNumber('2')
+        return 2
     elif int(num) < 0:
-        return NaturalNumber('1')
+        return 1
     elif int(num) == 0:
-        return NaturalNumber('0')
+        return 0
 
 
 def MUL_ZM_Z(num: IntegerNumber):  # Z-3	Умножение целого на (-1)
-    num = str(num)
-    if num[0] == '-':
-        num = num[1:]
-        return IntegerNumber(num)
+    if(int(num) == 0):
+        return num
     else:
-        num = '-' + num
-        return IntegerNumber(num)
+        if num.sign == 1:
+            num.sign = 0
+        else:
+            num.sign = 1
+        return num
 
 
 def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное от деления целого на целое (делитель отличен от нуля)
@@ -58,12 +59,12 @@ def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное о
     quotient = DIV_NN_N(abs_a, abs_b)
 
     # знак результата
-    if (str(sign_a) == '2' and str(sign_b) == '2') or (str(sign_a) == '1' and str(sign_b) == '1'):
-        quotient = str(quotient)
-        return IntegerNumber(quotient)  # Положительное частное
+    if (sign_a == 2 and sign_b == 2) or (sign_a == 1 and sign_b == 1):
+        return IntegerNumber(str(quotient))  # Положительное частное
     else:
-        quotient = '-' + str(quotient)
-        return IntegerNumber(quotient)  # Отрицательное частное
+        quotient = IntegerNumber(str(quotient))
+        quotient = MUL_ZM_Z(quotient)
+        return quotient  # Отрицательное частное
 
 
 def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток от деления целого на целое(делитель отличен от нуля)
