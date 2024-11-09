@@ -1,5 +1,5 @@
 from classes import *
-from depend import MUL_ZZ_Z, MUL_Nk_N, MUL_NN_N,  ADD_1N_N, SUB_NN_N, COM_NN_D,
+from depend import MUL_ZZ_Z, MUL_Nk_N, MUL_NN_N,  ADD_1N_N, SUB_NN_N, COM_NN_D
 
 def TRANS_N_Z(natural_num):
     """Преобразование натурального числа в целое"""
@@ -24,7 +24,7 @@ def MUL_QQ_Q(r_number_1, r_number_2):
     """Умножение рациональных чисел"""
     if type(r_number_1) == RationalNumber and type(r_number_2) == RationalNumber:
         numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator)
-        denominator = MUL_ZZ_Z(r_number_1.denominator, r_number_2.denominator)
+        denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator)
         r_number = RationalNumber(IntegerNumber(str(numerator)), NaturalNumber(str(denominator)))
         return r_number
     else:
