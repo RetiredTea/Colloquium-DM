@@ -279,7 +279,7 @@ class Polynomial:
             if int(temp.val.numerator) != 0:
                 arr.append(int(temp.deg))
             temp = temp.next
-        return arr or [0]
+        return arr or [NaturalNumber("0")]
 
     # Изменяет степень на новую
     def changeDegree(self, deg: NaturalNumber, newdeg: NaturalNumber):
