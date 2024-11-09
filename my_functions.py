@@ -1,5 +1,5 @@
 from classes import *
-from depend import MUL_ZZ_Z, MUL_Nk_N, MUL_NN_N,  ADD_1N_N, SUB_NN_N, COM_NN_D
+from depend import MUL_ZZ_Z, MUL_Nk_N, MUL_NN_N , ADD_1N_N, SUB_NN_N, COM_NN_D
 
 def TRANS_N_Z(natural_num):
     """Преобразование натурального числа в целое"""
@@ -23,21 +23,22 @@ def TRANS_Z_N(integer_num):
 def MUL_QQ_Q(r_number_1, r_number_2):
     """Умножение рациональных чисел"""
     if type(r_number_1) == RationalNumber and type(r_number_2) == RationalNumber:
-        numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator) # Нахождение числителя
-        denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator) # Нахождение знаменателя
+        numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator)
+        denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator)
         r_number = RationalNumber(IntegerNumber(str(numerator)), NaturalNumber(str(denominator)))
         return r_number
     else:
         raise ValueError("На вход должны подаваться рациональные числа")
 
 
-def find_denominator(n_num_1, n_num_2, k=NaturalNumber("0")): # Имитируем поиск первого числа от деления при делении в столбик
+def find_denominator(n_num_1, n_num_2, k=NaturalNumber("0")):
     """Определение первой цифры от деления большего натурального числа на меньшее"""
     result = NaturalNumber("0")
     temp_num = NaturalNumber(MUL_Nk_N(n_num_2, NaturalNumber(str(k))).__str__())  # n_num_2 * 10^k
 
-    while COM_NN_D(n_num_1, MUL_NN_N(temp_num, NaturalNumber(str(result)))) in [NaturalNumber("2"), NaturalNumber('0')]: # Перебирем числа от 0 до 10
-        result = ADD_1N_N(result) # Добавляем единицу
+    while COM_NN_D(n_num_1, MUL_NN_N(temp_num, NaturalNumber(str(result)))).__str__() in ["2","0"]:
+        print(n_num_1.__str__(), MUL_NN_N(temp_num, NaturalNumber(str(result))))
+        result = ADD_1N_N(result)
 
     return SUB_NN_N(result, NaturalNumber("1"))  # Возвращаем результат минус 1
 
@@ -45,7 +46,7 @@ def find_denominator(n_num_1, n_num_2, k=NaturalNumber("0")): # Имитируе
 def DIV_NN_Dk(n_num_1, n_num_2):
     """Вычисление первой цифры от деления большего натурального на меньшее"""
     if isinstance(n_num_1, NaturalNumber) and isinstance(n_num_2, NaturalNumber):
-        if n_num_1.__str__() == "0" or n_num_2.__str__() == "0": # Если среди чисел 0, то возвращаем 0
+        if n_num_1.__str__() == "0" or n_num_2.__str__() == "0":
             return NaturalNumber("0")
 
         # Сравниваем числа
@@ -58,26 +59,26 @@ def DIV_NN_Dk(n_num_1, n_num_2):
         if comp_1 == NaturalNumber("1"):
             n_num_1, n_num_2 = n_num_2, n_num_1
 
-        k = SUB_NN_N(NaturalNumber(str(n_num_1.__len__())), NaturalNumber(str(n_num_2.__len__()))) # Находим разницу в числе разрядов чисел
-        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k)) # Сравниваем числа после умножения на 10^k
+        k = SUB_NN_N(NaturalNumber(str(n_num_1.__len__())), NaturalNumber(str(n_num_2.__len__())))
+        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
 
-        if comp_2 == NaturalNumber("1"): # Находим подходящее для метода подбора k
-            while COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k)) != NaturalNumber("2"):
+        if COM_NN_D(comp_2, NaturalNumber("1")).__str__() == "0":
+            while COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k)).__str__() != "2":
                 k = SUB_NN_N(k, NaturalNumber("1"))
         comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
 
         # Если n_num_1 больше и comp_2 тоже показывает, что результат больше
-        if comp_2 == NaturalNumber("2"):
+        if comp_2.__str__() == "2":
             return find_denominator(n_num_1, n_num_2, k)
         # Если n_num_1 больше, но comp_2 показывает, что результат меньше
-        elif comp_1 == NaturalNumber("2") and comp_2 == NaturalNumber("1"):
+        elif comp_1.__str__() == "2" and comp_2.__str__() == "2":
             return find_denominator(n_num_1, n_num_2)
     else:
         raise ValueError("На вход должны подаваться натуральные числа")
 
 def MUL_PQ_P(polynomial, rational):
     """Умножение многочлена на рациональное число"""
-    result = Polynomial() # Создаем многочлен
+    result = Polynomial()
     temp = polynomial.head
     while temp is not None:
         # Умножаем коэффициент каждого члена многочлена на рациональное число
@@ -88,6 +89,10 @@ def MUL_PQ_P(polynomial, rational):
     return result
 
 
+# r1=RationalNumber(IntegerNumber("1"), NaturalNumber("2"))
+# r2=RationalNumber(IntegerNumber("3"), NaturalNumber("9"))
+# print(MUL_QQ_Q(r1,r2))
 
-
-
+#n1 = NaturalNumber("23600")
+#n2 = NaturalNumber("53")
+#print(DIV_NN_Dk(n1,n2))
