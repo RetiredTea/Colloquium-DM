@@ -341,18 +341,18 @@ def ADD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
     abs2 = ABS_Z_N(num2)
 
     # Если подаваемые числа положительные или 0.
-    if (num1_poz == "2" or num1_poz == "0") and (num2_poz == "2" or num2_poz == "0"):
+    if (num1_poz == 2 or num1_poz == 0) and (num2_poz == 2 or num2_poz == 0):
         result = IntegerNumber(str(ADD_NN_N(abs1, abs2)))
         return result
 
     # Если подаваемые числа отрицательные или 0.
-    elif (num1_poz == "1" or num1_poz == "0") and (num2_poz == "1" or num2_poz == "0"):
+    elif (num1_poz == 1 or num1_poz == 0) and (num2_poz == 1 or num2_poz == 0):
         add_result_as_integer = IntegerNumber(str(ADD_NN_N(abs1, abs2)))
         result = MUL_ZM_Z(add_result_as_integer)
         return result
 
     # Если первое отрицательное и второе положительное.
-    elif (num1_poz == "1" and num2_poz == "2"):
+    elif (num1_poz == 1 and num2_poz == 2):
 
         # Если модуль первого больше второго.
         if COM_NN_D(abs1, abs2) == 2:
@@ -370,7 +370,7 @@ def ADD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
             return IntegerNumber("0")
 
     # Если первое положительное и второе отрицательное
-    elif (num1_poz == "2" and num2_poz == "1"):
+    elif (num1_poz == 2 and num2_poz == 1):
 
         # Если модуль второго больше первого.
         if COM_NN_D(abs1, abs2) == 1:
@@ -399,12 +399,12 @@ def SUB_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
     abs2 = ABS_Z_N(num2)
 
     # Если первое положительное и второе отрицательное или 0.
-    if (num1_poz == "2") and (num2_poz == "0" or num2_poz == "1"):
+    if (num1_poz == 2) and (num2_poz == 0 or num2_poz == 1):
         result = IntegerNumber(str(ADD_NN_N(abs1, abs2)))
         return result
 
     # Если первое отрицательное и второе положительное или 0.
-    elif (num1_poz == "1") and (num2_poz == "0" or num2_poz == "2"):
+    elif (num1_poz == 1) and (num2_poz == 0 or num2_poz == 2):
         add_result_as_integer = IntegerNumber(str(ADD_NN_N(abs1, abs2)))
         result = MUL_ZM_Z(add_result_as_integer)
         return result
@@ -415,7 +415,7 @@ def SUB_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
         return result
 
     # Если оба положительные.
-    elif (num1_poz == "2" and num2_poz == "2"):
+    elif (num1_poz == 2 and num2_poz == 2):
 
         # Если модуль первого меньше второго.
         if COM_NN_D(abs1, abs2) == 1:
@@ -429,7 +429,7 @@ def SUB_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
             return result
 
     # Если оба отрицательные.
-    elif (num1_poz == "1" and num2_poz == "1"):
+    elif (num1_poz == 1 and num2_poz == 1):
 
         # Если модуль первого больше второго.
         if COM_NN_D(abs1, abs2) == 2:
@@ -455,7 +455,7 @@ def MUL_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
     abs2 = ABS_Z_N(num2)
 
     # Если введённые числа различны по знаку - результат отрицательный.
-    if (num1_poz == "2" and num2_poz == "1") or (num1_poz == "1" and num2_poz == "2"):
+    if (num1_poz == 2 and num2_poz == 1) or (num1_poz == 1 and num2_poz == 2):
         mul_result_as_integer = IntegerNumber(str(MUL_NN_N(abs1, abs2)))
         result = MUL_ZM_Z(mul_result_as_integer)
         return result
@@ -804,7 +804,7 @@ def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     return result
 
 
-def DER_P_P(pln: Polynomial) -> Polynomial: #Иcправления
+def DER_P_P(pln: Polynomial) -> Polynomial: #Исправления
     res = Polynomial()
     for i in pln.getDegrees():
         if i != 0:
