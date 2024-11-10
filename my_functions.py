@@ -134,13 +134,8 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
 
         # Проверяем, что числитель не равен нулю
         if not NZER_N_B(numerator):
-
-            # Проверяем, что числитель имеет тип NaturalNumber, иначе преобразуем
-            if not isinstance(numerator, NaturalNumber):
-                numerator = TRANS_Z_N(numerator)  # Преобразование в натуральное число
-
             # Добавляем числитель в список для вычисления НОД
-            gcd_list.append(numerator)
+            gcd_list.append(ABS_Z_N(numerator))
 
     # Извлекаем знаменатели всех коэффициентов для вычисления НОК
     for coeff in pol_coefs:
