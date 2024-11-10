@@ -160,7 +160,12 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
 
     # Возвращаем НОД числителей и НОК знаменателей в виде кортежа
     return gcd_result, lcm_result
-    
+
+def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
+    # Обращаемся к функциям умножения натурального числа на цифру и разности двух натуральных чисел
+    result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
+    return result
+
 poly = Polynomial()
 poly.makePolynomial("3/2x^2 + 9/6x + 3/2")
 n1,n2 = FAC_P_Q(poly)
