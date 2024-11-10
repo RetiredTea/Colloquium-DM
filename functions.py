@@ -804,7 +804,7 @@ def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     return result
 
 
-def DER_P_P(pln: Polynomial) -> Polynomial: #Исправления 
+def DER_P_P(pln: Polynomial) -> Polynomial: #Иcправления
     res = Polynomial()
     for i in pln.getDegrees():
         if i != 0:
