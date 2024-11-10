@@ -33,15 +33,16 @@ def COM_NN_D(num1: NaturalNumber, num2: NaturalNumber) -> int:
         return 0
 
 
-def NZER_N_B(num):  # N-1  Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
+def NZER_N_B(num: NaturalNumber):  # N-1  Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
     if int(num) == 0:
-        return "Число является 0"
+        return True
     else:
-        return "Число не является 0"
+        return False
 
 
-def ADD_1N_N():
-    pass
+def ADD_1N_N(num: NaturalNumber):  # N-3	Добавление 1 к натуральному числу
+    num = int(num) + 1
+    return NaturalNumber(str(num))
 
 
 # Модуль выполнен: Борисов Е.А., гр. 3382.
@@ -163,13 +164,20 @@ def DIV_NN_N():
     pass
 
 
-def MOD_NN_N():
-    pass
+def MOD_NN_N(num_1: NaturalNumber, num_2: NaturalNumber):  # N-12	Остаток от деления первого натурального числа на второе натуральное (делитель!=0)
+    if int(num_2) == 0:
+        raise ValueError("Делитель не может быть равен нулю.")  # хз, надо или не надо?
 
+    # Получение неполного частного
+    quotient = DIV_NN_N(num_1, num_2)
+
+    # Вычисление остатка
+    remainder = SUB_NDN_N(num_1, num_2, quotient)  # Остаток = a - b * (неполное частное)
+
+    return remainder
 
 def GCF_NN_N():
     pass
-
 
 def LCM_NN_N():
     pass
@@ -186,12 +194,23 @@ def ABS_Z_N(num: IntegerNumber) -> NaturalNumber:
     return NaturalNumber(str(result))
 
 
-def POZ_Z_D():
-    pass
+def POZ_Z_D(num: IntegerNumber):  # Z-2	Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
+    if int(num) > 0:
+        return int('2')
+    elif int(num) < 0:
+        return int('1')
+    elif int(num) == 0:
+        return int('0')
 
 
-def MUL_ZM_Z():
-    pass
+def MUL_ZM_Z(num: IntegerNumber):  # Z-3	Умножение целого на (-1)
+    num = str(num)
+    if num[0] == '-':
+        num = num[1:]
+        return IntegerNumber(num)
+    else:
+        num = '-' + num
+        return IntegerNumber(num)
 
 
 def TRANS_N_Z():

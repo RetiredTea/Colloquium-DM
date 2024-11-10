@@ -47,20 +47,26 @@ class SectionFrame(tk.Frame):
         self.label.pack(pady=(0, 10))  # Отступ снизу для отделения от поля ввода
 
         # Определение категорий функций
-        self.single_arg_funcs = ["2","3","13","25","26","27","28","37","39","43","44","45"]
+        self.single_arg_funcs = ["2","3","15","16","17"
+                                ,"18","19","25","27","28"
+                                ,"37","38","39","44","45"]
         self.dual_arg_funcs = {
             "+": ["4","20","29","33"],
-            "-": ["5","9","21","30","34"],
-            "*": ["6", "7", "8","17","22","31","35","36","40"],
-            ":": ["10", "11","23","32","41"],
+            "-": ["5","10","21","30","34"],
+            "*": ["6","7","8","22","31","35","36","40"],
+            ":": ["11","23","32","41"],
             "%": ["12","24","42"],
-            "?": ["1"]
+            "?": ["1",],
+            " ": ["13","14","26","43"]
         }
+        self.trio_arg_funcs = ["9"]
 
         # Создание макета на основе функции
         if func_number in self.single_arg_funcs:
             self.single_input_entry = tk.Entry(central_frame, width=30)
             self.single_input_entry.pack(pady=5)
+        elif func_number in self.trio_arg_funcs:
+            self.create_trio_input_frame(central_frame)
         else:
             operator = self.get_operator(func_number)
             if operator:
@@ -100,27 +106,65 @@ class SectionFrame(tk.Frame):
         self.second_input_entry = tk.Entry(dual_input_frame, width=14)
         self.second_input_entry.pack(side="left", padx=5)
 
-    def get_inputs(self, func_number): #Возвращает входные данные в зависимости от количества полей ввода.
+
+    def create_trio_input_frame(self, parent):
+        trio_input_frame = tk.Frame(parent)
+        trio_input_frame.pack(pady=5)
+
+        self.first_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.first_input_entry_in_trio.pack(side="left", padx=5)
+
+        tk.Label(trio_input_frame, text="-", font=("Arial", 12)).pack(side="left", padx=5)
+
+        self.second_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.second_input_entry_in_trio.pack(side="left", padx=5)
+
+        tk.Label(trio_input_frame, text="*", font=("Arial", 12)).pack(side="left", padx=5)
+
+        self.tree_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.tree_input_entry_in_trio.pack(side="left", padx=5)
+
+    def get_inputs(self, func_number):
         if func_number in self.single_arg_funcs:
             return [self.single_input_entry.get()]
+        elif func_number in self.trio_arg_funcs:
+            return [
+                self.first_input_entry_in_trio.get(),
+                self.second_input_entry_in_trio.get(),
+                self.tree_input_entry_in_trio.get(),
+            ]
         return [self.first_input_entry.get(), self.second_input_entry.get()]
 
     def run_function(self, func_number, result_label):
         """Выполняет функцию в зависимости от макета и отображает результат."""
         args = self.get_inputs(func_number)
-        if 0 <= int(func_number) <= 13:
+        if 0 <= int(func_number) <= 14:
             args = [NaturalNumber(arg) for arg in args]
-        elif 14 <= int(func_number) <= 23:
+        elif 15 <= int(func_number) <= 24:
             args = [IntegerNumber(arg) for arg in args]
-        elif 24 <= int(func_number) <= 31:
+        elif 25 <= int(func_number) <= 32:
             res = []
             for i in range(len(args)):
                 args[i] = args[i].split("/")
                 res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
             args = res
         elif 32 <= int(func_number) <= 44:
-            pass
-
+            res = []
+            if func_number == 35 or func_number == 36:
+                if args[0].isdigit():
+                    first_arg = IntegerNumber(args[0])
+                else:
+                    first_arg = makePolynomial(args[0])
+                if args[1].isdigit():
+                    second_arg = IntegerNumber(args[1])
+                else:
+                    second_arg = makePolynomial(args[1])
+                res = [first_arg, second_arg]
+                args = res
+            else:
+                for i in range(len(args)):
+                    res.append(makePolynomial(args[i]))
+                args = res
         function = functions_dict.get(func_number)
 
         if function:
@@ -144,4 +188,7 @@ class SectionFrame(tk.Frame):
         elif len(args) == 2:
             if not str(args)[0].strip() or not str(args)[1].strip():
                 return "Ошибка: оба поля должны быть заполнены."
+        elif len(args) == 3:
+            if not str(args)[0].strip() or not str(args)[1].strip() or not str(args)[2].strip():
+                return "Ошибка: все три поля должны быть заполнены."
         return None  # Нет ошибок
