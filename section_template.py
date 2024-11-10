@@ -151,7 +151,9 @@ class SectionFrame(tk.Frame):
         elif 32 <= int(func_number) <= 44:
             res = []
             if func_number == 35 or func_number == 36:
-                res = [makePolynomial(args[0]), RationalNumber(args[1])]
+                res.append(makePolynomial(args[0]))
+                rational_parts = args[1].split("/")
+                res.append(RationalNumber(IntegerNumber(rational_parts[0]), NaturalNumber(rational_parts[1])))
                 args = res
             else:
                 for i in range(len(args)):
