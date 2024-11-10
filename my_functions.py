@@ -42,36 +42,56 @@ def find_denominator(n_num_1: NaturalNumber, n_num_2: NaturalNumber, k=NaturalNu
     return SUB_NN_N(result, NaturalNumber("1"))  # Возвращаем результат минус 1
 
 
-def DIV_NN_Dk(n_num_1: NaturalNumber, n_num_2: NaturalNumber):
-    """Вычисление первой цифры от деления большего натурального на меньшее"""
-    if isinstance(n_num_1, NaturalNumber) and isinstance(n_num_2, NaturalNumber):
-        if n_num_1.__str__() == "0" and n_num_2.__str__() == "0":
-            return ValueError("Деление на 0 недопустимо")
-        if n_num_1.__str__() == "0" or n_num_2.__str__() == "0":
-            return NaturalNumber("0")
+def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
+    if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
+        return ValueError("На вход должны подаваться натуральные числа")
+    # Если num1 == num2, то результат 1
+    if COM_NN_D(num1, num2) == 0:
+        return NaturalNumber("1")
 
-        # Сравниваем числа
-        comp_1 = COM_NN_D(n_num_1, n_num_2)
-        # Если числа равны, возвращаем первую цифру как 1
-        if comp_1 == 0:
-            return NaturalNumber("1")
+    # Убедимся, что num1 больше num2
+    big = num1 if COM_NN_D(num1, num2) == 2 else num2
+    small = num2 if COM_NN_D(num1, num2) == 2 else num1
 
-        # Если первое число меньше, меняем местами
-        if comp_1 == 1:
-            n_num_1, n_num_2 = n_num_2, n_num_1
+    k = big.__len__() - small.__len__()
+    digits_of_smaller = small.__len__()
 
-        k = SUB_NN_N(NaturalNumber(str(n_num_1.__len__())), NaturalNumber(str(n_num_2.__len__())))
-        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
+    # Выделяем старшие разряды big, чтобы сравнивать с small
+    necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller])
+    if COM_NN_D(necessary_big, small) == 1:
+        necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller + 1])
+        k -= 1
 
-        if COM_NN_D(comp_2, NaturalNumber("1")) == 0:
-            while COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k)) != 2:
-                k = SUB_NN_N(k, NaturalNumber("1"))
-        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
+    # Умножаем small на множитель, пока он не превысит necessary_big
+    multiplier = 1
+    small_multiplied = small
+    while COM_NN_D(small_multiplied, necessary_big) != 2:
+        multiplier += 1
+        small_multiplied = ADD_NN_N(small_multiplied, small)
 
-        return find_denominator(n_num_1, n_num_2, k)
+    result = NaturalNumber(str(multiplier - 1))
+    return MUL_Nk_N(result, k)
 
-    else:
-        raise ValueError("На вход должны подаваться натуральные числа")
+def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
+    "Неполное частное от деления натуральных чисел"
+    if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
+        return ValueError("Числа должны быть натуральными")
+    if num1.__str__() == "0" and num2.__str__() == "0":
+        return  ValueError("деления на 0 запрещено")
+    if num1.__str__() == "0" or num2.__str__() == "0":
+        return NaturalNumber("0")
+    # Проверка, что num1 >= num2
+    if COM_NN_D(num1, num2) == 1:
+        num1, num2 = num2, num1
+
+    result = NaturalNumber("0")
+
+    while COM_NN_D(num1, num2) in [2, 0]:  # пока num1 >= num2
+        quotient = DIV_NN_Dk(num1, num2)
+        num1 = SUB_NN_N(num1, MUL_NN_N(num2, quotient))
+        result = ADD_NN_N(result, quotient)
+
+    return result
 
 def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
     """Умножение многочлена на рациональное число"""
