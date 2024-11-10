@@ -1,5 +1,5 @@
 from classes import NaturalNumber, IntegerNumber, RationalNumber, Polynomial, makePolynomial
-from technical_functions import euclidean_algorithm
+from technical_functions import *
 
 
 #-------------------------------------------------------------------------------------------------|
@@ -156,8 +156,37 @@ def SUB_NDN_N():
     pass
 
 
-def DIV_NN_Dk():
-    pass
+def DIV_NN_Dk(n_num_1: NaturalNumber, n_num_2: NaturalNumber):
+    """Вычисление первой цифры от деления большего натурального на меньшее"""
+    if isinstance(n_num_1, NaturalNumber) and isinstance(n_num_2, NaturalNumber):
+        if n_num_1.__str__() == "0" and n_num_2.__str__() == "0":
+            return ValueError("Деление на 0 недопустимо")
+        if n_num_1.__str__() == "0" or n_num_2.__str__() == "0":
+            return NaturalNumber("0")
+
+        # Сравниваем числа
+        comp_1 = COM_NN_D(n_num_1, n_num_2)
+        # Если числа равны, возвращаем первую цифру как 1
+        if comp_1 == 0:
+            return NaturalNumber("1")
+
+        # Если первое число меньше, меняем местами
+        if comp_1 == 1:
+            n_num_1, n_num_2 = n_num_2, n_num_1
+
+        k = SUB_NN_N(NaturalNumber(str(n_num_1.__len__())), NaturalNumber(str(n_num_2.__len__())))
+        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
+
+        if COM_NN_D(comp_2, NaturalNumber("1")) == 0:
+            while COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k)) != 2:
+                k = SUB_NN_N(k, NaturalNumber("1"))
+        comp_2 = COM_NN_D(n_num_1, MUL_Nk_N(n_num_2, k))
+
+        return find_denominator(n_num_1, n_num_2, k)
+
+    else:
+        raise ValueError("На вход должны подаваться натуральные числа")
+
 
 
 def DIV_NN_N():
@@ -196,29 +225,42 @@ def ABS_Z_N(num: IntegerNumber) -> NaturalNumber:
 
 def POZ_Z_D(num: IntegerNumber):  # Z-2	Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
     if int(num) > 0:
-        return int('2')
+        return 2
     elif int(num) < 0:
-        return int('1')
+        return 1
     elif int(num) == 0:
-        return int('0')
+        return 0
 
 
 def MUL_ZM_Z(num: IntegerNumber):  # Z-3	Умножение целого на (-1)
-    num = str(num)
-    if num[0] == '-':
-        num = num[1:]
-        return IntegerNumber(num)
+    if(int(num) == 0):
+        return num
     else:
-        num = '-' + num
-        return IntegerNumber(num)
+        if num.sign == 1:
+            num.sign = 0
+        else:
+            num.sign = 1
+        return num
+
+def TRANS_N_Z(natural_num: NaturalNumber):
+    """Преобразование натурального числа в целое"""
+    if type(natural_num) == NaturalNumber: # Проверка типа поданных данных
+        int_num = IntegerNumber(natural_num.__str__())
+        return int_num
+    else:
+        raise ValueError("На вход должно подаваться натуральное число.")
 
 
-def TRANS_N_Z():
-    pass
-
-
-def TRANS_Z_N():
-    pass
+def TRANS_Z_N(integer_num: IntegerNumber):
+    """Преобразование целого числа в натуральное"""
+    if type(integer_num) == IntegerNumber: # Проверка типа поданных данных
+        if integer_num.get_sign()==0: # Проверка знака числа
+            natural_num = NaturalNumber(integer_num.__str__())
+            return natural_num
+        else:
+            raise ValueError("Число должно быть неотрицательным")
+    else:
+        raise ValueError("На вход должно подаваться целое неотрицательное число.")
 
 
 # Модуль выполнен: Борисов Е.А., гр. 3382.
@@ -357,12 +399,41 @@ def MUL_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
         return IntegerNumber(str(MUL_NN_N(abs1, abs2)))
 
 
-def DIV_ZZ_Z():
-    pass
+def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное от деления целого на целое (делитель отличен от нуля)
+    if int(num2) == 0:
+        raise ValueError("Делитель не может быть равен нулю.")
+
+    # знаки a и b
+    sign_a = POZ_Z_D(num1)
+    sign_b = POZ_Z_D(num2)
+
+    # абсолютные значения
+    abs_a = ABS_Z_N(num1)
+    abs_b = ABS_Z_N(num2)
+
+    # неполное частное от абсолютных значений
+    quotient = DIV_NN_N(abs_a, abs_b)
+
+    # знак результата
+    if (sign_a == 2 and sign_b == 2) or (sign_a == 1 and sign_b == 1):
+        return IntegerNumber(str(quotient))  # Положительное частное
+    else:
+        quotient = IntegerNumber(str(quotient))
+        quotient = MUL_ZM_Z(quotient)
+        return quotient  # Отрицательное частное
 
 
-def MOD_ZZ_Z():
-    pass
+def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток от деления целого на целое(делитель отличен от нуля)
+    if int(num2) == 0:
+        raise ValueError("Делитель не может быть равен нулю.")  # хз, надо или не надо?
+
+    # частное от деления
+    quotient = DIV_ZZ_Z(num1, num2)
+
+    # остаток
+    remainder = SUB_ZZ_Z(num1, MUL_ZZ_Z(num2, quotient))  # Остаток = a - b * (частное)
+
+    return remainder
 
 
 def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
@@ -410,15 +481,15 @@ def SUB_QQ_Q():
     pass
 
 
-def MUL_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
-    temp = RationalNumber(rational_number1.numerator, rational_number1.denominator)
-    if rational_number2.numerator != '0':
-        temp.numerator = IntegerNumber(str(int(rational_number1.numerator) * int(rational_number2.numerator)))
-        temp.denominator = NaturalNumber(str(int(rational_number1.denominator) * int(rational_number2.denominator)))
+def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
+    """Умножение рациональных чисел"""
+    if type(r_number_1) == RationalNumber and type(r_number_2) == RationalNumber:
+        numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator)
+        denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator)
+        r_number = RationalNumber(IntegerNumber(str(numerator)), NaturalNumber(str(denominator)))
+        return r_number
     else:
-        raise ValueError("Знаменатель не может быть нулём")
-
-    return temp
+        raise ValueError("На вход должны подаваться рациональные числа")
 
 
 def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
@@ -452,8 +523,20 @@ def SUB_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     return temp
 
 
-def MUL_PQ_P():
-    pass
+def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
+    """Умножение многочлена на рациональное число"""
+    if not (isinstance(polynomial, Polynomial) and isinstance(rational, RationalNumber)):
+        return ValueError("Должны подаваться многочлен и рациональное число")
+
+    result = Polynomial()
+    temp = polynomial.head
+    while temp is not None:
+        # Умножаем коэффициент каждого члена многочлена на рациональное число
+        numerator_multiplied = MUL_ZZ_Z(temp.val.numerator, rational.numerator)
+        denominator_multiplied = MUL_NN_N(temp.val.denominator, rational.denominator)
+        result.add(temp.deg, RationalNumber(numerator_multiplied, denominator_multiplied))
+        temp = temp.next
+    return result
 
 
 def MUL_Pxk_P(pln: Polynomial, k: NaturalNumber) -> Polynomial:

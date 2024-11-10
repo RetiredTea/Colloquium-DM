@@ -1,5 +1,5 @@
 from classes import NaturalNumber, IntegerNumber, RationalNumber, Polynomial
-
+from functions import *
 
 #----------------------------------------------------------------------------------------------------------|
 # ТЕХНИЧЕСКИЕ ФУНКЦИИ                                                                                      |
@@ -35,3 +35,13 @@ def euclidean_algorithm(a, b):
 
     # Возвращаем результаты
     return coeffs, (a1, a2), (b1, b2), NOD
+
+def find_denominator(n_num_1: NaturalNumber, n_num_2: NaturalNumber, k=NaturalNumber("0")):
+    """Определение первой цифры от деления большего натурального числа на меньшее"""
+    result = NaturalNumber("0")
+    temp_num = NaturalNumber(MUL_Nk_N(n_num_2, NaturalNumber(str(k))).__str__())  # n_num_2 * 10^k
+
+    while COM_NN_D(n_num_1, MUL_NN_N(temp_num, NaturalNumber(str(result)))) in [2,0]:
+        result = ADD_1N_N(result)
+
+    return SUB_NN_N(result, NaturalNumber("1"))  # Возвращаем результат минус 1
