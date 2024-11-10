@@ -108,6 +108,68 @@ def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
         temp = temp.next
     return result
 
+def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
+    """
+    Функция находит НОД числителей и НОК знаменателей коэффициентов многочлена.
+    Возвращает кортеж: (НОД числителей, НОК знаменателей).
+
+    Аргументы:
+    polynomial (Polynomial): Объект многочлена с коэффициентами, содержащими числители и знаменатели.
+
+    Возвращает:
+    tuple[NaturalNumber, NaturalNumber]: НОД числителей и НОК знаменателей.
+    """
+
+    # Списки для хранения числителей (для НОД) и знаменателей (для НОК) коэффициентов
+    gcd_list = []
+    lcm_list = []
+
+    # Получаем степени многочлена и соответствующие коэффициенты
+    pol_degs = polynomial.getDegrees()
+    pol_coefs = [polynomial.getCoeff(NaturalNumber(str(deg))) for deg in pol_degs]
+
+    # Извлекаем числители ненулевых коэффициентов для вычисления НОД
+    for coeff in pol_coefs:
+        numerator = coeff.numerator
+
+        # Проверяем, что числитель не равен нулю
+        if not NZER_N_B(numerator):
+
+            # Проверяем, что числитель имеет тип NaturalNumber, иначе преобразуем
+            if not isinstance(numerator, NaturalNumber):
+                numerator = TRANS_Z_N(numerator)  # Преобразование в натуральное число
+
+            # Добавляем числитель в список для вычисления НОД
+            gcd_list.append(numerator)
+
+    # Извлекаем знаменатели всех коэффициентов для вычисления НОК
+    for coeff in pol_coefs:
+        denominator = coeff.denominator
+
+        # Проверяем, что знаменатель имеет тип NaturalNumber, иначе преобразуем
+        if not isinstance(denominator, NaturalNumber):
+            denominator = TRANS_Z_N(denominator)  # Преобразование в натуральное число
+
+        # Добавляем знаменатель в список для вычисления НОК
+        lcm_list.append(denominator)
+
+    # Инициализация НОД как первого числителя и поочередное нахождение НОД для всех остальных числителей
+    gcd_result = gcd_list[0]
+    for num in gcd_list[1:]:
+        gcd_result = GCF_NN_N(gcd_result, num)  # Вычисляем НОД текущего результата с числителем num
+
+    # Инициализация НОК как первого знаменателя и поочередное нахождение НОК для всех остальных знаменателей
+    lcm_result = lcm_list[0]
+    for den in lcm_list[1:]:
+        lcm_result = LCM_NN_N(lcm_result, den)  # Вычисляем НОК текущего результата со знаменателем den
+
+    # Возвращаем НОД числителей и НОК знаменателей в виде кортежа
+    return gcd_result, lcm_result
+    
+poly = Polynomial()
+poly.makePolynomial("3/2x^2 + 9/6x + 3/2")
+n1,n2 = FAC_P_Q(poly)
+print(n1,n2)
 
 # r1=RationalNumber(IntegerNumber("1"), NaturalNumber("2"))
 # r2=RationalNumber(IntegerNumber("3"), NaturalNumber("9"))
