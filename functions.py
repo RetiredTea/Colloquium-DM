@@ -232,7 +232,7 @@ def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
         return NaturalNumber("0")
     # Проверка, что num1 >= num2
     if COM_NN_D(num1, num2) == 1:
-        num1, num2 = num2, num1
+        return NaturalNumber("0")
     result = NaturalNumber("0")
 
     while COM_NN_D(num1, num2) in [2, 0]:  # пока num1 >= num2
