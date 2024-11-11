@@ -52,12 +52,12 @@ class SectionFrame(tk.Frame):
                                 ,"37","38","39","44","45"]
         self.dual_arg_funcs = {
             "+": ["4","20","29","33"],
-            "-": ["5","10","21","30","34"],
+            "-": ["5","21","30","34"],
             "*": ["6","7","8","22","31","35","36","40"],
             ":": ["11","23","32","41"],
             "%": ["12","24","42"],
-            "?": ["1",],
-            " ": ["13","14","43"]
+            "?": ["1"],
+            " ": ["13","14","43","10"]
         }
         self.trio_arg_funcs = ["9"]
 
@@ -138,7 +138,7 @@ class SectionFrame(tk.Frame):
     def run_function(self, func_number, result_label):
         """Выполняет функцию в зависимости от макета и отображает результат."""
         args = self.get_inputs(func_number)
-        if 0 <= int(func_number) <= 14:
+        if 0 <= int(func_number) <= 14: #N
             if int(func_number) == 6:
                 if 0 <= int(args[1]) <= 9:
                     args = [NaturalNumber(arg) for arg in args]
@@ -149,13 +149,13 @@ class SectionFrame(tk.Frame):
                 self.result_label.config(text="")
                 args = [NaturalNumber(arg) for arg in args]
 
-        elif 15 <= int(func_number) <= 24:
+        elif 15 <= int(func_number) <= 24: #Z
             if int(func_number) == 18:
                 args = [NaturalNumber(arg) for arg in args]
             else:
                 args = [IntegerNumber(arg) for arg in args]
 
-        elif 25 <= int(func_number) <= 32:
+        elif 25 <= int(func_number) <= 32: #Q
             if int(func_number) == 27:
                 args = [IntegerNumber(arg) for arg in args]
             else:
@@ -165,15 +165,17 @@ class SectionFrame(tk.Frame):
                     if args[i][1] == "0":
                         self.result_label.config(text="")
                         self.result_label.config(text="Знаменатель не может быть нулём")
-                        print(1)
                     res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
                 args = res
 
-        elif 32 <= int(func_number) <= 45:
+        elif 32 <= int(func_number) <= 45: #P
             res = []
             if func_number == 35:
                 res.append(makePolynomial(args[0]))
                 rational_parts = args[1].split("/")
+                if NaturalNumber(rational_parts[1]) == "0":
+                    self.result_label.config(text="")
+                    self.result_label.config(text="Знаменатель не может быть нулём")
                 res.append(RationalNumber(IntegerNumber(rational_parts[0]), NaturalNumber(rational_parts[1])))
                 args = res
             elif(func_number == 36):
