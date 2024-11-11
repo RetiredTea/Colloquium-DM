@@ -139,6 +139,11 @@ class SectionFrame(tk.Frame):
         """Выполняет функцию в зависимости от макета и отображает результат."""
         args = self.get_inputs(func_number)
         if 0 <= int(func_number) <= 14: #N
+            for arg in args:
+                if not arg.isdigit() or int(arg) < 0:
+                    self.result_label.config(text="")
+                    self.result_label.config(text="Ошибка: Надо ввести натуральное число.")
+                    return
             if int(func_number) == 6:
                 if 0 <= int(args[1]) <= 9:
                     args = [NaturalNumber(arg) for arg in args]

@@ -190,7 +190,7 @@ def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumbe
     return result
 
 
-def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
+def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
     if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
         return ValueError("На вход должны подаваться натуральные числа")
     # Если num1 == num2, то результат 1
@@ -222,13 +222,13 @@ def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
 
 
 
-def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
+def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
     "Неполное частное от деления натуральных чисел"
     if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
         return ValueError("Числа должны быть натуральными")
+    if num2.__str__() == "0":
+        return  ValueError("Нельзя делить на 0")
     if num1.__str__() == "0" and num2.__str__() == "0":
-        return  ValueError("деления на 0 запрещено")
-    if num1.__str__() == "0" or num2.__str__() == "0":
         return NaturalNumber("0")
     # Проверка, что num1 >= num2
     if COM_NN_D(num1, num2) == 1:
