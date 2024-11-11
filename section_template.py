@@ -141,7 +141,10 @@ class SectionFrame(tk.Frame):
         if 0 <= int(func_number) <= 14:
             args = [NaturalNumber(arg) for arg in args]
         elif 15 <= int(func_number) <= 24:
-            args = [IntegerNumber(arg) for arg in args]
+            if int(func_number) == 18:
+                args = [NaturalNumber(arg) for arg in args]
+            else:
+                args = [IntegerNumber(arg) for arg in args]
         elif 25 <= int(func_number) <= 32:
             if func_number == 27:
                 args = [IntegerNumber(arg) for arg in args]

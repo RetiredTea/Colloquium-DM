@@ -188,7 +188,7 @@ def MUL_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
 """
 def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     # Обращаемся к функциям умножения натурального числа на цифру и разности двух натуральных чисел
-    result = SUB_NN_N(num1, MUL_ND_N(num2, multiplier))
+    result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
     return result
 
 
@@ -275,7 +275,7 @@ def GCF_NN_N(num1: NaturalNumber, num2: NaturalNumber):
 #===== НОК натуральных чисел ====
 #===== принимает два числа возвращает одно - НОК (ввод/вывод объектами класса NaturalNumber) ====
 def LCM_NN_N(num1: NaturalNumber, num2: NaturalNumber):
-    return MOD_NN_N(MUL_NN_N(num1,num2), GCF_NN_N(num1, num2)) # нужна функция умножения чисел
+    return DIV_NN_N(MUL_NN_N(num1,num2), GCF_NN_N(num1, num2)) # нужна функция умножения чисел
 
 
 # Модуль выполнен: Борисов Е.А., гр. 3382.
