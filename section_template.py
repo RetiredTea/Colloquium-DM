@@ -157,6 +157,11 @@ class SectionFrame(tk.Frame):
         elif 15 <= int(func_number) <= 24: #Z
             if int(func_number) == 18:
                 args = [NaturalNumber(arg) for arg in args]
+            for arg in args:
+                if not arg.isdigit() or int(arg) < 0:
+                    self.result_label.config(text="")
+                    self.result_label.config(text="Ошибка: Надо ввести целое число.")
+                    return
             else:
                 args = [IntegerNumber(arg) for arg in args]
 
@@ -166,6 +171,10 @@ class SectionFrame(tk.Frame):
             else:
                 res = []
                 for i in range(len(args)):
+                    if args[i].count("/") == 0:
+                        self.result_label.config(text="")
+                        self.result_label.config(text="Ошибка: Надо ввести рациональное число.")
+                        return
                     args[i] = args[i].split("/")
                     if args[i][1] == "0":
                         self.result_label.config(text="")

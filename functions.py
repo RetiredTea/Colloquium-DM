@@ -191,8 +191,8 @@ def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumbe
 
 
 def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
-    if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
-        return ValueError("На вход должны подаваться натуральные числа")
+    if num2.__str__() == "0":
+        return ValueError("Нельзя делить на 0")
     # Если num1 == num2, то результат 1
     if COM_NN_D(num1, num2) == 0:
         return NaturalNumber("1")
@@ -224,8 +224,6 @@ def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalN
 
 def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
     "Неполное частное от деления натуральных чисел"
-    if not (isinstance(num1, NaturalNumber) and isinstance(num2, NaturalNumber)):
-        return ValueError("Числа должны быть натуральными")
     if num2.__str__() == "0":
         return  ValueError("Нельзя делить на 0")
     if num1.__str__() == "0" and num2.__str__() == "0":
@@ -563,11 +561,18 @@ def ADD_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber)
 #===== принимает две дроби возвращает их разность(ввод/вывод строкой) ====
 # нужны функции умножения целых чисел, вычетания целых чисел, преобразования натурального в целое
 def SUB_QQ_Q(frac1: RationalNumber, frac2: RationalNumber):
+
     denominator = (LCM_NN_N(frac1.denominator, frac2.denominator))
-    numerator = SUB_ZZ_Z(MUL_ZZ_Z(frac1.numerator, TRANS_N_Z((MOD_NN_N(denominator, frac1.denominator)))),\
-                        MUL_ZZ_Z(frac2.numerator, TRANS_N_Z(MOD_NN_N(denominator, frac2.denominator))))
+
+    # Вычисляем коэффициенты, на которые необходимо домножить числитель.
+    mul_coef1 = IntegerNumber(str(DIV_NN_N(denominator, frac1.denominator)))
+    mul_coef2 = IntegerNumber(str(DIV_NN_N(denominator, frac2.denominator)))
+
+    # Вычитаем числители, домноженные на коэффициенты.
+    numerator = SUB_ZZ_Z(MUL_ZZ_Z(frac1.numerator, mul_coef1), \
+                         MUL_ZZ_Z(frac2.numerator, mul_coef2))
     frac_sum = RationalNumber(numerator, denominator)
-    return(frac_sum)
+    return frac_sum
 
 
 def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
@@ -581,7 +586,11 @@ def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
         raise ValueError("На вход должны подаваться рациональные числа")
 
 
-def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
+def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber | ValueError:
+
+    if rational_number2.numerator.value == [0]:
+        return ValueError("Второй операнд не может быть 0.")
+
     temp1 = RationalNumber(rational_number1.numerator, rational_number1.denominator)
     temp2 = RationalNumber(rational_number2.numerator, rational_number2.denominator)
     if (temp2.numerator.get_sign() == 1):
