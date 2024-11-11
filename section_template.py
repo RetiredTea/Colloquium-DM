@@ -48,7 +48,7 @@ class SectionFrame(tk.Frame):
 
         # Определение категорий функций
         self.single_arg_funcs = ["2","3","15","16","17"
-                                ,"18","19","25","27","28"
+                                ,"18","19","25","26","27","28"
                                 ,"37","38","39","44","45"]
         self.dual_arg_funcs = {
             "+": ["4","20","29","33"],
@@ -57,7 +57,7 @@ class SectionFrame(tk.Frame):
             ":": ["11","23","32","41"],
             "%": ["12","24","42"],
             "?": ["1",],
-            " ": ["13","14","26","43"]
+            " ": ["13","14","43"]
         }
         self.trio_arg_funcs = ["9"]
 
@@ -148,20 +148,27 @@ class SectionFrame(tk.Frame):
             else:
                 self.result_label.config(text="")
                 args = [NaturalNumber(arg) for arg in args]
+
         elif 15 <= int(func_number) <= 24:
             if int(func_number) == 18:
                 args = [NaturalNumber(arg) for arg in args]
             else:
                 args = [IntegerNumber(arg) for arg in args]
+
         elif 25 <= int(func_number) <= 32:
-            if func_number == 27:
+            if int(func_number) == 27:
                 args = [IntegerNumber(arg) for arg in args]
             else:
                 res = []
                 for i in range(len(args)):
                     args[i] = args[i].split("/")
+                    if args[i][1] == "0":
+                        self.result_label.config(text="")
+                        self.result_label.config(text="Знаменатель не может быть нулём")
+                        print(1)
                     res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
                 args = res
+
         elif 32 <= int(func_number) <= 45:
             res = []
             if func_number == 35:
