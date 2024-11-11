@@ -408,7 +408,7 @@ def SUB_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
         return result
 
     # Если первое 0.
-    elif num1_poz == "0":
+    elif num1_poz == 0:
         result = MUL_ZM_Z(num2)
         return result
 

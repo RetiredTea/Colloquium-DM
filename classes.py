@@ -20,8 +20,11 @@ class IntegerNumber:
         if value[0] == '-':
             self.sign = 1
             self.value = list(map(int, list(value.lstrip('-'))))
+            if self.value == [0]:
+                self.sign = 0
         else:
             self.value = list(map(int, list(value)))
+
 
     # Вывод числа в виде строки
     def __str__(self):
