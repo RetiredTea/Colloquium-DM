@@ -141,8 +141,6 @@ def SUB_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
 
 
 def MUL_ND_N(num: NaturalNumber, digit: NaturalNumber) -> NaturalNumber:
-    if not (0 <= int(digit) <= 9):  # Проверяем, что digit является цифрой
-        raise ValueError('The number must be from 0 to 9')
     carry = 0  # Перенос для сложения
     result = []  # Список для хранения результата
 

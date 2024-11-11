@@ -139,7 +139,15 @@ class SectionFrame(tk.Frame):
         """Выполняет функцию в зависимости от макета и отображает результат."""
         args = self.get_inputs(func_number)
         if 0 <= int(func_number) <= 14:
-            args = [NaturalNumber(arg) for arg in args]
+            if int(func_number) == 6:
+                if 0 <= int(args[1]) <= 9:
+                    args = [NaturalNumber(arg) for arg in args]
+                else:
+                    self.result_label.config(text="")
+                    self.result_label.config(text="Ошибка:во втором поле должна быть введена одна цифра (0-9).")
+            else:
+                self.result_label.config(text="")
+                args = [NaturalNumber(arg) for arg in args]
         elif 15 <= int(func_number) <= 24:
             if int(func_number) == 18:
                 args = [NaturalNumber(arg) for arg in args]
