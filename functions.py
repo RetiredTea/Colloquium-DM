@@ -431,7 +431,7 @@ def MUL_PQ_P():
 def MUL_Pxk_P(pln: Polynomial, k: NaturalNumber) -> Polynomial:
     temp = makePolynomial(str(pln)) # Создаём копию переданного многочлена
     for i in temp.getDegrees(): # Для каждой степени с коэффициентом отличным от нуля
-        temp.changeDegree(i, ADD_NN_N(i, k)) # Добавляем к степени k (меняем на i+k)
+        temp.changeDegree(NaturalNumber(str(i)), ADD_NN_N(NaturalNumber(str(i)), k)) # Добавляем к степени k (меняем на i+k)
     return temp # Возвращаем копию переданного многочлена умноженную на x^k
 
 
@@ -440,10 +440,10 @@ def LED_P_Q():
 
 # Модуль выполнен: Борисов Е.А., гр. 3382.
 # Степень многочлена.
-def DEG_P_N(polynom: Polynomial) -> int:
+def DEG_P_N(polynom: Polynomial) -> NaturalNumber:
     # Вызываем метод, возвращающий массив степеней, и выводим максимальную степень.
     deg = polynom.getDegrees()[0]
-    return deg
+    return NaturalNumber(str(deg))
 
 def FAC_P_Q():
     pass
@@ -454,8 +454,8 @@ def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     pln = Polynomial() # Создадим результирующий многочлен
 
     for i in arr: # Для каждого элемента 1 многочлена
-        temp = MUL_PQ_P(pln2, pln1.getCoeff(i)) # Умножаем второй многочлен на коэффициент элемента первого многочлена
-        temp = MUL_Pxk_P(temp, i) # Умножаем второй многочлен на степень элемента первого многочлена
+        temp = MUL_PQ_P(pln2, pln1.getCoeff(NaturalNumber(str(i)))) # Умножаем второй многочлен на коэффициент элемента первого многочлена
+        temp = MUL_Pxk_P(temp, NaturalNumber(str(i))) # Умножаем второй многочлен на степень элемента первого многочлена
         pln = ADD_PP_P(pln, temp) # Добавляем к результирующему произведение элемента первого многочлена со вторым многочленом
             
     return pln # Возвращаем результирующий многочлен (произведение первого и второго)
@@ -466,11 +466,13 @@ def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
     pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
     pln = Polynomial() # Создадим многочлен частного
     break_deg = DEG_P_N(pln2) # Запомним степень делителя
+    if(int(break_deg) == 0): # Проверяем на нулевой многочлен
+        raise ValueError("Делитель не может быть нулём.")
     while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
         temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
 
-        val = DIV_QQ_Q(pln1.getCoeff(pln1.getDegrees()[0]), pln2.getCoeff(pln2.getDegrees()[0])) # Коэффициент одночлена
-        deg = SUB_NN_N(pln1.getDegrees()[0], pln2.getDegrees()[0]) # Степень одночлена
+        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2))) # Коэффициент одночлена
+        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2)) # Степень одночлена
         temp.add(deg, val) # Запишем одночлен
 
         temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
@@ -485,11 +487,13 @@ def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
     pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
     pln = Polynomial() # Создадим многочлен частного
     break_deg = DEG_P_N(pln2) # Запомним степень делителя
+    if(int(break_deg) == 0): # Проверяем на нулевой многочлен
+        raise ValueError("Делитель не может быть нулём.")
     while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
         temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
 
-        val = DIV_QQ_Q(pln1.getCoeff(pln1.getDegrees()[0]), pln2.getCoeff(pln2.getDegrees()[0])) # Коэффициент одночлена
-        deg = SUB_NN_N(pln1.getDegrees()[0], pln2.getDegrees()[0]) # Степень одночлена
+        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2))) # Коэффициент одночлена
+        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2)) # Степень одночлена
         temp.add(deg, val) # Запишем одночлен
         
         temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
@@ -507,7 +511,7 @@ def DER_P_P():
     pass
 
 
-def NMR_P_P(pln: Polynomial) -> str:
+def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
     gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
