@@ -8,7 +8,7 @@ class SectionFrame(tk.Frame):
 
         # Создаем основной контейнер для размещения лейблов и полей ввода
         main_container = tk.Frame(self)
-        main_container.pack(fill="both", expand=True)
+        main_container.pack(fill="both")
 
         # Левый фрейм для отображения доступных операций
         operations_frame = tk.Frame(main_container)
@@ -69,7 +69,7 @@ class SectionFrame(tk.Frame):
 
         # Создание макета на основе функции
         if func_number in self.single_arg_funcs:
-            self.single_input_entry = tk.Entry(content_frame, width=60, justify="center")
+            self.single_input_entry = tk.Entry(content_frame, width=60)
             self.single_input_entry.pack(pady=5)
         elif func_number in self.trio_arg_funcs:
             self.create_trio_input_frame(content_frame)
@@ -203,7 +203,6 @@ class SectionFrame(tk.Frame):
             if int(func_number) == 35:
                 res.append(makePolynomial(args[0]))
                 rational_parts = args[1].split("/")
-
                 if str(NaturalNumber(rational_parts[1])) == "0":
                     self.result_label.config(text="")
                     self.error_label.config(text="")
