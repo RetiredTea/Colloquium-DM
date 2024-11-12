@@ -731,6 +731,8 @@ def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     return pln # Возвращаем результирующий многочлен (произведение первого и второго)
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Частное от деления многочлена на многочлен при делении с остатком.
 def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
     pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
     pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
@@ -752,6 +754,8 @@ def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
     return pln # Возвращаем частное
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Остаток от деления многочлена на многочлен при делении с остатком.
 def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
     pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
     pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
@@ -817,6 +821,8 @@ def DER_P_P(polyn: Polynomial):
     return polyn
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Преобразование многочлена — кратные корни в простые.
 def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
     gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
