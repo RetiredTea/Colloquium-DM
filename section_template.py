@@ -88,7 +88,7 @@ class SectionFrame(tk.Frame):
         self.run_button.pack(pady=10)
 
         # Лейбл для отображения результата
-        self.result_label = tk.Label(content_frame, text="", font=("Arial", 18), fg="White")
+        self.result_label = tk.Label(content_frame, text="", font=("Arial", 18), fg="#D3D3D3")
         self.result_label.pack(pady=5)
 
 

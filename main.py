@@ -6,27 +6,21 @@ from section_template import SectionFrame
 def main():
     root = tk.Tk()
     root.title("Проект, Коллоквиум №1")
-    x = root.winfo_screenwidth()  # размер  по горизонтали
+    x = root.winfo_screenwidth()  # размер по горизонтали
     y = root.winfo_screenheight()  # размер по вертикали
     root.geometry('{}x{}'.format(int(x * 0.8), int(y * 0.5)))
     root.minsize(400, 300)
 
     # Установка темной темы
-    #root.tk_setPalette(background='white', foreground='black')  # Темный фон, светлый текст
-    root.tk_setPalette(background='#2e2e2e', foreground='#d3d3d3')  # Темный фон, светлый текст
+    root.tk_setPalette(background='#2e2e2e', foreground='#d3d3d3')
     style = ttk.Style()
-
-    # Настройка стилей для ttk виджетов
     style.configure("TButton", background="#555", foreground="#d3d3d3", font=("Arial", 10))
     style.configure("TLabel", background="#2e2e2e", foreground="#d3d3d3", font=("Arial", 10))
     style.configure("TCombobox", fieldbackground="#555", background="#555", foreground="#d3d3d3")
     style.configure("TEntry", fieldbackground="#555", background="#555", foreground="#d3d3d3")
     style.configure("TFrame", background="#2e2e2e")
 
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(1, weight=1)
-
-    # Словарь с названиями разделов и соответствующими номерами функций
+    # Словарь с названиями разделов и функциями
     sections_dict = {
         "Информация": "0",
         "N-1 Сравнение натуральных чисел": "1",
@@ -78,14 +72,58 @@ def main():
         "P-13 Преобразование многочлена — кратные корни в простые": "45"
     }
 
-    # Лейбл "Выберите функцию"
-    label = tk.Label(root, text="Выберите функцию:")
-    label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+    # Контейнер для верхней панели поиска и списка
+    top_frame = tk.Frame(root, background="#2e2e2e")
+    top_frame.grid(row=0, column=1, sticky="ne", padx=10, pady=5)
+
+    # Кнопка для переключения темы
+    def toggle_theme():
+        if root.theme == "dark":
+            # Переключение на светлую тему
+            root.tk_setPalette(background="white", foreground="black")
+            style.configure("TButton", background="#ddd", foreground="black", font=("Arial", 10))
+            style.configure("TLabel", background="white", foreground="black", font=("Arial", 10))
+            style.configure("TCombobox", fieldbackground="#fff", background="#fff", foreground="black")
+            style.configure("TEntry", fieldbackground="#fff", background="#fff", foreground="black")
+            style.configure("TFrame", background="white")
+            theme_button.config(text="🌙", bg="white", fg="black")
+            root.theme = "light"
+        else:
+            # Переключение на темную тему
+            root.tk_setPalette(background="#2e2e2e", foreground="#d3d3d3")
+            style.configure("TButton", background="#555", foreground="#d3d3d3", font=("Arial", 10))
+            style.configure("TLabel", background="#2e2e2e", foreground="#d3d3d3", font=("Arial", 10))
+            style.configure("TCombobox", fieldbackground="#555", background="#555", foreground="#d3d3d3")
+            style.configure("TEntry", fieldbackground="#555", background="#555", foreground="#d3d3d3")
+            style.configure("TFrame", background="#2e2e2e")
+            theme_button.config(text="☀", bg="#2e2e2e", fg="#d3d3d3")
+            root.theme = "dark"
+
+    theme_button = tk.Button(top_frame, text="☀", font=("Arial", 10), command=toggle_theme, bg="#2e2e2e", fg="#d3d3d3")
+    theme_button.grid(row=0, column=0, padx=(10, 0), pady=5, sticky="nw")
+
+    # Метка "Поиск:"
+    search_label = tk.Label(top_frame, text="Поиск:", font=("Arial", 10, "bold"))
+    search_label.grid(row=0, column=1, padx=(5, 0), pady=5, sticky="e")
+
+    # Поле ввода для поиска
+    search_entry = tk.Entry(top_frame, width=15)
+    search_entry.grid(row=0, column=2, padx=(0, 10), pady=5, sticky="e")
+
+    # Метка "Список функций:"
+    list_label = tk.Label(top_frame, text="Список функций:", font=("Arial", 10, "bold"), fg="#D3D3D3")
+    list_label.grid(row=0, column=3, padx=(5, 0), pady=5, sticky="e")
 
     # Выпадающий список
     selected_function = tk.StringVar(root)
-    dropdown = ttk.Combobox(root, textvariable=selected_function, values=list(sections_dict.keys()), state="readonly")
-    dropdown.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
+    dropdown = ttk.Combobox(
+        top_frame,
+        textvariable=selected_function,
+        values=list(sections_dict.keys()),
+        state="readonly",
+        width=70
+    )
+    dropdown.grid(row=0, column=4, padx=(0, 10), pady=5, sticky="e")
     dropdown.set("Информация")
 
     # Контейнер для отображения выбранного раздела
@@ -95,7 +133,7 @@ def main():
     root.rowconfigure(1, weight=1)
 
     # Лейбл для вывода результата
-    result_label = tk.Label(root, text="", wraplength=500, fg="#d3d3d3")  # Белый текст для результата
+    result_label = tk.Label(root, text="", wraplength=500, fg="#d3d3d3")
     result_label.grid(row=2, column=0, columnspan=2, padx=10, pady=5)
 
     # Переменная для текущего открытого фрейма
@@ -110,23 +148,36 @@ def main():
         func_name = selected_function.get()
         func_number = sections_dict[func_name]
 
-        # Стартовый экран
         if func_number == "0":
             current_frame = tk.Frame(container)
             info_label = tk.Label(current_frame,
-            text="Добро пожаловать в программу!\n"
-            "Проект выполнили студенты группы 3382 ",
-            font=("Arial", 14))
+                                  text="Добро пожаловать в программу!\n"
+                                       "Проект выполнили студенты группы 3382",
+                                  font=("Arial", 14))
             info_label.pack(expand=True)
         else:
             current_frame = SectionFrame(container, func_number, func_name, result_label)
 
         current_frame.pack(fill="both", expand=True)
 
+    def filter_dropdown(event=None):
+        """Фильтрует список функций на основе введенного текста"""
+        search_text = search_entry.get().strip().lower()
+        filtered_sections = [section for section in sections_dict if search_text in section.lower()]
+        dropdown['values'] = filtered_sections
+        if filtered_sections:
+            dropdown.set(filtered_sections[0])
+        else:
+            dropdown.set("Не найдено")
+
     dropdown.bind("<<ComboboxSelected>>", switch_section)
+    search_entry.bind("<KeyRelease>", filter_dropdown)
     switch_section()
 
+    root.theme = "dark"  # Начальная тема
+
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
