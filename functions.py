@@ -189,57 +189,70 @@ def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumbe
     result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
     return result
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Вычисление первой цифры частного при делении большего натурального числа на меньшее, домноженное на 10^k,
+# где k - номер позиции этой цифры (номер считается с нуля)
 def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
+    # Проверка, что делитель num2 не равен 0
     if num2.__str__() == "0":
-        return ValueError("Нельзя делить на 0")
-    # Если num1 == num2, то результат 1
+        return ValueError("Нельзя делить на 0")  # Генерация ошибки, если деление на 0
+
+    # Если числа равны (num1 == num2), результат деления — единица
     if COM_NN_D(num1, num2) == 0:
         return NaturalNumber("1")
 
-    # Убедимся, что num1 больше num2
-    big = num1 if COM_NN_D(num1, num2) == 2 else num2
-    small = num2 if COM_NN_D(num1, num2) == 2 else num1
+    # Определяем большее и меньшее число
+    big = num1 if COM_NN_D(num1, num2) == 2 else num2  # Присваиваем big значение большего из num1 и num2
+    small = num2 if COM_NN_D(num1, num2) == 2 else num1  # Присваиваем small значение меньшего
 
+    # Вычисляем начальное значение позиции k
     k = big.__len__() - small.__len__()
     digits_of_smaller = small.__len__()
 
-    # Выделяем старшие разряды big, чтобы сравнивать с small
-    necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller])
-    if COM_NN_D(necessary_big, small) == 1:
-        necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller + 1])
-        k -= 1
+    # Извлекаем старшие разряды числа big для сравнения с числом small
+    necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller])  # Извлекаем первые разряды, соответствующие длине small
+    if COM_NN_D(necessary_big, small) == 1:  # Если выделенная часть necessary_big меньше small
+        necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller + 1])  # Увеличиваем длину на 1 разряд
+        k -= 1  # Снижаем k, так как увеличили количество цифр в necessary_big
 
-    # Умножаем small на множитель, пока он не превысит necessary_big
+    # Ищем множитель для small, чтобы достичь максимального возможного значения, не превышающего necessary_big
     multiplier = 1
     small_multiplied = small
-    while COM_NN_D(small_multiplied, necessary_big) != 2:
+    while COM_NN_D(small_multiplied, necessary_big) != 2:  # Пока small_multiplied <= necessary_big
         multiplier += 1
-        small_multiplied = ADD_NN_N(small_multiplied, small)
+        small_multiplied = ADD_NN_N(small_multiplied, small)  # Увеличиваем small_multiplied на small
 
-    result = NaturalNumber(str(multiplier - 1))
-    return MUL_Nk_N(result, k)
+    # Возвращаем результат, умноженный на 10^k (положение разряда)
+    result = NaturalNumber(str(multiplier - 1))  # Находим окончательное значение, уменьшая multiplier на 1
+    return MUL_Nk_N(result, k)  # Домножаем на 10^k для корректного расположения разряда
 
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Неполное частное от деления первого натурального числа на второе с остатком (делитель отличен от нуля)
 def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
     "Неполное частное от деления натуральных чисел"
+    # Проверка деления на ноль
     if num2.__str__() == "0":
-        return  ValueError("Нельзя делить на 0")
+        return ValueError("Нельзя делить на 0")  # Генерация ошибки, если делитель равен 0
+
+    # Обработка случая, когда оба числа равны нулю
     if num1.__str__() == "0" and num2.__str__() == "0":
-        return NaturalNumber("0")
-    # Проверка, что num1 >= num2
+        return NaturalNumber("0")  # Результат 0, если оба числа нулевые
+
+    # Если num1 меньше num2, результат частного будет 0
     if COM_NN_D(num1, num2) == 1:
         return NaturalNumber("0")
+
+    # Инициализация результата
     result = NaturalNumber("0")
 
+    # Цикл для нахождения частного
     while COM_NN_D(num1, num2) in [2, 0]:  # пока num1 >= num2
-        quotient = DIV_NN_Dk(num1, num2)
-        num1 = SUB_NN_N(num1, MUL_NN_N(num2, quotient))
-        result = ADD_NN_N(result, quotient)
+        quotient = DIV_NN_Dk(num1, num2)  # Вычисляем очередную цифру частного
+        num1 = SUB_NN_N(num1, MUL_NN_N(num2, quotient))  # Вычитаем произведение частного на делитель из num1
+        result = ADD_NN_N(result, quotient)  # Добавляем найденную цифру частного к результату
 
     return result
-
 
 def MOD_NN_N(num_1: NaturalNumber, num_2: NaturalNumber):  # N-12	Остаток от деления первого натурального числа на второе натуральное (делитель!=0)
     if int(num_2) == 0:
@@ -304,6 +317,8 @@ def MUL_ZM_Z(num: IntegerNumber):  # Z-3	Умножение целого на (-
             num.sign = 1
         return num
 
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Преобразование натурального в целое
 def TRANS_N_Z(natural_num: NaturalNumber):
     """Преобразование натурального числа в целое"""
     if type(natural_num) == NaturalNumber: # Проверка типа поданных данных
@@ -312,7 +327,8 @@ def TRANS_N_Z(natural_num: NaturalNumber):
     else:
         raise ValueError("На вход должно подаваться натуральное число.")
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Преобразование целого неотрицательного в натуральное
 def TRANS_Z_N(integer_num: IntegerNumber):
     """Преобразование целого числа в натуральное"""
     if type(integer_num) == IntegerNumber: # Проверка типа поданных данных
@@ -500,14 +516,17 @@ def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток �
 
     return remainder
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Сокращение дроби.
-def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
-    gcf = GCF_NN_N(ABS_Z_N(rational_number.numerator), rational_number.denominator) # НОД числителя и знаменателя
-    num = DIV_ZZ_Z(rational_number.numerator, TRANS_N_Z(gcf)) # Делим числитель на НОД
-    denom = DIV_NN_N(rational_number.denominator, gcf) # Делим знаменатель на НОД
 
-    return RationalNumber(num, denom) # Возвращаем сокращённую дробь
+def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
+    if (rational_number.denominator == 1):
+        return rational_number
+
+    temp = RationalNumber(rational_number.numerator, rational_number.denominator)
+    nod = euclidean_algorithm(int(rational_number.numerator), int(rational_number.denominator))[3]
+    temp.numerator = IntegerNumber(str(int(rational_number.numerator) // nod))
+    temp.denominator = NaturalNumber(str(int(rational_number.denominator) // nod))
+
+    return temp
 
 
 # Метод для проверки, является ли рациональное число целым
@@ -522,10 +541,9 @@ def INT_Q_B(r_number: RationalNumber) -> bool:
     else:
         return False
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Преобразование целого в дробное.
+
 def TRANS_Z_Q(integer_number: IntegerNumber) -> RationalNumber:
-    return RationalNumber(str(integer_number)) # Возвращаем рациональное число, проинициализированное через конструктор с переданным числителем
+    return RationalNumber(str(integer_number))
 
 
 # Преобразование сокращенного дробного в целое (если знаменатель равен 1)
@@ -561,32 +579,41 @@ def SUB_QQ_Q(frac1: RationalNumber, frac2: RationalNumber):
     frac_sum = RationalNumber(numerator, denominator)
     return(frac_sum)
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Умножение рациональных чисел
 def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
-    """Умножение рациональных чисел"""
-    if type(r_number_1) == RationalNumber and type(r_number_2) == RationalNumber:
+    # Проверка типов аргументов
+    if isinstance(r_number_1, RationalNumber) and isinstance(r_number_2, RationalNumber):
+        # Умножаем числители и знаменатели рациональных чисел по отдельности
         numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator)
         denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator)
+
+        # Создаем новый рациональный результат
         r_number = RationalNumber(IntegerNumber(str(numerator)), NaturalNumber(str(denominator)))
+
         return r_number
     else:
+        # Генерация ошибки, если типы аргументов не являются RationalNumber
         raise ValueError("На вход должны подаваться рациональные числа")
 
-
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Деление дробей.
 def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber | ValueError:
-    if int(rational_number2.numerator) == 0: # Проверяем, что знаменатель отличен от нуля
+
+    if rational_number2.numerator.value == [0]:
         return ValueError("Второй операнд не может быть 0.")
 
-    num = MUL_ZZ_Z(rational_number1.numerator, TRANS_N_Z(rational_number2.denominator)) # Перемножаем числитель первого и знаменатель второго
-    denom = MUL_NN_N(ABS_Z_N(rational_number1.denominator), rational_number2.numerator) # Перемножаем знаменатель первого и числитель второго
-    res = RationalNumber(num, denom) # Создаём рациональзое число из полученных числителя и знаменателя
-    # Так как при поиске знаменателя мы могли потерять знак (перемножали натуральные числа), то
-    if (rational_number2.numerator.get_sign() == 1): # Если знак у второго числа '-'
-        res = MUL_QQ_Q(res, RationalNumber("-1")) # Домножем на -1 всё число
+    temp1 = RationalNumber(rational_number1.numerator, rational_number1.denominator)
+    temp2 = RationalNumber(rational_number2.numerator, rational_number2.denominator)
+    if (temp2.numerator.get_sign() == 1):
+        temp2.numerator = IntegerNumber(str(int(temp2.numerator) * (-1)))
+        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * (-1)))
 
-    return res # Возвращаем полученное число
+    if temp2.numerator != '0':
+        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * int(temp2.denominator)))
+        temp1.denominator = NaturalNumber(str(int(temp1.denominator) * int(temp2.numerator)))
+    else:
+        raise ValueError("Знаменатель не может быть нулём")
+
+    return temp1
 
 
 #===== Сложение многочленов ====
@@ -621,20 +648,35 @@ def SUB_PP_P(polyn1: Polynomial, polyn2: Polynomial):
         temp = temp.next
     return result
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Умножение многочлена на рациональное число
 def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
     """Умножение многочлена на рациональное число"""
+
+    # Проверка, что переданы правильные типы: Polynomial и RationalNumber
     if not (isinstance(polynomial, Polynomial) and isinstance(rational, RationalNumber)):
         return ValueError("Должны подаваться многочлен и рациональное число")
 
+    # Создаем пустой результат многочлена
     result = Polynomial()
+
+    # Начинаем с первого члена многочлена
     temp = polynomial.head
+
+    # Перебираем каждый элемент в списке членов многочлена
     while temp is not None:
-        # Умножаем коэффициент каждого члена многочлена на рациональное число
+        # Умножаем числитель коэффициента на числитель рационального числа
         numerator_multiplied = MUL_ZZ_Z(temp.val.numerator, rational.numerator)
+
+        # Умножаем знаменатель коэффициента на знаменатель рационального числа
         denominator_multiplied = MUL_NN_N(temp.val.denominator, rational.denominator)
+
+        # Добавляем новый член в многочлен результата с полученным коэффициентом
         result.add(temp.deg, RationalNumber(numerator_multiplied, denominator_multiplied))
+
+        # Переходим к следующему члену многочлена
         temp = temp.next
+
     return result
 
 
@@ -717,94 +759,84 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
     return gcd_result, lcm_result
 
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Умножение многочленов.
 def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
-    arr = pln1.getDegrees() # Запомним массив степеней 1 многочлена с ненулевыми коэффициентами
-    pln = Polynomial() # Создадим результирующий многочлен
+    arr1 = pln1.getDegrees()
+    arr2 = pln2.getDegrees()
+    pln = Polynomial()
 
-    for i in arr: # Для каждого элемента 1 многочлена
-        temp = MUL_PQ_P(pln2, pln1.getCoeff(NaturalNumber(str(i)))) # Умножаем второй многочлен на коэффициент элемента первого многочлена
-        temp = MUL_Pxk_P(temp, NaturalNumber(str(i))) # Умножаем второй многочлен на степень элемента первого многочлена
-        pln = ADD_PP_P(pln, temp) # Добавляем к результирующему произведение элемента первого многочлена со вторым многочленом
-            
-    return pln # Возвращаем результирующий многочлен (произведение первого и второго)
+    for i in arr2:
+        for j in arr1:
+            val = MUL_QQ_Q(pln2.getCoeff(NaturalNumber(str(i))), pln1.getCoeff(NaturalNumber(str(j))))
+            pln.add(NaturalNumber(str(int(j) + int(i))), val)
+
+    return pln
 
 
 # Модуль выполнен: Яковлев Д.С., гр. 3382.
 # Частное от деления многочлена на многочлен при делении с остатком.
 def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
-    pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
-    pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
-    pln = Polynomial() # Создадим многочлен частного
-    break_deg = DEG_P_N(pln2) # Запомним степень делителя
-    if(int(break_deg) == 0): # Проверяем на нулевой многочлен
+    pln1 = makePolynomial(str(input_pln1))  # Создадим копию первого многочлена
+    pln2 = makePolynomial(str(input_pln2))  # Создадим копию второго многочлена
+    pln = Polynomial()  # Создадим многочлен частного
+    break_deg = DEG_P_N(pln2)  # Запомним степень делителя
+    if(str(pln2) == "0"): # Проверяем на нулевой многочлен
         raise ValueError("Делитель не может быть нулём.")
-    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
-        temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
+    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1):  # Пока степень первого многочлен не меньше степени второго
+        if (int(DEG_P_N(pln1)) == 0 and int(pln1.getCoeff(DEG_P_N(pln1)).numerator) == 0 and int(break_deg) == 0):
+            break
+        temp = Polynomial()  # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
 
-        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2))) # Коэффициент одночлена
-        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2)) # Степень одночлена
-        temp.add(deg, val) # Запишем одночлен
-        
-        temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
-        pln1 = SUB_PP_P(pln1, temp) # Вычтем из первого многочлена второй, домноженный на одночлен
+        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2)))  # Коэффициент одночлена
+        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2))  # Степень одночлена
+        temp.add(deg, val)  # Запишем одночлен
 
-        pln.add(deg, val) # Добавляем одночлен на который было разделен первый многочлен к частному
-    return pln # Возвращаем частное
+        temp = MUL_PP_P(pln2, temp)  # Домножем второй многочлен на одночлен
+        pln1 = SUB_PP_P(pln1, temp)  # Вычтем из первого многочлена второй, домноженный на одночлен
+
+        pln.add(deg, val)  # Добавляем одночлен на который было разделен первый многочлен к частному
+    return pln  # Возвращаем частное
 
 
 # Модуль выполнен: Яковлев Д.С., гр. 3382.
 # Остаток от деления многочлена на многочлен при делении с остатком.
 def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
-    pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
-    pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
-    pln = Polynomial() # Создадим многочлен частного
-    break_deg = DEG_P_N(pln2) # Запомним степень делителя
-    if(int(break_deg) == 0): # Проверяем на нулевой многочлен
+    pln1 = makePolynomial(str(input_pln1))  # Создадим копию первого многочлена
+    pln2 = makePolynomial(str(input_pln2))  # Создадим копию второго многочлена
+    pln = Polynomial()  # Создадим многочлен частного
+    break_deg = DEG_P_N(pln2)  # Запомним степень делителя
+    if(str(pln2) == "0"): # Проверяем на нулевой многочлен
         raise ValueError("Делитель не может быть нулём.")
-    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
-        temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
+    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1):  # Пока степень первого многочлен не меньше степени второго
+        if (int(DEG_P_N(pln1)) == 0 and int(pln1.getCoeff(DEG_P_N(pln1)).numerator) == 0 and int(break_deg) == 0):
+            break
+        temp = Polynomial()  # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
+        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2)))  # Коэффициент одночлена
+        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2))  # Степень одночлена
+        temp.add(deg, val)  # Запишем одночлен
 
-        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2))) # Коэффициент одночлена
-        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2)) # Степень одночлена
-        temp.add(deg, val) # Запишем одночлен
-        
-        temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
-        pln1 = SUB_PP_P(pln1, temp) # Вычтем из первого многочлена второй, домноженный на одночлен
+        temp = MUL_PP_P(pln2, temp)  # Домножем второй многочлен на одночлен
+        pln1 = SUB_PP_P(pln1, temp)  # Вычтем из первого многочлена второй, домноженный на одночлен
 
-        pln.add(deg, val) # Добавляем одночлен на который было разделен первый многочлен к частному
-    return pln1 # Возвращаем частное
+        pln.add(deg, val)  # Добавляем одночлен на который было разделен первый многочлен к частному
+    return pln1  # Возвращаем частное
 
 
 #===== НОД многочленов ====
 #=====  ====
-def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
-    result = Polynomial()
-    while polyn1.head is not None and polyn2.head is not None:
-        if int(str(polyn1.head.deg)) > int(str(polyn2.head.deg)):
-            polyn1 = MOD_PP_P(polyn1,polyn2)
-        elif int(str(polyn1.head.deg)) == int(str(polyn2.head.deg)) and \
-           int(str((SUB_QQ_Q(polyn1.head.val, polyn2.head.val)).numerator)) > 0:
-            polyn1 = MOD_PP_P(polyn1,polyn2)
-        elif int(str(polyn1.head.deg)) == int(str(polyn2.head.deg)) and \
-           int(str((SUB_QQ_Q(polyn1.head.val, polyn2.head.val)).numerator)) < 0:
-            polyn2 = MOD_PP_P(polyn2,polyn1)
-        else:
-            polyn2 = MOD_PP_P(polyn2,polyn1)
-    temp = polyn1.head
-    while temp is not None:
-        result.add(temp.deg, temp.val)
-        temp = temp.next
-    # Затем добавляем все члены из второго многочлена
-    temp = polyn2.head
-    while temp is not None:
-        result.add(temp.deg, temp.val)
-        temp = temp.next
-    return result
+
+def GCF_PP_P(input_pln1: Polynomial, input_pln2: Polynomial):
+    def swap(pln1, pln2):
+        return pln2, pln1
+    pln1 = makePolynomial(str(input_pln1))
+    pln2 = makePolynomial(str(input_pln2))
+    while(str(pln2) != "0"):
+        pln1 = MOD_PP_P(pln1, pln2)
+        pln1, pln2 = swap(pln1, pln2)
+    return pln1
 
 
-def DER_P_P(polyn: Polynomial):
+def DER_P_P(pln: Polynomial):
+    polyn = makePolynomial(str(pln))
     temp = polyn.head
     while temp is not None:
         if str(temp.deg) != '1' and str(temp.deg) != '0':
@@ -825,7 +857,10 @@ def DER_P_P(polyn: Polynomial):
 # Преобразование многочлена — кратные корни в простые.
 def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
-    gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
+    der = DER_P_P(pln) # Запомним производную
+    # Опционально можно добавить следующую строку если нам не важен общий коэффициент произвоной многочлена, который больше 1
+    der.reduceCoeffs() # Сократим производную на НОД всех коэффициентов (например 2x+2 ---> x+1) 
+    gcf = GCF_PP_P(pln, der) # Запомним НОД исходного многочлена и его производной
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
     return res # Возвращаем исходный многочлен без кратных корней
 
