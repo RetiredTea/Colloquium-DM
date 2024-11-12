@@ -189,57 +189,70 @@ def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumbe
     result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
     return result
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Вычисление первой цифры частного при делении большего натурального числа на меньшее, домноженное на 10^k,
+# где k - номер позиции этой цифры (номер считается с нуля)
 def DIV_NN_Dk(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
+    # Проверка, что делитель num2 не равен 0
     if num2.__str__() == "0":
-        return ValueError("Нельзя делить на 0")
-    # Если num1 == num2, то результат 1
+        return ValueError("Нельзя делить на 0")  # Генерация ошибки, если деление на 0
+
+    # Если числа равны (num1 == num2), результат деления — единица
     if COM_NN_D(num1, num2) == 0:
         return NaturalNumber("1")
 
-    # Убедимся, что num1 больше num2
-    big = num1 if COM_NN_D(num1, num2) == 2 else num2
-    small = num2 if COM_NN_D(num1, num2) == 2 else num1
+    # Определяем большее и меньшее число
+    big = num1 if COM_NN_D(num1, num2) == 2 else num2  # Присваиваем big значение большего из num1 и num2
+    small = num2 if COM_NN_D(num1, num2) == 2 else num1  # Присваиваем small значение меньшего
 
+    # Вычисляем начальное значение позиции k
     k = big.__len__() - small.__len__()
     digits_of_smaller = small.__len__()
 
-    # Выделяем старшие разряды big, чтобы сравнивать с small
-    necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller])
-    if COM_NN_D(necessary_big, small) == 1:
-        necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller + 1])
-        k -= 1
+    # Извлекаем старшие разряды числа big для сравнения с числом small
+    necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller])  # Извлекаем первые разряды, соответствующие длине small
+    if COM_NN_D(necessary_big, small) == 1:  # Если выделенная часть necessary_big меньше small
+        necessary_big = NaturalNumber(big.__str__()[:digits_of_smaller + 1])  # Увеличиваем длину на 1 разряд
+        k -= 1  # Снижаем k, так как увеличили количество цифр в necessary_big
 
-    # Умножаем small на множитель, пока он не превысит necessary_big
+    # Ищем множитель для small, чтобы достичь максимального возможного значения, не превышающего necessary_big
     multiplier = 1
     small_multiplied = small
-    while COM_NN_D(small_multiplied, necessary_big) != 2:
+    while COM_NN_D(small_multiplied, necessary_big) != 2:  # Пока small_multiplied <= necessary_big
         multiplier += 1
-        small_multiplied = ADD_NN_N(small_multiplied, small)
+        small_multiplied = ADD_NN_N(small_multiplied, small)  # Увеличиваем small_multiplied на small
 
-    result = NaturalNumber(str(multiplier - 1))
-    return MUL_Nk_N(result, k)
+    # Возвращаем результат, умноженный на 10^k (положение разряда)
+    result = NaturalNumber(str(multiplier - 1))  # Находим окончательное значение, уменьшая multiplier на 1
+    return MUL_Nk_N(result, k)  # Домножаем на 10^k для корректного расположения разряда
 
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Неполное частное от деления первого натурального числа на второе с остатком (делитель отличен от нуля)
 def DIV_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> ValueError | NaturalNumber:
     "Неполное частное от деления натуральных чисел"
+    # Проверка деления на ноль
     if num2.__str__() == "0":
-        return  ValueError("Нельзя делить на 0")
+        return ValueError("Нельзя делить на 0")  # Генерация ошибки, если делитель равен 0
+
+    # Обработка случая, когда оба числа равны нулю
     if num1.__str__() == "0" and num2.__str__() == "0":
-        return NaturalNumber("0")
-    # Проверка, что num1 >= num2
+        return NaturalNumber("0")  # Результат 0, если оба числа нулевые
+
+    # Если num1 меньше num2, результат частного будет 0
     if COM_NN_D(num1, num2) == 1:
         return NaturalNumber("0")
+
+    # Инициализация результата
     result = NaturalNumber("0")
 
+    # Цикл для нахождения частного
     while COM_NN_D(num1, num2) in [2, 0]:  # пока num1 >= num2
-        quotient = DIV_NN_Dk(num1, num2)
-        num1 = SUB_NN_N(num1, MUL_NN_N(num2, quotient))
-        result = ADD_NN_N(result, quotient)
+        quotient = DIV_NN_Dk(num1, num2)  # Вычисляем очередную цифру частного
+        num1 = SUB_NN_N(num1, MUL_NN_N(num2, quotient))  # Вычитаем произведение частного на делитель из num1
+        result = ADD_NN_N(result, quotient)  # Добавляем найденную цифру частного к результату
 
     return result
-
 
 def MOD_NN_N(num_1: NaturalNumber, num_2: NaturalNumber):  # N-12	Остаток от деления первого натурального числа на второе натуральное (делитель!=0)
     if int(num_2) == 0:
@@ -304,6 +317,8 @@ def MUL_ZM_Z(num: IntegerNumber):  # Z-3	Умножение целого на (-
             num.sign = 1
         return num
 
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Преобразование натурального в целое
 def TRANS_N_Z(natural_num: NaturalNumber):
     """Преобразование натурального числа в целое"""
     if type(natural_num) == NaturalNumber: # Проверка типа поданных данных
@@ -312,7 +327,8 @@ def TRANS_N_Z(natural_num: NaturalNumber):
     else:
         raise ValueError("На вход должно подаваться натуральное число.")
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Преобразование целого неотрицательного в натуральное
 def TRANS_Z_N(integer_num: IntegerNumber):
     """Преобразование целого числа в натуральное"""
     if type(integer_num) == IntegerNumber: # Проверка типа поданных данных
@@ -563,17 +579,22 @@ def SUB_QQ_Q(frac1: RationalNumber, frac2: RationalNumber):
     frac_sum = RationalNumber(numerator, denominator)
     return(frac_sum)
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Умножение рациональных чисел
 def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
-    """Умножение рациональных чисел"""
-    if type(r_number_1) == RationalNumber and type(r_number_2) == RationalNumber:
+    # Проверка типов аргументов
+    if isinstance(r_number_1, RationalNumber) and isinstance(r_number_2, RationalNumber):
+        # Умножаем числители и знаменатели рациональных чисел по отдельности
         numerator = MUL_ZZ_Z(r_number_1.numerator, r_number_2.numerator)
         denominator = MUL_NN_N(r_number_1.denominator, r_number_2.denominator)
+
+        # Создаем новый рациональный результат
         r_number = RationalNumber(IntegerNumber(str(numerator)), NaturalNumber(str(denominator)))
+
         return r_number
     else:
+        # Генерация ошибки, если типы аргументов не являются RationalNumber
         raise ValueError("На вход должны подаваться рациональные числа")
-
 
 def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber | ValueError:
 
@@ -627,21 +648,35 @@ def SUB_PP_P(polyn1: Polynomial, polyn2: Polynomial):
         temp = temp.next
     return result
 
-
+# Модуль выполнен: Андреев М.В., гр. 3382.
+# Умножение многочлена на рациональное число
 def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
     """Умножение многочлена на рациональное число"""
+
+    # Проверка, что переданы правильные типы: Polynomial и RationalNumber
     if not (isinstance(polynomial, Polynomial) and isinstance(rational, RationalNumber)):
         return ValueError("Должны подаваться многочлен и рациональное число")
 
+    # Создаем пустой результат многочлена
     result = Polynomial()
+
+    # Начинаем с первого члена многочлена
     temp = polynomial.head
-    print(type(temp.val))
+
+    # Перебираем каждый элемент в списке членов многочлена
     while temp is not None:
-        # Умножаем коэффициент каждого члена многочлена на рациональное число
+        # Умножаем числитель коэффициента на числитель рационального числа
         numerator_multiplied = MUL_ZZ_Z(temp.val.numerator, rational.numerator)
+
+        # Умножаем знаменатель коэффициента на знаменатель рационального числа
         denominator_multiplied = MUL_NN_N(temp.val.denominator, rational.denominator)
+
+        # Добавляем новый член в многочлен результата с полученным коэффициентом
         result.add(temp.deg, RationalNumber(numerator_multiplied, denominator_multiplied))
+
+        # Переходим к следующему члену многочлена
         temp = temp.next
+
     return result
 
 
