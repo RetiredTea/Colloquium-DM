@@ -464,6 +464,8 @@ def MUL_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
 def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное от деления целого на целое (делитель отличен от нуля)
     if int(num2) == 0:
         raise ValueError("Делитель не может быть равен нулю.")
+    if int(num1) == 0:  # если делимое = 0 вернуть 0
+        return num1
 
     # знаки a и b
     sign_a = POZ_Z_D(num1)
@@ -480,8 +482,9 @@ def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное о
     if (sign_a == 2 and sign_b == 2) or (sign_a == 1 and sign_b == 1):
         return IntegerNumber(str(quotient))  # Положительное частное
     else:
-        quotient = IntegerNumber(str(quotient))
-        quotient = MUL_ZM_Z(quotient)
+        if not (int(abs_a) == int(abs_b)):
+            quotient = IntegerNumber(str(ADD_1N_N(quotient)))  # для случая с разными знаками, но одинаковыми модулями
+        quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))  # домножение на -1
         return quotient  # Отрицательное частное
 
 
@@ -539,40 +542,26 @@ def TRANS_Q_Z(r_number: RationalNumber) -> IntegerNumber:
 
 
 
-
-def ADD_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber:
-    # Сложение рациональных чисел:
-    # (a/b) + (c/d) = (a*d + b*c) / (b*d)
-    # Получаем числители и знаменатели
-    a = int(rational_number1.numerator)
-    b = int(rational_number1.denominator)
-    c = int(rational_number2.numerator)
-    d = int(rational_number2.denominator)
-
-    # Вычисляем новый числитель и знаменатель
-    new_numerator_value = IntegerNumber(str(a * d + b * c))
-    new_denominator_value = NaturalNumber(str(b * d))
-
-    # Возвращаем новый объект RationalNumber
-    return RationalNumber(new_numerator_value, new_denominator_value)
+#===== Сложение дробей ====
+#===== принимает две дроби возвращает их сумму(ввод/вывод рациональое число) ====
+# Нужны функции сложения целых чисел, умножения целового на целое, преобразования натурального в целое
+def ADD_QQ_Q (frac1: RationalNumber, frac2: RationalNumber):
+    denominator = (LCM_NN_N(frac1.denominator,frac2.denominator))
+    numerator = ADD_ZZ_Z(MUL_ZZ_Z(frac1.numerator, TRANS_N_Z((DIV_NN_N(denominator, frac1.denominator)))),\
+                        MUL_ZZ_Z(frac2.numerator, TRANS_N_Z(DIV_NN_N(denominator, frac2.denominator))))
+    frac_sum = RationalNumber(numerator, denominator)
+    return(frac_sum)
 
 
 #===== Вычитание дробей ====
 #===== принимает две дроби возвращает их разность(ввод/вывод строкой) ====
 # нужны функции умножения целых чисел, вычетания целых чисел, преобразования натурального в целое
 def SUB_QQ_Q(frac1: RationalNumber, frac2: RationalNumber):
-
     denominator = (LCM_NN_N(frac1.denominator, frac2.denominator))
-
-    # Вычисляем коэффициенты, на которые необходимо домножить числитель.
-    mul_coef1 = IntegerNumber(str(DIV_NN_N(denominator, frac1.denominator)))
-    mul_coef2 = IntegerNumber(str(DIV_NN_N(denominator, frac2.denominator)))
-
-    # Вычитаем числители, домноженные на коэффициенты.
-    numerator = SUB_ZZ_Z(MUL_ZZ_Z(frac1.numerator, mul_coef1), \
-                         MUL_ZZ_Z(frac2.numerator, mul_coef2))
+    numerator = SUB_ZZ_Z(MUL_ZZ_Z(frac1.numerator, TRANS_N_Z((DIV_NN_N(denominator, frac1.denominator)))),\
+                        MUL_ZZ_Z(frac2.numerator, TRANS_N_Z(DIV_NN_N(denominator, frac2.denominator))))
     frac_sum = RationalNumber(numerator, denominator)
-    return frac_sum
+    return(frac_sum)
 
 
 def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
@@ -646,6 +635,7 @@ def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
 
     result = Polynomial()
     temp = polynomial.head
+    print(type(temp.val))
     while temp is not None:
         # Умножаем коэффициент каждого члена многочлена на рациональное число
         numerator_multiplied = MUL_ZZ_Z(temp.val.numerator, rational.numerator)

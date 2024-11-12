@@ -6,10 +6,13 @@ from section_template import SectionFrame
 def main():
     root = tk.Tk()
     root.title("Проект, Коллоквиум №1")
-    root.geometry("1200x500") #900x400
+    x = root.winfo_screenwidth()  # размер  по горизонтали
+    y = root.winfo_screenheight()  # размер по вертикали
+    root.geometry('{}x{}'.format(int(x * 0.8), int(y * 0.5)))
     root.minsize(400, 300)
 
     # Установка темной темы
+    #root.tk_setPalette(background='white', foreground='black')  # Темный фон, светлый текст
     root.tk_setPalette(background='#2e2e2e', foreground='#d3d3d3')  # Темный фон, светлый текст
     style = ttk.Style()
 
