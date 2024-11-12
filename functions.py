@@ -824,32 +824,50 @@ def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
 
 #===== НОД многочленов ====
 #=====  ====
+
 def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
-    result = Polynomial()
-    while polyn1.head is not None and polyn2.head is not None:
-        if int(str(polyn1.head.deg)) > int(str(polyn2.head.deg)):
-            polyn1 = MOD_PP_P(polyn1,polyn2)
-        elif int(str(polyn1.head.deg)) == int(str(polyn2.head.deg)) and \
-           int(str((SUB_QQ_Q(polyn1.head.val, polyn2.head.val)).numerator)) > 0:
-            polyn1 = MOD_PP_P(polyn1,polyn2)
-        elif int(str(polyn1.head.deg)) == int(str(polyn2.head.deg)) and \
-           int(str((SUB_QQ_Q(polyn1.head.val, polyn2.head.val)).numerator)) < 0:
-            polyn2 = MOD_PP_P(polyn2,polyn1)
-        else:
-            polyn2 = MOD_PP_P(polyn2,polyn1)
-    temp = polyn1.head
-    while temp is not None:
-        result.add(temp.deg, temp.val)
-        temp = temp.next
-    # Затем добавляем все члены из второго многочлена
-    temp = polyn2.head
-    while temp is not None:
-        result.add(temp.deg, temp.val)
-        temp = temp.next
-    return result
+    # Проверка на нулевые многочлены
+    if str(polyn1) == str(polyn2):
+        return polyn1
+    if str(polyn1) == '0':  # polyn1 == 0
+        return polyn2
+    if str(polyn2) == '0':  # polyn2 == 0
+        return polyn1
+
+    while not (
+            str(polyn2.head.deg) == '0' and polyn2.getCoeff(NaturalNumber("0")).numerator == 0):  # Пока polyn2 не нулевой
+        if int(str(polyn2.head.deg)) > int(str(polyn1.head.deg)):
+            curr = polyn2
+            polyn2 = polyn1
+            polyn1 = curr
+        elif int(str(polyn2.head.deg)) == int(str(polyn1.head.deg)) and int(
+                str(SUB_QQ_Q(polyn1.head.val, polyn2.head.val).numerator)) < 0:
+            curr = polyn2
+            polyn2 = polyn1
+            polyn1 = curr
+        if str(polyn1) == '0':  # polyn1 == 0
+            return polyn2
+        if str(polyn2) == '0':  # polyn2 == 0
+            return polyn1
+        remainder = MOD_PP_P(polyn1, polyn2)
+        current = remainder.head
+        while str(current.val.numerator) == '0' and current.next is not None:
+            current = current.next
+        if str(current.val.numerator)[0] == '-' and str(current.val.numerator)[1:].isdigit():
+            if int(str(current.val.numerator)) < 0:
+                return makePolynomial('1')
+        if str(remainder) == str(polyn1) or str(remainder) == str(polyn2):
+            return makePolynomial('1')
+        if str(remainder) == '0':
+            return polyn2
+        polyn1, polyn2 = polyn2, remainder
+        break
+
+    return polyn1
 
 
-def DER_P_P(polyn: Polynomial):
+def DER_P_P(pln: Polynomial):
+    polyn = makePolynomial(str(pln))
     temp = polyn.head
     while temp is not None:
         if str(temp.deg) != '1' and str(temp.deg) != '0':
