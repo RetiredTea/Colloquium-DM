@@ -628,7 +628,6 @@ def SUB_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     # Сначала добавляем все члены из первого многочлена
     temp = polyn1.head
     while temp is not None:
-        temp.val.numerator = MUL_ZM_Z(temp.val.numerator)
         result.add(temp.deg, temp.val)
         temp = temp.next
     # Затем вычитаем все члены из второго многочлена
@@ -811,12 +810,21 @@ def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     return result
 
 
-def DER_P_P(pln: Polynomial) -> Polynomial: #Исправления
-    res = Polynomial()
-    for i in pln.getDegrees():
-        if i != 0:
-            res.add(NaturalNumber(str(i - 1)), RationalNumber(ADD_QQ_Q(str(pln.getCoeff(NaturalNumber(str(i))) , RationalNumber(str(int(i - 1)))))))
-    return res
+def DER_P_P(polyn: Polynomial):
+    temp = polyn.head
+    while temp is not None:
+        if str(temp.deg) != '1' and str(temp.deg) != '0':
+            temp.val = MUL_QQ_Q(temp.val, TRANS_Z_Q(TRANS_N_Z(temp.deg)))
+            temp.deg = SUB_NN_N(temp.deg, NaturalNumber('1'))
+        elif str(temp.deg) == '1':
+            temp.deg = '0'
+
+        elif str(temp.deg) == '0':
+            temp = temp.prev
+            temp.next = None
+            break
+        temp = temp.next
+    return polyn
 
 
 def NMR_P_P(pln: Polynomial) -> Polynomial:

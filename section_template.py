@@ -63,7 +63,7 @@ class SectionFrame(tk.Frame):
 
         # Создание макета на основе функции
         if func_number in self.single_arg_funcs:
-            self.single_input_entry = tk.Entry(central_frame, width=30)
+            self.single_input_entry = tk.Entry(central_frame, width=60)
             self.single_input_entry.pack(pady=5)
         elif func_number in self.trio_arg_funcs:
             self.create_trio_input_frame(central_frame)
@@ -97,13 +97,13 @@ class SectionFrame(tk.Frame):
         dual_input_frame = tk.Frame(parent)
         dual_input_frame.pack(pady=5)
 
-        self.first_input_entry = tk.Entry(dual_input_frame, width=14)
+        self.first_input_entry = tk.Entry(dual_input_frame, width=24)
         self.first_input_entry.pack(side="left", padx=5)
 
         self.operator_label = tk.Label(dual_input_frame, text=operator, font=("Arial", 12))
         self.operator_label.pack(side="left", padx=5)
 
-        self.second_input_entry = tk.Entry(dual_input_frame, width=14)
+        self.second_input_entry = tk.Entry(dual_input_frame, width=24)
         self.second_input_entry.pack(side="left", padx=5)
 
 
@@ -111,17 +111,17 @@ class SectionFrame(tk.Frame):
         trio_input_frame = tk.Frame(parent)
         trio_input_frame.pack(pady=5)
 
-        self.first_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.first_input_entry_in_trio = tk.Entry(trio_input_frame, width=24)
         self.first_input_entry_in_trio.pack(side="left", padx=5)
 
         tk.Label(trio_input_frame, text="-", font=("Arial", 12)).pack(side="left", padx=5)
 
-        self.second_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.second_input_entry_in_trio = tk.Entry(trio_input_frame, width=24)
         self.second_input_entry_in_trio.pack(side="left", padx=5)
 
         tk.Label(trio_input_frame, text="*", font=("Arial", 12)).pack(side="left", padx=5)
 
-        self.tree_input_entry_in_trio = tk.Entry(trio_input_frame, width=10)
+        self.tree_input_entry_in_trio = tk.Entry(trio_input_frame, width=24)
         self.tree_input_entry_in_trio.pack(side="left", padx=5)
 
     def get_inputs(self, func_number):
