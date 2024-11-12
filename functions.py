@@ -140,6 +140,8 @@ def SUB_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     return NaturalNumber(result)
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Умножение натурального числа на цифру
 def MUL_ND_N(num: NaturalNumber, digit: NaturalNumber) -> NaturalNumber:
     carry = 0  # Перенос для сложения
     result = []  # Список для хранения результата
@@ -159,20 +161,23 @@ def MUL_ND_N(num: NaturalNumber, digit: NaturalNumber) -> NaturalNumber:
     return NaturalNumber(''.join(map(str, result)))
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Умножение натурального числа на 10^k, k-натуральное
 def MUL_Nk_N(num: NaturalNumber, degree: NaturalNumber) -> NaturalNumber:
 
     result = str(num) + '0' * int(degree)  # Добавляем k-нулей к числу
     return NaturalNumber(result)
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
 #Умножение натуральных чисел
 def MUL_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     total_result = NaturalNumber('0')  # Начальное значение результата
-
+    # Перебираем цифры первого числа num1 справа налево 
     for i, digit in enumerate(reversed(num1.get_value())):
         # Умножаем num2 на текущую цифру num1
         partial_product = MUL_ND_N(num2, NaturalNumber(str(digit)))
-        # Сдвигаем частичный результат на i позиций влево (добавляем нули)
+        # Сдвигаем промежуточный результат partial_product на i позиций влево (добавляем нули)
         shifted_partial_product = MUL_Nk_N(partial_product, NaturalNumber(str(i)))
         # Добавляем сдвинутый частичный результат к общему результату
         total_result = ADD_NN_N(total_result, shifted_partial_product)
@@ -180,6 +185,7 @@ def MUL_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     return total_result
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
 """"
 Вычитание из натурального другого натурального, 
 умноженного на цифру для случая с неотрицательным результатом
@@ -188,6 +194,7 @@ def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumbe
     # Обращаемся к функциям умножения натурального числа на цифру и разности двух натуральных чисел
     result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
     return result
+
 
 # Модуль выполнен: Андреев М.В., гр. 3382.
 # Вычисление первой цифры частного при делении большего натурального числа на меньшее, домноженное на 10^k,
@@ -529,7 +536,11 @@ def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
     return temp
 
 
-# Метод для проверки, является ли рациональное число целым
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+"""
+ Проверка сокращенного дробного на целое, 
+ если рациональное число является целым, то «да», иначе «нет»
+"""
 def INT_Q_B(r_number: RationalNumber) -> bool:
 
     # Преобразуем числитель в строку и проверяем делимость на знаменатель
@@ -546,17 +557,16 @@ def TRANS_Z_Q(integer_number: IntegerNumber) -> RationalNumber:
     return RationalNumber(str(integer_number))
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
 # Преобразование сокращенного дробного в целое (если знаменатель равен 1)
 def TRANS_Q_Z(r_number: RationalNumber) -> IntegerNumber:
 
-    # Проверяем, равен ли знаменатель 1
+    # Проверяем, равен ли знаменатель 1, если не равен возвращаем ошибку
     if r_number.denominator.__str__() != "1":
-        raise ValueError ("The fraction cannot be converted to an integer because the denominator is not equal to 1.")
+        raise ValueError ("Дробь не может быть преобразована в целое число, знаменатель не равен 1")
     # Преобразуем числитель в целое число
     result = IntegerNumber(str(r_number.numerator))
     return result  # Возвращаем целое число
-
-
 
 #===== Сложение дробей ====
 #===== принимает две дроби возвращает их сумму(ввод/вывод рациональое число) ====
@@ -680,27 +690,28 @@ def MUL_PQ_P(polynomial: Polynomial, rational: RationalNumber):
     return result
 
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Умножение многочлена на x^k, k-натуральное или 0.
 def MUL_Pxk_P(pln: Polynomial, k: NaturalNumber) -> Polynomial:
-    temp = Polynomial() # Создаём результирующий многочлен
-    for i in pln.getDegrees(): # Для каждой степени с коэффициентом отличным от нуля
-        temp.add(NaturalNumber(str(i+int(k))), pln.getCoeff(NaturalNumber(str(i)))) # Добавляем к степени k (меняем на i+k) (добавляя к результирующему)
+    temp = makePolynomial(str(pln)) # Создаём копию переданного многочлена
+    for i in temp.getDegrees(): # Для каждой степени с коэффициентом отличным от нуля
+        temp.changeDegree(i, ADD_NN_N(i, k)) # Добавляем к степени k (меняем на i+k)
     return temp # Возвращаем копию переданного многочлена умноженную на x^k
 
 
-
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Старший коэффициент многочлена
 def LED_P_Q(polynom: Polynomial) -> RationalNumber:
-
+    # Вызываем метод, возвращающий массив степеней, и выводим максимальную степень.
     deg = polynom.getDegrees()[0]
+    # Получаем коэффициент, соответствующий старшей степени.
     result = polynom.getCoeff(NaturalNumber(str(deg)))
     return result
 
+
 # Модуль выполнен: Борисов Е.А., гр. 3382.
 # Степень многочлена.
-def DEG_P_N(polynom: Polynomial) -> NaturalNumber:
+def DEG_P_N(polynom: Polynomial) -> int:
     # Вызываем метод, возвращающий массив степеней, и выводим максимальную степень.
-    deg = NaturalNumber(str(polynom.getDegrees()[0]))
+    deg = polynom.getDegrees()[0]
     return deg
 
 def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
@@ -773,53 +784,42 @@ def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
     return pln
 
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Частное от деления многочлена на многочлен при делении с остатком.
 def DIV_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
-    pln1 = makePolynomial(str(input_pln1))  # Создадим копию первого многочлена
-    pln2 = makePolynomial(str(input_pln2))  # Создадим копию второго многочлена
-    pln = Polynomial()  # Создадим многочлен частного
-    break_deg = DEG_P_N(pln2)  # Запомним степень делителя
-    if(str(pln2) == "0"): # Проверяем на нулевой многочлен
-        raise ValueError("Делитель не может быть нулём.")
-    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1):  # Пока степень первого многочлен не меньше степени второго
-        if (int(DEG_P_N(pln1)) == 0 and int(pln1.getCoeff(DEG_P_N(pln1)).numerator) == 0 and int(break_deg) == 0):
-            break
-        temp = Polynomial()  # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
+    pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
+    pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
+    pln = Polynomial() # Создадим многочлен частного
+    break_deg = DEG_P_N(pln2) # Запомним степень делителя
+    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
+        temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
 
-        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2)))  # Коэффициент одночлена
-        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2))  # Степень одночлена
-        temp.add(deg, val)  # Запишем одночлен
+        val = DIV_QQ_Q(pln1.getCoeff(pln1.getDegrees()[0]), pln2.getCoeff(pln2.getDegrees()[0])) # Коэффициент одночлена
+        deg = SUB_NN_N(pln1.getDegrees()[0], pln2.getDegrees()[0]) # Степень одночлена
+        temp.add(deg, val) # Запишем одночлен
 
-        temp = MUL_PP_P(pln2, temp)  # Домножем второй многочлен на одночлен
-        pln1 = SUB_PP_P(pln1, temp)  # Вычтем из первого многочлена второй, домноженный на одночлен
+        temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
+        pln1 = SUB_PP_P(pln1, temp) # Вычтем из первого многочлена второй, домноженный на одночлен
 
-        pln.add(deg, val)  # Добавляем одночлен на который было разделен первый многочлен к частному
-    return pln  # Возвращаем частное
+        pln.add(deg, val) # Добавляем одночлен на который было разделен первый многочлен к частному
+    return pln # Возвращаем частное
 
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Остаток от деления многочлена на многочлен при делении с остатком.
 def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
-    pln1 = makePolynomial(str(input_pln1))  # Создадим копию первого многочлена
-    pln2 = makePolynomial(str(input_pln2))  # Создадим копию второго многочлена
-    pln = Polynomial()  # Создадим многочлен частного
-    break_deg = DEG_P_N(pln2)  # Запомним степень делителя
-    if(str(pln2) == "0"): # Проверяем на нулевой многочлен
-        raise ValueError("Делитель не может быть нулём.")
-    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1):  # Пока степень первого многочлен не меньше степени второго
-        if (int(DEG_P_N(pln1)) == 0 and int(pln1.getCoeff(DEG_P_N(pln1)).numerator) == 0 and int(break_deg) == 0):
-            break
-        temp = Polynomial()  # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
-        val = DIV_QQ_Q(pln1.getCoeff(DEG_P_N(pln1)), pln2.getCoeff(DEG_P_N(pln2)))  # Коэффициент одночлена
-        deg = SUB_NN_N(DEG_P_N(pln1), DEG_P_N(pln2))  # Степень одночлена
-        temp.add(deg, val)  # Запишем одночлен
+    pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
+    pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
+    pln = Polynomial() # Создадим многочлен частного
+    break_deg = DEG_P_N(pln2) # Запомним степень делителя
+    while (COM_NN_D(DEG_P_N(pln1), break_deg) != 1): # Пока степень первого многочлен не меньше степени второго
+        temp = Polynomial() # Одночлен, на который мы домножем второй многочлен для последующего деления в столбик
 
-        temp = MUL_PP_P(pln2, temp)  # Домножем второй многочлен на одночлен
-        pln1 = SUB_PP_P(pln1, temp)  # Вычтем из первого многочлена второй, домноженный на одночлен
+        val = DIV_QQ_Q(pln1.getCoeff(pln1.getDegrees()[0]), pln2.getCoeff(pln2.getDegrees()[0])) # Коэффициент одночлена
+        deg = SUB_NN_N(pln1.getDegrees()[0], pln2.getDegrees()[0]) # Степень одночлена
+        temp.add(deg, val) # Запишем одночлен
 
-        pln.add(deg, val)  # Добавляем одночлен на который было разделен первый многочлен к частному
-    return pln1  # Возвращаем частное
+        temp = MUL_PP_P(pln2, temp) # Домножем второй многочлен на одночлен
+        pln1 = SUB_PP_P(pln1, temp) # Вычтем из первого многочлена второй, домноженный на одночлен
+
+        pln.add(deg, val) # Добавляем одночлен на который было разделен первый многочлен к частному
+    return pln1 # Возвращаем остаток (то, что осталось в первом многочлене)
 
 
 #===== НОД многочленов ====
@@ -866,14 +866,14 @@ def DER_P_P(polyn: Polynomial):
     return polyn
 
 
-# Модуль выполнен: Яковлев Д.С., гр. 3382.
-# Преобразование многочлена — кратные корни в простые.
 def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
+    print(1)
     gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
+    print(2)
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
+    print(3)
     return res # Возвращаем исходный многочлен без кратных корней
-
 
 
 
