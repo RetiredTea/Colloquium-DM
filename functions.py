@@ -832,6 +832,10 @@ def GCF_PP_P(input_pln1: Polynomial, input_pln2: Polynomial):
     while(str(pln2) != "0"):
         pln1 = MOD_PP_P(pln1, pln2)
         pln1, pln2 = swap(pln1, pln2)
+    if(int(pln1.getCoeff(DEG_P_N(pln1)).numerator) < 0):
+        pln1 = MUL_PQ_P(pln1, RationalNumber("-1"))
+    # Опционально: следующая строка приводит полином к красивым коэффициентам
+    #pln1.setNiceCoeffs()
     return pln1
 
 
@@ -846,9 +850,13 @@ def DER_P_P(pln: Polynomial):
             temp.deg = '0'
 
         elif str(temp.deg) == '0':
-            temp = temp.prev
-            temp.next = None
+            if(temp.prev != None):
+                temp = temp.prev
+                temp.next = None
+            else:
+                temp.val = RationalNumber("0")
             break
+
         temp = temp.next
     return polyn
 
@@ -858,10 +866,10 @@ def DER_P_P(pln: Polynomial):
 def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
     der = DER_P_P(pln) # Запомним производную
-    # Опционально можно добавить следующую строку если нам не важен общий коэффициент произвоной многочлена, который больше 1
-    der.reduceCoeffs() # Сократим производную на НОД всех коэффициентов (например 2x+2 ---> x+1) 
+    der.setNiceCoeffs() # Сократим производную на НОД всех коэффициентов (например 2x+2 ---> x+1)
     gcf = GCF_PP_P(pln, der) # Запомним НОД исходного многочлена и его производной
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
+    res.setNiceCoeffs() # Сокращаем получившийся многочлен на общую константу
     return res # Возвращаем исходный многочлен без кратных корней
 
 

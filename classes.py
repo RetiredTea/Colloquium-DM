@@ -414,7 +414,7 @@ class Polynomial:
             nod = find_nod(abs(int(coef.numerator)), int(coef.denominator))
             if(int(coef.denominator)//nod != 1):
                 return
-            coeffs.append(int(coef.numerator)//nod)
+            coeffs.append(abs(int(coef.numerator))//nod)
         gcf = GCF_ARR(coeffs)
         if(gcf > 1):
             temp = self.head
@@ -422,6 +422,39 @@ class Polynomial:
                 temp.val.numerator = IntegerNumber(str(int(temp.val.numerator)//gcf))
                 temp = temp.next
         return
+    
+    def setNiceCoeffs(self):
+        def gcd(a, b):
+            """Функция для нахождения НОД двух чисел с использованием алгоритма Евклида."""
+            while b != 0:
+                a, b = b, a % b
+            return a
+
+        def lcm(a, b):
+            """Функция для нахождения НОК двух чисел."""
+            return abs(a * b) // gcd(a, b)
+
+        def lcm_array(arr):
+            """Функция для нахождения НОК всех чисел в массиве."""
+            result = arr[0]
+            for num in arr[1:]:
+                result = lcm(result, num)
+            return result
+        
+        arr = []
+        for i in self.getDegrees():
+            arr.append(int(self.getCoeff(NaturalNumber(str(i))).denominator))
+
+        lcm = lcm_array(arr)
+        temp = self.head
+        while(temp != None):
+            temp.val.numerator = IntegerNumber(str(int(temp.val.numerator)*(lcm//int(temp.val.denominator))))
+            temp.val.denominator = NaturalNumber("1")
+            temp = temp.next
+
+        self.reduceCoeffs()
+        return
+
 
 
 
