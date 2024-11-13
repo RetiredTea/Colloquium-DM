@@ -724,7 +724,6 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
     Возвращает:
     tuple[NaturalNumber, NaturalNumber]: НОД числителей и НОК знаменателей.
     """
-
     # Списки для хранения числителей (для НОД) и знаменателей (для НОК) коэффициентов
     gcd_list = []
     lcm_list = []
@@ -732,6 +731,8 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
     # Получаем степени многочлена и соответствующие коэффициенты
     pol_degs = polynomial.getDegrees()
     pol_coefs = [polynomial.getCoeff(NaturalNumber(str(deg))) for deg in pol_degs]
+    if int(DEG_P_N(polynomial)) == 0 and int(pol_coefs[0].numerator) == 0:
+        return 1 , 1
 
     # Извлекаем числители ненулевых коэффициентов для вычисления НОД
     for coeff in pol_coefs:
@@ -769,7 +770,7 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
         lcm_result = LCM_NN_N(lcm_result, den)  # Вычисляем НОК текущего результата со знаменателем den
 
     # Возвращаем НОД числителей и НОК знаменателей в виде кортежа
-    return gcd_result, lcm_result
+    return int(gcd_result), int(lcm_result)
 
 
 def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:

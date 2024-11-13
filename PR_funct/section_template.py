@@ -225,16 +225,25 @@ class SectionFrame(tk.Frame):
                 self.error_label.config(text=validation_error)
                 self.result_label.config(text="")  # Очистка поля результата
             else:
-                self.error_label.config(text="")  # Очистка ошибок
-                try:
-                    result_text = function(*args)  # Выполнение функции с аргументами
-                    result_text = makePolynomial(str(result_text))
-                    # Опционально чтобы сократить многочлен на константу
-                    # result_text.setNiceCoeffs()
-                    result_text = result_text.getNiceStr()
-                    self.result_label.config(text=result_text)  # Отображение результата
-                except Exception as e:
-                    self.error_label.config(text=f"Ошибка выполнения: {e}")
+                if int(func_number) == 39:
+                    self.error_label.config(text="")  # Очистка ошибок
+                    try:
+                        result_text = function(*args)  # Выполнение функции с аргументами
+                        result_text = str(result_text)
+                        self.result_label.config(text=result_text)  # Отображение результата
+                    except Exception as e:
+                        self.error_label.config(text=f"Ошибка выполнения: {e}")
+                else:
+                    self.error_label.config(text="")  # Очистка ошибок
+                    try:
+                        result_text = function(*args)  # Выполнение функции с аргументами
+                        result_text = makePolynomial(str(result_text))
+                        # Опционально чтобы сократить многочлен на константу
+                        # result_text.setNiceCoeffs()
+                        result_text = result_text.getNiceStr()
+                        self.result_label.config(text=result_text)  # Отображение результата
+                    except Exception as e:
+                        self.error_label.config(text=f"Ошибка выполнения: {e}")
 
     def validate_input(self, args):
         """Валидация данных, введённых пользователем, перед отправкой в функцию."""
