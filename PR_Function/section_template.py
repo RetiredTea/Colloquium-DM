@@ -228,7 +228,10 @@ class SectionFrame(tk.Frame):
                 self.error_label.config(text="")  # Очистка ошибок
                 try:
                     result_text = function(*args)  # Выполнение функции с аргументами
-                    result_text = makePolynomial(str(result_text)).getNiceStr()
+                    result_text = makePolynomial(str(result_text))
+                    # Опционально чтобы сократить многочлен на константу
+                    # result_text.setNiceCoeffs()
+                    result_text = result_text.getNiceStr()
                     self.result_label.config(text=result_text)  # Отображение результата
                 except Exception as e:
                     self.error_label.config(text=f"Ошибка выполнения: {e}")
