@@ -139,7 +139,8 @@ def SUB_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     result = ''.join(list(map(str, list(reversed(decrement)))))
     return NaturalNumber(result)
 
-
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Умножение натурального числа на цифру
 def MUL_ND_N(num: NaturalNumber, digit: NaturalNumber) -> NaturalNumber:
     carry = 0  # Перенос для сложения
     result = []  # Список для хранения результата
@@ -158,28 +159,30 @@ def MUL_ND_N(num: NaturalNumber, digit: NaturalNumber) -> NaturalNumber:
     result.reverse()  # Переворачиваем результат для правильного порядка цифр
     return NaturalNumber(''.join(map(str, result)))
 
-
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Умножение натурального числа на 10^k, k-натуральное
 def MUL_Nk_N(num: NaturalNumber, degree: NaturalNumber) -> NaturalNumber:
 
     result = str(num) + '0' * int(degree)  # Добавляем k-нулей к числу
     return NaturalNumber(result)
 
 
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
 #Умножение натуральных чисел
 def MUL_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     total_result = NaturalNumber('0')  # Начальное значение результата
-
+    # Перебираем цифры первого числа num1 справа налево
     for i, digit in enumerate(reversed(num1.get_value())):
         # Умножаем num2 на текущую цифру num1
         partial_product = MUL_ND_N(num2, NaturalNumber(str(digit)))
-        # Сдвигаем частичный результат на i позиций влево (добавляем нули)
+        # Сдвигаем промежуточный результат partial_product на i позиций влево (добавляем нули)
         shifted_partial_product = MUL_Nk_N(partial_product, NaturalNumber(str(i)))
         # Добавляем сдвинутый частичный результат к общему результату
         total_result = ADD_NN_N(total_result, shifted_partial_product)
 
     return total_result
 
-
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
 """"
 Вычитание из натурального другого натурального, 
 умноженного на цифру для случая с неотрицательным результатом
@@ -266,6 +269,7 @@ def MOD_NN_N(num_1: NaturalNumber, num_2: NaturalNumber):  # N-12	Остаток
 
     return remainder
 
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== НОД натуральных чисел ====
 #===== принимает два числа возвращает одно - НОД (ввод/вывод объектами класса NaturalNumber) ====
 def GCF_NN_N(num1: NaturalNumber, num2: NaturalNumber):
@@ -281,6 +285,7 @@ def GCF_NN_N(num1: NaturalNumber, num2: NaturalNumber):
         num1 = MOD_NN_N(num1,num2)
     return num2
 
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== НОК натуральных чисел ====
 #===== принимает два числа возвращает одно - НОК (ввод/вывод объектами класса NaturalNumber) ====
 def LCM_NN_N(num1: NaturalNumber, num2: NaturalNumber):
@@ -529,7 +534,11 @@ def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
     return temp
 
 
-# Метод для проверки, является ли рациональное число целым
+#  Модуль выполнен: Самойлова Е.М., гр. 3382.
+"""
+ Проверка сокращенного дробного на целое, 
+ если рациональное число является целым, то «да», иначе «нет»
+"""
 def INT_Q_B(r_number: RationalNumber) -> bool:
 
     # Преобразуем числитель в строку и проверяем делимость на знаменатель
@@ -548,16 +557,15 @@ def TRANS_Z_Q(integer_number: IntegerNumber) -> RationalNumber:
 
 # Преобразование сокращенного дробного в целое (если знаменатель равен 1)
 def TRANS_Q_Z(r_number: RationalNumber) -> IntegerNumber:
-
-    # Проверяем, равен ли знаменатель 1
+    # Проверяем, равен ли знаменатель 1, если не равен возвращаем ошибку
     if r_number.denominator.__str__() != "1":
-        raise ValueError ("The fraction cannot be converted to an integer because the denominator is not equal to 1.")
+        raise ValueError ("Дробь не может быть преобразована в целое число, знаменатель не равен 1")
     # Преобразуем числитель в целое число
     result = IntegerNumber(str(r_number.numerator))
     return result  # Возвращаем целое число
 
 
-
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== Сложение дробей ====
 #===== принимает две дроби возвращает их сумму(ввод/вывод рациональое число) ====
 # Нужны функции сложения целых чисел, умножения целового на целое, преобразования натурального в целое
@@ -569,6 +577,7 @@ def ADD_QQ_Q (frac1: RationalNumber, frac2: RationalNumber):
     return(frac_sum)
 
 
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== Вычитание дробей ====
 #===== принимает две дроби возвращает их разность(ввод/вывод строкой) ====
 # нужны функции умножения целых чисел, вычетания целых чисел, преобразования натурального в целое
@@ -615,7 +624,7 @@ def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber)
 
     return temp1
 
-
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== Сложение многочленов ====
 def ADD_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     result = Polynomial()  # Создаем новый многочлен для результата
@@ -631,7 +640,7 @@ def ADD_PP_P(polyn1: Polynomial, polyn2: Polynomial):
         temp = temp.next
     return result
 
-
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== Вычитание многочленов ====
 def SUB_PP_P(polyn1: Polynomial, polyn2: Polynomial):
     result = Polynomial()  # Создаем новый многочлен для результата
@@ -689,10 +698,12 @@ def MUL_Pxk_P(pln: Polynomial, k: NaturalNumber) -> Polynomial:
     return temp # Возвращаем копию переданного многочлена умноженную на x^k
 
 
-
+# Модуль выполнен: Самойлова Е.М., гр. 3382.
+# Старший коэффициент многочлена
 def LED_P_Q(polynom: Polynomial) -> RationalNumber:
-
+    # Вызываем метод, возвращающий массив степеней, и выводим максимальную степень.
     deg = polynom.getDegrees()[0]
+    # Получаем коэффициент, соответствующий старшей степени.
     result = polynom.getCoeff(NaturalNumber(str(deg)))
     return result
 
@@ -821,51 +832,21 @@ def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
         pln.add(deg, val)  # Добавляем одночлен на который было разделен первый многочлен к частному
     return pln1  # Возвращаем частное
 
-
+# Модуль выполнен: Денис Ц., гр. 3382.
 #===== НОД многочленов ====
 #=====  ====
+def GCF_PP_P(input_pln1: Polynomial, input_pln2: Polynomial):
+    def swap(pln1, pln2):
+        return pln2, pln1
+    pln1 = makePolynomial(str(input_pln1))
+    pln2 = makePolynomial(str(input_pln2))
+    while(str(pln2) != "0"):
+        pln1 = MOD_PP_P(pln1, pln2)
+        pln1, pln2 = swap(pln1, pln2)
+    return pln1
 
-def GCF_PP_P(polyn1: Polynomial, polyn2: Polynomial):
-    # Проверка на нулевые многочлены
-    if str(polyn1) == str(polyn2):
-        return polyn1
-    if str(polyn1) == '0':  # polyn1 == 0
-        return polyn2
-    if str(polyn2) == '0':  # polyn2 == 0
-        return polyn1
-
-    while not (
-            str(polyn2.head.deg) == '0' and polyn2.getCoeff(NaturalNumber("0")).numerator == 0):  # Пока polyn2 не нулевой
-        if int(str(polyn2.head.deg)) > int(str(polyn1.head.deg)):
-            curr = polyn2
-            polyn2 = polyn1
-            polyn1 = curr
-        elif int(str(polyn2.head.deg)) == int(str(polyn1.head.deg)) and int(
-                str(SUB_QQ_Q(polyn1.head.val, polyn2.head.val).numerator)) < 0:
-            curr = polyn2
-            polyn2 = polyn1
-            polyn1 = curr
-        if str(polyn1) == '0':  # polyn1 == 0
-            return polyn2
-        if str(polyn2) == '0':  # polyn2 == 0
-            return polyn1
-        remainder = MOD_PP_P(polyn1, polyn2)
-        current = remainder.head
-        while str(current.val.numerator) == '0' and current.next is not None:
-            current = current.next
-        if str(current.val.numerator)[0] == '-' and str(current.val.numerator)[1:].isdigit():
-            if int(str(current.val.numerator)) < 0:
-                return makePolynomial('1')
-        if str(remainder) == str(polyn1) or str(remainder) == str(polyn2):
-            return makePolynomial('1')
-        if str(remainder) == '0':
-            return polyn2
-        polyn1, polyn2 = polyn2, remainder
-        break
-
-    return polyn1
-
-
+# Модуль выполнен: Денис Ц., гр. 3382.
+#===== Производная многочлена ====
 def DER_P_P(pln: Polynomial):
     polyn = makePolynomial(str(pln))
     temp = polyn.head
@@ -888,9 +869,14 @@ def DER_P_P(pln: Polynomial):
 # Преобразование многочлена — кратные корни в простые.
 def NMR_P_P(pln: Polynomial) -> Polynomial:
     res = Polynomial() # Создадим результирующий многочлен
-    gcf = GCF_PP_P(pln, DER_P_P(pln)) # Запомним НОД исходногл многочлена и его производной
+    der = DER_P_P(pln) # Запомним производную
+    # Опционально можно добавить следующую строку если нам не важен общий коэффициент произвоной многочлена, который больше 1
+    der.reduceCoeffs() # Сократим производную на НОД всех коэффициентов (например 2x+2 ---> x+1)
+    gcf = GCF_PP_P(pln, der) # Запомним НОД исходного многочлена и его производной
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
     return res # Возвращаем исходный многочлен без кратных корней
+
+
 
 
 

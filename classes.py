@@ -390,6 +390,40 @@ class Polynomial:
 
         return res or "0"
 
+    def reduceCoeffs(self):
+        def find_nod(a, b):
+            def swap(a, b):
+                return b, a
+
+            while (b != 0):
+                a = a % b
+                a, b = swap(a, b)
+            # Записываем результаты алгоритма Евклида (nod)
+            return a
+
+        def GCF_ARR(arr):
+            if (len(arr) == 0):
+                return 1
+            nod = arr[0]
+            for i in range(1, len(arr)):
+                nod = find_nod(nod, arr[i])
+            return nod
+
+        coeffs = []
+        for i in self.getDegrees():
+            coef = self.getCoeff(NaturalNumber(str(i)))
+            nod = find_nod(abs(int(coef.numerator)), int(coef.denominator))
+            if (int(coef.denominator) // nod != 1):
+                return
+            coeffs.append(int(coef.numerator) // nod)
+        gcf = GCF_ARR(coeffs)
+        if (gcf > 1):
+            temp = self.head
+            while temp != None:
+                temp.val.numerator = IntegerNumber(str(int(temp.val.numerator) // gcf))
+                temp = temp.next
+        return
+
 
 def makePolynomial(input_str: str) -> Polynomial:
     pln = Polynomial()
