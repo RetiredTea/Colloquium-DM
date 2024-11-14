@@ -6,23 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ae2c5c-b0ba-40ec-9197-d1603cab8892" name="Changes" comment="Corrected">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/classes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/functions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/main.spec" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/section_template.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/technical_functions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/validate_input.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PR_funct/Правила оформления кода.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/classes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/main.spec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/section_template.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/technical_functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/validate_input.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LR_functions/Правила оформления кода.docx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Start_prog.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/Analysis-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/EXE-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PKG-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PYZ-00.pyz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/main.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/main.pkg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/warn-main.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/warn-main.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

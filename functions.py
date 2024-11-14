@@ -483,11 +483,11 @@ def MUL_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
         return IntegerNumber(str(MUL_NN_N(abs1, abs2)))
 
 #  Модуль выполнен: Мельник А., гр. 3382.
-def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное от деления целого на целое (делитель отличен от нуля)
+def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9  Частное от деления целого на целое (делитель отличен от нуля)
     if int(num2) == 0:
         raise ValueError("Делитель не может быть равен нулю.")
     if int(num1) == 0:  # если делимое = 0 вернуть 0
-        return num1
+        return IntegerNumber("0")
 
     # знаки a и b
     sign_a = POZ_Z_D(num1)

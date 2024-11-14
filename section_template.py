@@ -158,18 +158,26 @@ class SectionFrame(tk.Frame):
                     return
             if int(func_number) == 6:
                 if 0 <= int(args[1]) <= 9:
+
                     args = [NaturalNumber(arg) for arg in args]
                 else:
                     self.result_label.config(text="")
-                    self.error_label.config(text="")
                     self.error_label.config(text="Ошибка:во втором поле должна быть введена одна цифра (0-9).")
+                    return
             else:
                 self.result_label.config(text="")
                 args = [NaturalNumber(arg) for arg in args]
 
         elif 15 <= int(func_number) <= 24:  # Z
             if int(func_number) == 18:
+                for arg in args:
+                    if not arg.isdigit() or int(arg) < 0:
+                        self.result_label.config(text="")
+                        self.error_label.config(text="")
+                        self.error_label.config(text="Ошибка: Надо ввести натуральное число.")
+                        return
                 args = [NaturalNumber(arg) for arg in args]
+                return
             for arg in args:
                 if not (arg.lstrip('-').isdigit()):
                     self.result_label.config(text="")
@@ -195,6 +203,7 @@ class SectionFrame(tk.Frame):
                         self.result_label.config(text="")
                         self.error_label.config(text="")
                         self.error_label.config(text="Знаменатель не может быть нулём")
+                        return
                     res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
                 args = res
 
@@ -207,6 +216,7 @@ class SectionFrame(tk.Frame):
                     self.result_label.config(text="")
                     self.error_label.config(text="")
                     self.error_label.config(text="Знаменатель не может быть нулём")
+                    return
                 res.append(RationalNumber(IntegerNumber(rational_parts[0]), NaturalNumber(rational_parts[1])))
                 args = res
             elif int(func_number) == 36:
@@ -236,15 +246,15 @@ class SectionFrame(tk.Frame):
                 else:
                     self.error_label.config(text="")  # Очистка ошибок
                     try:
-                        if int(func_number) == 2:
-                            result_text = function(*args)  # Выполнение функции с аргументами
-                            self.result_label.config(text=result_text)  # Отображение результата
-                        else:
+                        if 29 <= int(func_number) <= 45:
                             result_text = function(*args)  # Выполнение функции с аргументами
                             result_text = makePolynomial(str(result_text))
                             # Опционально чтобы сократить многочлен на константу
                             # result_text.setNiceCoeffs()
                             result_text = result_text.getNiceStr()
+                            self.result_label.config(text=result_text)  # Отображение результата
+                        else:
+                            result_text = function(*args)  # Выполнение функции с аргументами
                             self.result_label.config(text=result_text)  # Отображение результата
                     except Exception as e:
                         self.error_label.config(text=f"Ошибка выполнения: {e}")
