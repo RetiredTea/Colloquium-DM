@@ -284,6 +284,10 @@ def GCF_NN_N(num1: NaturalNumber, num2: NaturalNumber):
     while NZER_N_B(num1) == False and NZER_N_B(num2) == False:
         num1, num2 = swap(num1,num2)
         num1 = MOD_NN_N(num1,num2)
+    if(int(num2) == 0 and int(num1) != 0):
+        return num1
+    elif(int(num2) == 0 and int(num1) == 0):
+        return NaturalNumber("1")
     return num2
 
 # Модуль выполнен: Царегородцев Д., гр. 3382.
@@ -752,7 +756,7 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
 
             # Проверяем, что числитель имеет тип NaturalNumber, иначе преобразуем
             if not isinstance(numerator, NaturalNumber):
-                numerator = TRANS_Z_N(numerator)  # Преобразование в натуральное число
+                numerator = ABS_Z_N(numerator)  # Преобразование в натуральное число
 
             # Добавляем числитель в список для вычисления НОД
             gcd_list.append(numerator)
@@ -880,6 +884,8 @@ def DER_P_P(pln: Polynomial):
                 temp.val = RationalNumber("0")
             break
         temp = temp.next
+    if(str(polyn) == "0"):
+        polyn = makePolynomial("1")
     return polyn
 
 
