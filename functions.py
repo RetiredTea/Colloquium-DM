@@ -1,4 +1,4 @@
-from classes import NaturalNumber, IntegerNumber, RationalNumber, Polynomial, makePolynomial
+from classes import *
 from technical_functions import *
 
 
@@ -290,7 +290,7 @@ def GCF_NN_N(num1: NaturalNumber, num2: NaturalNumber):
 #===== НОК натуральных чисел ====
 #===== принимает два числа возвращает одно - НОК (ввод/вывод объектами класса NaturalNumber) ====
 def LCM_NN_N(num1: NaturalNumber, num2: NaturalNumber):
-    return DIV_NN_N(MUL_NN_N(num1,num2), GCF_NN_N(num1, num2)) # нужна функция умножения чисел
+    return DIV_NN_N(MUL_NN_N(num1,num2), GCF_NN_N(num1, num2))
 
 
 # Модуль выполнен: Борисов Е.А., гр. 3382.
@@ -483,11 +483,11 @@ def MUL_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber) -> IntegerNumber:
         return IntegerNumber(str(MUL_NN_N(abs1, abs2)))
 
 #  Модуль выполнен: Мельник А., гр. 3382.
-def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9  Частное от деления целого на целое (делитель отличен от нуля)
+def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное от деления целого на целое (делитель отличен от нуля)
     if int(num2) == 0:
         raise ValueError("Делитель не может быть равен нулю.")
     if int(num1) == 0:  # если делимое = 0 вернуть 0
-        return IntegerNumber("0")
+        return num1
 
     # знаки a и b
     sign_a = POZ_Z_D(num1)
@@ -500,19 +500,28 @@ def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9  Частное �
     # неполное частное от абсолютных значений
     quotient = DIV_NN_N(abs_a, abs_b)
 
-    # знак результата
-    if (sign_a == 2 and sign_b == 2) or (sign_a == 1 and sign_b == 1):
-        return IntegerNumber(str(quotient))  # Положительное частное
+    if sign_a == 2 and sign_b == 2:  # случай, когда оба числа положительны
+        return IntegerNumber(str(quotient))
+    if sign_a == 1 and sign_b == 1:  # случай, когда оба числа отрицательны
+        quotient = IntegerNumber(str(ADD_1N_N(quotient)))
+        return quotient
     else:
-        if not (int(abs_a) == int(abs_b)):
-            quotient = IntegerNumber(str(ADD_1N_N(quotient)))  # для случая с разными знаками, но одинаковыми модулями
-        quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))  # домножение на -1
-        return quotient  # Отрицательное частное
+        if int(SUB_ZZ_Z(abs_a, MUL_ZZ_Z(abs_b, IntegerNumber(str(quotient))))) == 0:  # случай, когда остатка нет
+            quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))
+            return quotient
+        else:
+            if sign_a == 1:  # случай, когда делимое отрицательно
+                quotient = IntegerNumber(str(ADD_1N_N(quotient)))
+                quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))
+                return quotient  # Отрицательное частное
+            elif sign_b == 1:  # случай, когда делитель отрицателен
+                quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))
+                return quotient  # Отрицательное частное
 
-#  Модуль выполнен: Мельник А., гр. 3382.
+
 def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток от деления целого на целое(делитель отличен от нуля)
     if int(num2) == 0:
-        raise ValueError("Делитель не может быть равен нулю.")  # хз, надо или не надо?
+        raise ValueError("Делитель не может быть равен нулю.")
 
     # частное от деления
     quotient = DIV_ZZ_Z(num1, num2)

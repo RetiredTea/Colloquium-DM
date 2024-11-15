@@ -156,34 +156,54 @@ class SectionFrame(tk.Frame):
                     self.error_label.config(text="")
                     self.error_label.config(text="Ошибка: Надо ввести натуральное число.")
                     return
+           #искощючниея для N ----------------------------------------------------------------------------------------------
             if int(func_number) == 6:
                 if 0 <= int(args[1]) <= 9:
-
                     args = [NaturalNumber(arg) for arg in args]
                 else:
                     self.result_label.config(text="")
                     self.error_label.config(text="Ошибка:во втором поле должна быть введена одна цифра (0-9).")
                     return
+
+            if int(func_number) == 9:
+                if 0 <= int(args[2]) <= 9:
+                    args = [NaturalNumber(arg) for arg in args]
+                else:
+                    self.result_label.config(text="")
+                    self.error_label.config(text="Ошибка:в третье поле должна быть введена одна цифра (0-9).")
+                    return
+
+            if int(func_number) == 10:
+                if int(args[0]) != 0 :
+                    args = [NaturalNumber(arg) for arg in args]
+                else:
+                    self.result_label.config(text="0")
+                    return
+
+            if int(func_number) == 14:
+                if int(args[0]) != 0 :
+                    args = [NaturalNumber(arg) for arg in args]
+                else:
+                    self.result_label.config(text="Нельзя вводить 0")
+                    return
             else:
                 self.result_label.config(text="")
                 args = [NaturalNumber(arg) for arg in args]
-
+            # искощючниея для N ----------------------------------------------------------------------------------------------
         elif 15 <= int(func_number) <= 24:  # Z
-            if int(func_number) == 18:
-                for arg in args:
-                    if not arg.isdigit() or int(arg) < 0:
-                        self.result_label.config(text="")
-                        self.error_label.config(text="")
-                        self.error_label.config(text="Ошибка: Надо ввести натуральное число.")
-                        return
-                args = [NaturalNumber(arg) for arg in args]
-                return
             for arg in args:
                 if not (arg.lstrip('-').isdigit()):
                     self.result_label.config(text="")
                     self.error_label.config(text="")
                     self.error_label.config(text="Ошибка: Надо ввести целое число.")
                     return
+            if int(func_number) == 18:
+                for arg in args:
+                    if not arg.isdigit() or int(arg) < 0:
+                        self.result_label.config(text="")
+                        self.error_label.config(text="")
+                        self.error_label.config(text="Ошибка: Надо ввести натуральное число.")
+                args = [NaturalNumber(arg) for arg in args]
             else:
                 args = [IntegerNumber(arg) for arg in args]
 
