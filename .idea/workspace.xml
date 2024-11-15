@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ae2c5c-b0ba-40ec-9197-d1603cab8892" name="Changes" comment="Corrected">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/Analysis-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/EXE-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PKG-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PYZ-00.pyz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/main.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/main.pkg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/main/warn-main.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/warn-main.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/section_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/section_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/section_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/section_template.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
