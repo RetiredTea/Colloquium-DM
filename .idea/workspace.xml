@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ae2c5c-b0ba-40ec-9197-d1603cab8892" name="Changes" comment="Corrected">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/section_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/section_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/classes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/main.spec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/section_template.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/technical_functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/validate_input.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/Правила оформления кода.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

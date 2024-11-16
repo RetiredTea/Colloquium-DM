@@ -189,7 +189,7 @@ def MUL_NN_N(num1: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
 """
 def SUB_NDN_N(num1: NaturalNumber, multiplier: NaturalNumber, num2: NaturalNumber) -> NaturalNumber:
     # Обращаемся к функциям умножения натурального числа на цифру и разности двух натуральных чисел
-    result = SUB_NN_N(num1, MUL_NN_N(num2, multiplier))
+    result = SUB_NN_N(num1, MUL_ND_N(num2, multiplier))
     return result
 
 # Модуль выполнен: Андреев М.В., гр. 3382.
@@ -536,16 +536,14 @@ def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток �
     return remainder
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Сокращение дроби.
 def RED_Q_Q(rational_number: RationalNumber) -> RationalNumber:
-    if (rational_number.denominator == 1):
-        return rational_number
+    gcf = GCF_NN_N(ABS_Z_N(rational_number.numerator), rational_number.denominator) # НОД числителя и знаменателя
+    num = DIV_ZZ_Z(rational_number.numerator, TRANS_N_Z(gcf)) # Делим числитель на НОД
+    denom = DIV_NN_N(rational_number.denominator, gcf) # Делим знаменатель на НОД
 
-    temp = RationalNumber(rational_number.numerator, rational_number.denominator)
-    nod = euclidean_algorithm(int(rational_number.numerator), int(rational_number.denominator))[3]
-    temp.numerator = IntegerNumber(str(int(rational_number.numerator) // nod))
-    temp.denominator = NaturalNumber(str(int(rational_number.denominator) // nod))
-
-    return temp
+    return RationalNumber(num, denom) # Возвращаем сокращённую дробь
 
 
 #  Модуль выполнен: Самойлова Е.М., гр. 3382.
@@ -565,8 +563,10 @@ def INT_Q_B(r_number: RationalNumber) -> bool:
         return False
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Преобразование целого в дробное.
 def TRANS_Z_Q(integer_number: IntegerNumber) -> RationalNumber:
-    return RationalNumber(str(integer_number))
+    return RationalNumber(str(integer_number)) # Создаём и возвращаем рациональное число с исходным числителем и знаменателем равным 1
 
 
 # Преобразование сокращенного дробного в целое (если знаменатель равен 1)
@@ -619,24 +619,21 @@ def MUL_QQ_Q(r_number_1: RationalNumber, r_number_2: RationalNumber):
         # Генерация ошибки, если типы аргументов не являются RationalNumber
         raise ValueError("На вход должны подаваться рациональные числа")
 
+
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Деление дробей (делитель отличен от нуля).
 def DIV_QQ_Q(rational_number1: RationalNumber, rational_number2: RationalNumber) -> RationalNumber | ValueError:
 
-    if rational_number2.numerator.value == [0]:
-        return ValueError("Второй операнд не может быть 0.")
+    if rational_number2.numerator.value == [0]: # Проверяем если деление на ноль
+        return ValueError("Второй операнд не может быть 0.") # Выводим ошибку
 
-    temp1 = RationalNumber(rational_number1.numerator, rational_number1.denominator)
-    temp2 = RationalNumber(rational_number2.numerator, rational_number2.denominator)
-    if (temp2.numerator.get_sign() == 1):
-        temp2.numerator = IntegerNumber(str(int(temp2.numerator) * (-1)))
-        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * (-1)))
-
-    if temp2.numerator != '0':
-        temp1.numerator = IntegerNumber(str(int(temp1.numerator) * int(temp2.denominator)))
-        temp1.denominator = NaturalNumber(str(int(temp1.denominator) * int(temp2.numerator)))
+    temp1 = RationalNumber(rational_number1.numerator, rational_number1.denominator) # Создаём копию 1 рационального числа
+    if(rational_number2.numerator.get_sign() == 1): # Если 2 рациональное число отрицательное
+        temp2 = RationalNumber(MUL_ZM_Z(TRANS_N_Z(rational_number2.denominator)), ABS_Z_N(rational_number2.numerator)) # То создаём копию, переворачивая 2 исходное рациональное число, и не забывая знак
     else:
-        raise ValueError("Знаменатель не может быть нулём")
+        temp2 = RationalNumber(TRANS_N_Z(rational_number2.denominator), ABS_Z_N(rational_number2.numerator)) # Иначе создаём копию, просто переворачивая 2 исходное рациональное число
 
-    return temp1
+    return MUL_QQ_Q(temp1, temp2) # возвращаем перемноженные 2 ранее созданных рациональных числа
 
 # Модуль выполнен: Царегородцев Д., гр. 3382.
 #===== Сложение многочленов ====
@@ -786,17 +783,18 @@ def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
     return int(gcd_result), int(lcm_result)
 
 
+# Модуль выполнен: Яковлев Д.С., гр. 3382.
+# Умножение многочленов.
 def MUL_PP_P(pln1: Polynomial, pln2: Polynomial) -> Polynomial:
-    arr1 = pln1.getDegrees()
-    arr2 = pln2.getDegrees()
-    pln = Polynomial()
+    arr = pln1.getDegrees() # Запомним массив степеней 1 многочлена с ненулевыми коэффициентами
+    pln = Polynomial() # Создадим результирующий многочлен
 
-    for i in arr2:
-        for j in arr1:
-            val = MUL_QQ_Q(pln2.getCoeff(NaturalNumber(str(i))), pln1.getCoeff(NaturalNumber(str(j))))
-            pln.add(NaturalNumber(str(int(j) + int(i))), val)
+    for i in arr: # Для каждого элемента 1 многочлена
+        temp = MUL_PQ_P(pln2, pln1.getCoeff(NaturalNumber(str(i)))) # Умножаем второй многочлен на коэффициент элемента первого многочлена
+        temp = MUL_Pxk_P(temp, NaturalNumber(str(i))) # Умножаем второй многочлен на степень элемента первого многочлена
+        pln = ADD_PP_P(pln, temp) # Добавляем к результирующему произведение элемента первого многочлена со вторым многочленом
 
-    return pln
+    return pln # Возвращаем результирующий многочлен (произведение первого и второго)
 
 
 # Модуль выполнен: Яковлев Д.С., гр. 3382.
@@ -851,18 +849,19 @@ def MOD_PP_P(input_pln1: Polynomial, input_pln2: Polynomial) -> Polynomial:
 #===== НОД многочленов ====
 #=====  ====
 def GCF_PP_P(input_pln1: Polynomial, input_pln2: Polynomial):
-    def swap(pln1, pln2):
+    # Используем алгоритм Евклида для многочленов
+    def swap(pln1, pln2): # Функция свапа многочленов
         return pln2, pln1
-    pln1 = makePolynomial(str(input_pln1))
-    pln2 = makePolynomial(str(input_pln2))
-    while(str(pln2) != "0"):
-        pln1 = MOD_PP_P(pln1, pln2)
-        pln1, pln2 = swap(pln1, pln2)
-    if(int(pln1.getCoeff(DEG_P_N(pln1)).numerator) < 0):
-        pln1 = MUL_PQ_P(pln1, RationalNumber("-1"))
+    pln1 = makePolynomial(str(input_pln1)) # Создадим копию первого многочлена
+    pln2 = makePolynomial(str(input_pln2)) # Создадим копию второго многочлена
+    while(str(pln2) != "0"): # Пока второй многочлен не равен нулю
+        pln1 = MOD_PP_P(pln1, pln2) # 1 многочлен равен остатку от деления первого на второй
+        pln1, pln2 = swap(pln1, pln2) # Меняем их местами
+    if(int(pln1.getCoeff(DEG_P_N(pln1)).numerator) < 0): # Если у коэффициента у максимальной степени многочлена отрицательный знак
+        pln1 = MUL_PQ_P(pln1, RationalNumber("-1")) # То домножем многочлен на -1
     # Опционально: следующая строка приводит полином к красивым коэффициентам
     #pln1.setNiceCoeffs()
-    return pln1
+    return pln1 # Возвращаем НОД многочленов
 
 # Модуль выполнен: Царегородцев Д., гр. 3382.
 #===== Производная многочлена ====

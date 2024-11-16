@@ -169,7 +169,7 @@ class SectionFrame(tk.Frame):
 
             if int(func_number) == 9:
                 if 0 <= int(args[2]) <= 9:
-                    args = [NaturalNumber(arg) for arg in args]
+                    args = [NaturalNumber(str(arg)) for arg in args]
                 else:
                     self.result_label.config(text="")
                     self.error_label.config(text="Ошибка:в третье поле должна быть введена одна цифра (0-9).")
@@ -177,20 +177,20 @@ class SectionFrame(tk.Frame):
 
             if int(func_number) == 10:
                 if int(args[0]) != 0 :
-                    args = [NaturalNumber(arg) for arg in args]
+                    args = [NaturalNumber(str(arg)) for arg in args]
                 else:
                     self.result_label.config(text="0")
                     return
 
             if int(func_number) == 14:
                 if int(args[0]) != 0 :
-                    args = [NaturalNumber(arg) for arg in args]
+                    args = [NaturalNumber(str(arg)) for arg in args]
                 else:
                     self.result_label.config(text="Нельзя вводить 0")
                     return
             else:
                 self.result_label.config(text="")
-                args = [NaturalNumber(arg) for arg in args]
+                args = [NaturalNumber(str(arg)) for arg in args]
             # искощючниея для N ----------------------------------------------------------------------------------------------
         elif 15 <= int(func_number) <= 24:  # Z
             for arg in args:
@@ -205,6 +205,7 @@ class SectionFrame(tk.Frame):
                         self.result_label.config(text="")
                         self.error_label.config(text="")
                         self.error_label.config(text="Ошибка: Надо ввести натуральное число.")
+                        return
                 args = [NaturalNumber(arg) for arg in args]
             else:
                 args = [IntegerNumber(arg) for arg in args]
@@ -226,10 +227,6 @@ class SectionFrame(tk.Frame):
                         self.error_label.config(text="")
                         self.error_label.config(text="Знаменатель не может быть нулём")
                         return
-                    if args[i][1].find("-"):
-                        self.result_label.config(text="")
-                        self.error_label.config(text="")
-                        self.error_label.config(text="Введите  -  пред дробью")
                     res.append(RationalNumber(IntegerNumber(args[i][0]), NaturalNumber(args[i][1])))
                 args = res
 
@@ -293,7 +290,7 @@ class SectionFrame(tk.Frame):
                                 self.result_label.config(text=result_text)  # Отображение результата
                         else:
                             result_text = function(*args)  # Выполнение функции с аргументами
-                            if len(result_text) > 50:
+                            if len(str(result_text)) > 50:
                                 # Сохраняем длинный результат в файл
                                 file_path = "result.txt"
                                 with open(file_path, "w", encoding="utf-8") as file:
