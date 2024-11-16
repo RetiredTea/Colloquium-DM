@@ -32,7 +32,7 @@ def COM_NN_D(num1: NaturalNumber, num2: NaturalNumber) -> int:
         # Иначе числа равны.
         return 0
 
-
+# Модуль выполнен: Мельник А.В., гр. 3382.
 def NZER_N_B(num: NaturalNumber):  # N-1  Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
     if int(num) == 0:
         return True
@@ -522,7 +522,7 @@ def DIV_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-9	Частное о
                 quotient = MUL_ZM_Z(IntegerNumber(str(quotient)))
                 return quotient  # Отрицательное частное
 
-
+# Модуль выполнен: Мельник А.В., гр. 3382.
 def MOD_ZZ_Z(num1: IntegerNumber, num2: IntegerNumber):  # Z-10	Остаток от деления целого на целое(делитель отличен от нуля)
     if int(num2) == 0:
         raise ValueError("Делитель не может быть равен нулю.")
@@ -723,6 +723,7 @@ def DEG_P_N(polynom: Polynomial) -> NaturalNumber:
     deg = NaturalNumber(str(polynom.getDegrees()[0]))
     return deg
 
+# Модуль выполнен: Андреев М.В., гр. 3382.
 def FAC_P_Q(polynomial: Polynomial) -> tuple[NaturalNumber, NaturalNumber]:
     """
     Функция находит НОД числителей и НОК знаменателей коэффициентов многочлена.
@@ -881,8 +882,6 @@ def DER_P_P(pln: Polynomial):
                 temp.val = RationalNumber("0")
             break
         temp = temp.next
-    if(str(polyn) == "0"):
-        polyn = makePolynomial("1")
     return polyn
 
 
@@ -894,6 +893,8 @@ def NMR_P_P(pln: Polynomial) -> Polynomial:
     # Опционально можно добавить следующую строку если нам не важен общий коэффициент произвоной многочлена, который больше 1
     der.setNiceCoeffs() # Сократим производную на НОД всех коэффициентов (например 2x+2 ---> x+1)
     gcf = GCF_PP_P(pln, der) # Запомним НОД исходного многочлена и его производной
+    if (str(gcf) == "0"):  # Если производная равна нулю
+        gcf == makePolynomial("1")  # То для последующего деления пусть НОД будет равен единицы
     res = DIV_PP_P(pln, gcf) # Запишем в результирующий многочлен частное от исходного на сохранённый НОД
     res.setNiceCoeffs() # Сокращаем получившийся многочлен на общую константу
     return res # Возвращаем исходный многочлен без кратных корней
