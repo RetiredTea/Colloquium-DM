@@ -10,11 +10,18 @@
       <change beforePath="$PROJECT_DIR$/Functions/functions.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/main.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/main.spec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/result.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/section_template.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/technical_functions.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/test.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/validate_input.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Functions/Правила оформления кода.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Start_prog.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/Analysis-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PKG-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/PYZ-00.pyz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main/main.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/main/main.pkg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
